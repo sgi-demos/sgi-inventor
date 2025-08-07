@@ -1,7 +1,7 @@
-![SGI Inventor Logo](sgi-inventor-logo.png)
+![SGI Open Inventor Logo](sgi-inventor-logo.png)
 
-## SGI Inventor
-_SGI Inventor source and binaries archive_
+## SGI Open Inventor
+_SGI Open Inventor source and binaries archive_
 
 This will be a collection of all open source Open Inventor versions.  Eventually I'd like to do an Emscripten port, as there are a few fun demos I'd like to preserve.  Gathering up the raw materials here to do that.
 
