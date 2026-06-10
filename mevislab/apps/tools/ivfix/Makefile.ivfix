@@ -1,0 +1,24 @@
+all: release debug
+
+#/Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix/Makefile.ivfix.Release: /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix/ivfix.pro
+#	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix && python /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/BuildSystem/BuildTools/Scripts/createProject.py ivfix
+#/Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix/Makefile.ivfix.Debug: /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix/ivfix.pro
+#	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix && python /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/BuildSystem/BuildTools/Scripts/createProject.py ivfix
+
+release: #/Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix/Makefile.ivfix.Release
+	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix
+	$(MAKE) -k -j 4 -f Makefile.ivfix.Release
+debug: #/Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix/Makefile.ivfix.Debug 
+	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix 
+	$(MAKE) -k -j 4 -f Makefile.ivfix.Debug
+cleanall: clean
+cleanrelease:
+	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix && if test -e Makefile.ivfix.Release; then $(MAKE) -k -f Makefile.ivfix.Release clean; fi
+cleandebug:
+	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/apps/tools/ivfix && if test -e Makefile.ivfix.Debug; then $(MAKE) -k -f Makefile.ivfix.Debug clean; fi
+
+clean: cleanrelease cleandebug
+
+rebuilddebug: cleandebug debug
+
+rebuildrelease: cleanrelease release

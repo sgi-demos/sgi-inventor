@@ -1,0 +1,24 @@
+all: release debug
+
+#/Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/Makefile.inventor.Release: /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/inventor.pro
+#	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor && python /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/BuildSystem/BuildTools/Scripts/createProject.py inventor
+#/Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/Makefile.inventor.Debug: /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/inventor.pro
+#	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor && python /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/BuildSystem/BuildTools/Scripts/createProject.py inventor
+
+release: #/Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/Makefile.inventor.Release
+	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor
+	$(MAKE) -k -j 4 -f Makefile.inventor.Release
+debug: #/Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor/Makefile.inventor.Debug 
+	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor 
+	$(MAKE) -k -j 4 -f Makefile.inventor.Debug
+cleanall: clean
+cleanrelease:
+	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor && if test -e Makefile.inventor.Release; then $(MAKE) -k -f Makefile.inventor.Release clean; fi
+cleandebug:
+	cd /Users/ilab/BuildSlaveWorkingDirectory/WD/MeVis/ThirdParty/Sources/Inventor/inventor && if test -e Makefile.inventor.Debug; then $(MAKE) -k -f Makefile.inventor.Debug clean; fi
+
+clean: cleanrelease cleandebug
+
+rebuilddebug: cleandebug debug
+
+rebuildrelease: cleanrelease release
