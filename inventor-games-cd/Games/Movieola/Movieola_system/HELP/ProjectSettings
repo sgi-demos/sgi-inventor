@@ -1,0 +1,7 @@
+Settings->Project Settings
+
+This selection brings up the Project Settings editor which lets you
+turn on/off the "Auto save" option in Movieola and also set the
+interval (in seconds) for Auto saving of the project. When the "Auto
+Save" option is on, Movieola does an automatic, periodic save of the
+current project.

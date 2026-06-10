@@ -1,0 +1,9 @@
+#Inventor V1.0 ascii
+
+DEF greenPlastic Material {
+    ambientColor 	0.0 0.0 0.0
+    diffuseColor 	0.1 0.35 0.1
+    specularColor 	0.45 0.55 0.45
+    shininess 		.25
+    #ALPHA 1.0
+}

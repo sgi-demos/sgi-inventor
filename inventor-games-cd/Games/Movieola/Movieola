@@ -1,0 +1,29 @@
+#!/bin/csh -f
+#Tag 66832
+#
+
+##########################################################################
+# 
+# Copyright (c) 1993 by Radiance Software
+#
+# All rights reserved. This listing of source code is proprietary and
+# confidential to Radiance Software. It may not be copied or made 
+# available in any form (electronic or hard copy) to any person not
+# authorized by Radiance Software.
+# Unpublished - Rights reserved under all copyright laws
+#
+# Radiance Software, 1726 Francisco Street, Berkeley, CA 94703
+#
+##########################################################################
+###########################################################################
+#
+# Script to run Movieola. This script should be automatically generated
+# by the Movieola installation procedure (setting MOVIEOLAHOME to the
+# the installation directory)
+#
+###########################################################################
+
+
+setenv MOVIEOLAHOME `pwd`/Movieola_system
+$MOVIEOLAHOME/bin/Movieola.csh $* >/dev/null
+

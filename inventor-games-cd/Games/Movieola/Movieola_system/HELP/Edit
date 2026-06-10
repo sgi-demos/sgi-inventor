@@ -1,0 +1,20 @@
+EDIT - common editing operations
+
+The "Edit" drop down menu contains the following options and tools:
+
+	Undo	 Alt+Z
+	Cut	 Alt+X
+	Copy	 Alt+C
+	Paste	 Alt+V
+	Delete
+	Duplicate
+	Group	 Alt+G
+	UnGroup
+	Select All	 Alt+A
+	DeSelect All
+	Hide 	 >
+		 Selected
+		 UnSelected
+	Show
+	Show Clipboard
+

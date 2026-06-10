@@ -1,0 +1,153 @@
+#Inventor V1.0 ascii
+
+#from: File { name "pieces/scaleKnob.iv" }
+DEF SCALE_KNOB
+Cube { height 0.1 width 0.1 depth 0.1 }
+
+#from: File { name "pieces/scale2Knob.iv" }
+DEF SCALE_2_KNOB
+Separator {
+    Translation { translation 0.025 0.025 0 } 
+    Cube { height 0.05 width 0.05 depth 0.05 }
+    Translation { translation 0.0 -0.05 0 } 
+    Cube { height 0.05 width 0.05 depth 0.05 }
+    Translation { translation -0.05 0 0 } 
+    Cube { height 0.05 width 0.05 depth 0.05 }
+}
+
+
+#from: File { name "pieces/xAxis.iv" }
+# A thick line along the x axis
+DEF X_AXIS
+Separator {
+
+    Coordinate3 { point [ -1 0 0, 1 0 0 ] }
+    LineSet {}
+
+}
+
+#from: File { name "pieces/yAxis.iv" }
+# A thick line along the y axis
+DEF Y_AXIS
+Separator {
+
+    Coordinate3 { point [ 0 -1 0, 0 1 0 ] }
+    LineSet {}
+
+}
+
+#from: File { name "pieces/zAxis.iv" }
+# A thick line along the z axis
+DEF Z_AXIS
+Separator {
+
+    Coordinate3 { point [ 0 0 -1, 0 0 1 ] }
+    LineSet {}
+
+}
+
+#from: File { name "pieces/xFeedbackAxis.iv" }
+DEF X_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ -1.25 0 0, 1.25 0 0 ] }
+    LineSet {}
+}
+
+
+#from: File { name "pieces/yFeedbackAxis.iv" }
+DEF Y_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ 0 -1.25 0, 0 1.25 0 ] }
+    LineSet {}
+}
+
+
+#from: File { name "pieces/zFeedbackAxis.iv" }
+DEF Z_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ 0 0 -1.25, 0 0 1.25 ] }
+    LineSet {}
+}
+
+#from: File { name "pieces/wireBox.iv" }
+DEF WIRE_BOX
+Separator {
+    DrawStyle {
+	style LINES
+	lineWidth 1
+    }
+    Cube { width 2.2 height 2.2 depth 2.2 }
+}
+
+DEF SCALING_OBJECT
+Separator {
+
+    # 8 cubes, one at each corner.
+    # front upper left
+    Translation { translation -1.1 1.1 1.1 }
+    USE SCALE_KNOB
+
+    # front upper right
+    Translation { translation 2.2 0 0 }
+    USE SCALE_KNOB
+
+    # front lower right
+    Translation { translation 0 -2.2 0 }
+    USE SCALE_KNOB
+
+    # front lower left
+    Translation { translation -2.2 0 0 }
+    USE SCALE_KNOB
+
+    # rear upper left
+    Translation { translation 0 2.2 -2.2 }
+    USE SCALE_KNOB
+
+    # rear upper right
+    Translation { translation 2.2 0 0 }
+    USE SCALE_KNOB
+
+    # rear lower right
+    Translation { translation 0 -2.2 0 }
+    USE SCALE_KNOB
+
+    # rear lower left
+    Translation { translation -2.2 0 0 }
+    USE SCALE_KNOB
+
+}
+
+Separator {
+    Label {
+	label "scaleUniformScaler"
+    }
+    USE SCALING_OBJECT
+}
+
+Separator {
+    Label {
+	label "scaleUniformScalerActive"
+    }
+    USE WIRE_BOX
+    USE SCALING_OBJECT
+}
+
+Separator {
+    Label {
+	label "scaleUniformCenterFeedback"
+    }
+    Label {
+	label "scaleUniformCenterFeedbackActive"
+    }
+    # A skinny set of axes.
+
+    # x-axis
+    USE X_FEEDBACK_AXIS
+
+    #y-axis
+    USE Y_FEEDBACK_AXIS
+
+    #z-axis
+    USE Z_FEEDBACK_AXIS
+}
+

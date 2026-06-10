@@ -1,0 +1,9 @@
+Edit->Group
+
+"Group" is used to create a group of objects from several unrelated
+objects for selection and manipulation purposes. If you select two or
+more objects and use "Group", a new "group" object is created , with
+the selected objects as its children. From then on, the objects acts a
+single group for selection and manipulation. You can use "Ungroup" to
+ungroup them.
+

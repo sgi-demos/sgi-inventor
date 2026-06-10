@@ -1,0 +1,576 @@
+#Inventor V2.0 ascii
+
+# All separators have caching turned off, since there's no need to
+# waste memory on this display.
+
+Separator {
+    renderCaching OFF
+
+    DEF SetupECB EventCallback {}
+
+    # Set up camera to view from -100 to 100 in x and y
+    OrthographicCamera {
+	position	0 0 5
+	height		200
+	nearDistance	1
+	farDistance	10
+    }
+
+    LightModel { model BASE_COLOR }
+
+    # Most of this stuff can't be picked
+    PickStyle { style UNPICKABLE }
+
+    # Background
+    Separator {
+	renderCaching OFF
+	Transform {
+	    scaleFactor 200 200 1
+	    translation 0 0 -2
+	}
+	DEF _SetupBoxCoords Coordinate3 {
+	    point [-1 -1 0, 1 -1 0, 1 1 0, -1 1 0, -1 -1 0]
+	}
+	MaterialBinding { value PER_VERTEX }
+	BaseColor { rgb [.4 0 .2, .4 0 .2,
+			 0 0 .5, 0 0 .5] }
+	FaceSet {}
+    }
+
+    DEF SetupMainSwitch Switch {
+	Separator {
+	    renderCaching OFF
+
+	    # Main panel
+	    Switch {
+
+		# Background box color
+		DEF _SetupBackgroundColor BaseColor { rgb .6 .6 .5 }
+
+		# Foreground text/accent color
+		DEF _SetupForegroundColor BaseColor { rgb .3 .2 .1 }
+
+		# Active area color
+		DEF _SetupActiveColor     BaseColor { rgb .8 .8 .4 }
+
+		# Active area accent color
+		DEF _SetupActiveAccentColor BaseColor { rgb .7 .2 .1 }
+
+		# Static area box (-1 to 1 in both dimensions)
+		DEF _SetupStaticBox Separator {
+		    renderCaching OFF
+		    USE _SetupBoxCoords
+		    USE _SetupBackgroundColor
+		    BaseColor {
+			rgb [.5 .5 .4, .5 .5 .4,
+			     .7 .7 .7, .7 .7 .7]
+		    }
+		    MaterialBinding { value PER_VERTEX }
+		    FaceSet { numVertices 4 }
+		    USE _SetupForegroundColor
+		    Separator {
+			renderCaching OFF
+			LightModel { model PHONG }
+			DirectionalLight { direction 0 0 -1 }
+			Material {
+			    ambientColor   .05 .02 .02
+			    diffuseColor   .3 .2 .2
+			    specularColor  .6 .5 0
+			    shininess	   .15
+			}
+			Separator {
+			    renderCaching OFF
+			    Translation { translation -1 0 0 }
+			    DEF _SetupStaticCyl Cylinder { radius .04 }
+			}
+			Separator {
+			    renderCaching OFF
+			    Translation { translation 1 0 0 }
+			    USE _SetupStaticCyl
+			}
+			Separator {
+			    renderCaching OFF
+			    Transform {
+				rotation 0 0 1 -1.5707963
+				translation 0 1 0
+			    }
+			    USE _SetupStaticCyl
+			}
+			Separator {
+			    renderCaching OFF
+			    Transform {
+				rotation 0 0 1 1.57
+				translation 0 -1 0
+			    }
+			    USE _SetupStaticCyl
+			}
+			Separator {
+			    renderCaching OFF
+			    Translation { translation -1 -1 0 }
+			    DEF _SetupStaticSphere Sphere { radius .04 }
+			}
+			Separator {
+			    renderCaching OFF
+			    Translation { translation -1 1 0 }
+			    USE _SetupStaticSphere
+			}
+			Separator {
+			    renderCaching OFF
+			    Translation { translation 1 -1 0 }
+			    USE _SetupStaticSphere
+			}
+			Separator {
+			    renderCaching OFF
+			    Translation { translation 1 1 0 }
+			    USE _SetupStaticSphere
+			}
+		    }
+		}
+
+		# Active area box (-1 to 1 in both dimensions)
+		DEF _SetupActiveBox Separator {
+		    renderCaching OFF
+		    PickStyle { style SHAPE }
+		    USE _SetupBoxCoords
+		    USE _SetupActiveColor
+		    FaceSet { numVertices 4 }
+		    USE _SetupActiveAccentColor
+		    DrawStyle { lineWidth 2 }
+		    Translation { translation 0 0 .1 }
+		    LineSet {}
+		}
+
+		# Active area box (-5 to 5 in both dimensions)
+		DEF _SetupCheckBox Separator {
+		    renderCaching OFF
+		    Scale { scaleFactor 5 5 1 }
+		    USE _SetupActiveBox
+		}
+
+		# Text attributes
+		DEF _SetupTextAttribs Group {
+		    Font { name AvantGarde-Demi size 7 }
+		    USE _SetupForegroundColor
+		}
+
+		# A check-mark (-5 to 5)
+		DEF _SetupCheck Separator {
+		    renderCaching OFF
+		    LightModel { model PHONG }
+		    DirectionalLight { direction 0 -1 -1  }
+		    USE _SetupActiveAccentColor
+		    Translation { translation -1 -3.5 0 }
+		    RotationXYZ { axis Z  angle -.6 }
+
+		    Material {
+			diffuseColor .7 .2 .1
+			specularColor .6 .6 .6
+			shininess .4
+		    }
+
+		    Separator {
+			renderCaching OFF
+			Translation { translation 0 4.5 0 }
+			Cylinder    { height 9 }
+		    }
+
+		    Separator {
+			renderCaching OFF
+			RotationXYZ { axis Z  angle -1.8 }
+			Translation { translation 0 -2 0 }
+			Cylinder    { height 4 }
+		    }
+
+		    Separator {
+			renderCaching OFF
+			Translation { translation 0 0 0 }
+			Sphere      { }
+		    }
+		}
+
+		# An arrow (points up, -1 to 1 in both dimensions)
+		DEF _SetupArrow Separator {
+		    renderCaching OFF
+		    PickStyle { style SHAPE }
+		    Coordinate3 {
+			point [.5 -1 0, .5 0 0, 1 0 0, 0 1 0,
+			       -1 0 0, -.5 0 0, -.5 -1 0, .5 -1 0]
+		    }
+		    USE _SetupActiveColor
+		    ShapeHints { faceType UNKNOWN_FACE_TYPE }
+		    FaceSet { numVertices 7 }
+		    USE _SetupActiveAccentColor
+		    DrawStyle { lineWidth 2 }
+		    Translation { translation 0 0 .1 }
+		    LineSet {}
+		}
+	    }
+
+	    # Greeting box
+	    Separator {
+		renderCaching OFF
+		Translation { translation 0 70 0 }
+		Separator {
+		    renderCaching OFF
+		    Scale { scaleFactor 50 20 50 }
+		    USE _SetupStaticBox
+		}
+		Separator {
+		    renderCaching OFF
+		    USE _SetupTextAttribs
+		    Translation { translation 0 1 .1 }
+		    DEF SetupNameText Text3 {
+			justification CENTER
+			spacing 1.5
+			string ["Welcome, Cadet",
+				"<name here>"]
+		    }
+		}
+	    }
+
+	    # Airplane mode option box
+	    Separator {
+		renderCaching OFF
+		Translation { translation -60 22 0 }
+		Separator {
+		    renderCaching OFF
+		    Scale { scaleFactor 30 20 30 }
+		    USE _SetupStaticBox
+		}
+		Separator {
+		    renderCaching OFF
+		    USE _SetupTextAttribs
+		    Translation { translation 0 6 .1 }
+		    Text3 {
+			justification CENTER
+			string "Airplane Mode"
+		    }
+		}
+		DEF SetupAirplaneMode Separator {
+		    renderCaching OFF
+		    Translation { translation 0 -5 .1 }
+		    USE _SetupCheckBox
+		    DEF SetupAirplaneModeSwitch Switch {
+			USE _SetupCheck
+		    }
+		}
+	    }
+
+	    # Dark mode option box
+	    Separator {
+		renderCaching OFF
+		Translation { translation -60 -25 0 }
+		Separator {
+		    renderCaching OFF
+		    Scale { scaleFactor 30 20 30 }
+		    USE _SetupStaticBox
+		}
+		Separator {
+		    renderCaching OFF
+		    USE _SetupTextAttribs
+		    Translation { translation 0 6 .1 }
+		    Text3 {
+			justification CENTER
+			string "Dark Mode"
+		    }
+		}
+		DEF SetupDarkMode Separator {
+		    renderCaching OFF
+		    Translation { translation 0 -5 .1 }
+		    USE _SetupCheckBox
+		    DEF SetupDarkModeSwitch Switch {
+			USE _SetupCheck
+		    }
+		}
+	    }
+
+	    # Sound option box
+	    Separator {
+		renderCaching OFF
+		Translation { translation 60 22 0 }
+		Separator {
+		    renderCaching OFF
+		    Scale { scaleFactor 30 20 30 }
+		    USE _SetupStaticBox
+		}
+		Separator {
+		    renderCaching OFF
+		    USE _SetupTextAttribs
+		    Translation { translation 0 6 .1 }
+		    Text3 {
+			justification CENTER
+			string Sound
+		    }
+		}
+		DEF SetupSound Separator {
+		    renderCaching OFF
+		    Translation { translation 0 -5 .1 }
+		    USE _SetupCheckBox
+		    DEF SetupSoundSwitch Switch {
+			USE _SetupCheck
+		    }
+		}
+	    }
+
+	    # Starting level option box
+	    Separator {
+		renderCaching OFF
+		Translation { translation 60 -25 0 }
+		Separator {
+		    renderCaching OFF
+		    Scale { scaleFactor 30 20 30 }
+		    USE _SetupStaticBox
+		}
+		Separator {
+		    renderCaching OFF
+		    USE _SetupTextAttribs
+		    Translation { translation 0 6 .1 }
+		    Text3 {
+			justification CENTER
+			string "Starting Level"
+		    }
+		}
+		Separator {
+		    renderCaching OFF
+		    USE _SetupActiveAccentColor
+		    Translation { translation 0 -7 .1 }
+		    Font {
+			name Helvetica-Bold
+			size 7
+		    }
+		    DEF SetupStartLevelText Text3 {
+			justification CENTER
+			string 14
+		    }
+		}
+		DEF SetupLevelUp1 Separator {
+		    renderCaching OFF
+		    Transform {
+			scaleFactor	4 4 1
+			translation	11 -5 .1
+		    }
+		    USE _SetupArrow
+		}
+		DEF SetupLevelUp5 Separator {
+		    renderCaching OFF
+		    Transform {
+			scaleFactor	4 7 1
+			translation	22 -5 .1
+		    }
+		    USE _SetupArrow
+		}
+		DEF SetupLevelDown1 Separator {
+		    renderCaching OFF
+		    Transform {
+			rotation	0 0 1 3.14159
+			scaleFactor	4 4 1
+			translation	-11 -5 .1
+		    }
+		    USE _SetupArrow
+		}
+		DEF SetupLevelDown5 Separator {
+		    renderCaching OFF
+		    Transform {
+			rotation	0 0 1 3.14159
+			scaleFactor	4 7 1
+			translation	-22 -5 .1
+		    }
+		    USE _SetupArrow
+		}
+	    }
+
+	    # Start button
+	    Separator {
+		renderCaching OFF
+		Translation { translation -60 -70 0 }
+		Separator {
+		    renderCaching OFF
+		    Transform {
+			scaleFactor 16 10 16
+			translation 0 0 -1
+		    }
+		    USE _SetupStaticBox
+		}
+		DEF SetupStart Separator {
+		    renderCaching OFF
+		    Scale { scaleFactor 13 8 13 }
+		    USE _SetupActiveBox
+		}
+		Separator {
+		    renderCaching OFF
+		    USE _SetupTextAttribs
+		    Translation { translation 0 -2 .1 }
+		    Text3 {
+			justification CENTER
+			string Begin
+		    }
+		}
+	    }
+
+	    # Help button
+	    Separator {
+		renderCaching OFF
+		Translation { translation 0 -70 0 }
+		Separator {
+		    renderCaching OFF
+		    Transform {
+			scaleFactor 16 10 16
+			translation 0 0 -1
+		    }
+		    USE _SetupStaticBox
+		}
+		DEF SetupHelp Separator {
+		    renderCaching OFF
+		    Scale { scaleFactor 13 8 13 }
+		    USE _SetupActiveBox
+		}
+		Separator {
+		    renderCaching OFF
+		    USE _SetupTextAttribs
+		    Translation { translation 0 -2 .1 }
+		    Text3 {
+			justification CENTER
+			string Help
+		    }
+		}
+	    }
+
+	    # Quit button
+	    Separator {
+		renderCaching OFF
+		Translation { translation 60 -70 0 }
+		DEF _SetupQuitStuff Group {
+		    Separator {
+			renderCaching OFF
+			Transform {
+			    scaleFactor 16 10 16
+			    translation 0 0 -1
+			}
+			USE _SetupStaticBox
+		    }
+		    DEF SetupQuit Separator {
+			renderCaching OFF
+			Scale { scaleFactor 13 8 13 }
+			USE _SetupActiveBox
+		    }
+		    Separator {
+			renderCaching OFF
+			USE _SetupTextAttribs
+			Translation { translation 0 -2 .1 }
+			Text3 {
+			    justification CENTER
+			    string Quit
+			}
+		    }
+		}
+	    }
+	}
+    }
+
+    DEF SetupHighScoreSwitch Switch {
+	Separator {
+	    BaseColor { rgb 1 .6 .2 }
+	    Font {
+		name	Times-Bold
+		size	9
+	    }
+	    Translation { translation 0 80 0 }
+	    DEF SetupHighScoreNames Text3 {
+		justification CENTER
+		string ["Cadet Honor Roll"]
+	    }
+	}
+	BaseColor { rgb 1 1 .5 }
+	Font {
+	    name	Times-Bold
+	    size	7.5
+	}
+	Separator {
+	    Coordinate3 { point [-100 57 0, 100 57 0] }
+	    LineSet {}
+	}
+
+	Separator {
+	    Translation { translation -100 60 0 }
+	    DEF SetupHighScoreRanks Text3 {
+		justification LEFT
+		spacing 1.75
+		string ["Rank", "1", "2", "3", "4", "5", "6", "7",
+			"8", "9", "10"]
+	    }
+	}
+	Separator {
+	    Translation { translation -75 60 0 }
+	    DEF SetupHighScoreNames Text3 {
+		justification LEFT
+		spacing 1.75
+		string ["Cadet"]
+	    }
+	}
+	Separator {
+	    Translation { translation 60 60 0 }
+	    DEF SetupHighScoreLevels Text3 {
+		justification RIGHT
+		spacing 1.75
+		string ["Level"]
+	    }
+	}
+	Separator {
+	    Translation { translation 100 60 0 }
+	    DEF SetupHighScores Text3 {
+		justification RIGHT
+		spacing 1.75
+		string ["Score"]
+	    }
+	}
+
+	# Highlights new score
+	DEF SetupHighScoreNewSwitch Switch {
+	    Separator {
+		# Translate 13.1 down in y for each score below the first
+		DEF SetupHighScoreNewTranslation Translation {
+		    translation 0 -117.9 0
+		}
+		BaseColor { rgb .3 .6 .6 }
+		Coordinate3 { point [-102 45 0, 102 45 0,
+				     102 54 0, -102 54 0, -102 45 0] }
+		LineSet {}
+	    }
+	}
+
+	# Restart button
+	Separator {
+	    renderCaching OFF
+	    Translation { translation -20 -88 0 }
+	    Separator {
+		renderCaching OFF
+		Transform {
+		    scaleFactor 16 10 16
+		    translation 0 0 -1
+		}
+		USE _SetupStaticBox
+	    }
+	    DEF SetupRestart Separator {
+		renderCaching OFF
+		Scale { scaleFactor 13 8 13 }
+		USE _SetupActiveBox
+	    }
+	    Separator {
+		renderCaching OFF
+		USE _SetupTextAttribs
+		Translation { translation 0 -2 .1 }
+		Text3 {
+		    justification CENTER
+		    string Restart
+		}
+	    }
+	}
+
+	# Another Quit button
+	Separator {
+	    renderCaching OFF
+	    Translation { translation 20 -88 0 }
+	    USE _SetupQuitStuff
+	}
+    }
+}

@@ -1,0 +1,13 @@
+Sculptor->Text->2D Text
+
+"2D Text" is a tool that provides for the creation of 2D annotation
+text on the screen. The text always stays flat on the screen and does
+not rotate with the camera. 2D text is useful for annotation and
+titling. However, it cannot be rendered.
+
+If an existing 2D text object is selected while invoking this tool,
+that object will be edited, otherwise a new object will be created.
+This tool takes its input from the keyboard. Just type in whatever you
+wish and then click on Accept. If you turn on Dynamic Update, you can
+see the text appear as you type. You may change the object name, font
+, font size, line spacing or justification at any time.

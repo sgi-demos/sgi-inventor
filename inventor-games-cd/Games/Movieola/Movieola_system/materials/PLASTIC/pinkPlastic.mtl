@@ -1,0 +1,9 @@
+#Inventor V1.0 ascii
+
+DEF pinkPlastic Material {
+    ambientColor 	0.1 0.0 0.06
+    diffuseColor 	0.47058824 0.0 0.19607843
+    specularColor 	0.50196078 0.50196078 0.50196078
+    shininess 		.25
+    #ALPHA 1.0
+}

@@ -1,0 +1,211 @@
+GETTING STARTED
+
+
+In this Beta version, we give you a very brief overview of Movieola,
+to get you started immediately. In the final version, more extensive
+tutorials will be given. Being extremely user-friendly, Movieola will
+present much less difficulty in learning, than similar packages. Use
+the on-line context-sensitive cue cards to get detailed help on the
+various tools. You will be surprised by how quickly you will start
+doing complex projects.
+
+
+Running Movieola:
+
+If you registered yourself as a Movieola user during installation (see
+Chapter 2), you will have a "Movieola" executable script in your home
+directory. Run Movieola by double-clicking on the Workspace icon, or
+by typing '/usr/sbin/Movieola' in the Console window.
+
+
+Starting a new project:
+
+Movieola comes up with the "Open project" interface. Type in a new
+name, say, "Tutorial", and choose "Ok". A new project folder called
+"Tutorial.mvla" will be created.  The interface in front of you has a
+main 3D viewer with a title bar., and an icon menu.
+
+The title bar has several drop-down menus. "File" contains operations
+to manage your project. "Edit" contains common editing operations like
+"cut" and "undo". "Sculptor" contains all the modeling operations.
+"Costume" contains operations to give color,s materials and textures
+to objects. "Limelight" contains operations to set lights and
+environment, and to render the photorealistic scene. "Settings"
+contains interfaces to customize your work settings. "Cue Cards" gives
+you help. The icon menu is a shortcut for some of the more important
+operations in the title bar menus. To use text labels instead of
+icons, choose "View->Labels" in the icon window.
+
+
+Getting online help:
+
+Choose "Cue Cards->On Context" in the main title bar. This will bring
+up the cue card on opening a new project. As you go on to do more
+things, the cue card will constantly update to give you help on
+whatever you are doing.If you want to just get help on the various
+tools without actually doing any action, choose "Cue Cards->Help
+Mode". Then if you click on any button, it does not perform the
+action, but only gives you help on it. You can also get help on any
+tool by choosing "Cue Cards->On Topic". It is recommended that you
+contantly refer to the cue cards (either "on Context", or "on Topic")
+while you are still learning the product.. Depending on your style,
+you may either follow the tutorial as it is, or experiment on your own
+as you go along (with the help of cue cards).
+
+
+Getting Your Feet Wet:
+
+Choose "Sculptor->Primitives" or the Primitives icon (the one with a
+cube and sphere on a checkerboard). This brings up a list of common
+primitives. Click on "Cylinder" and choose "Accept". A wireframe
+cylinder appears in the main viewer window. "Dismiss" the "Primitives"
+window. Use the right mouse button in the viewer window to bring up
+the popup menu, and choose Draw Style->As Is. While keeping the left
+mouse button rpessed, move the cursor around and see how the view
+changes. Use the middle mouse button to translate in the viewing
+plane. By pressing both the left and middle mouse buttons, you can
+zoom in and out. Play around the viewer and the interface items in the
+viewer "decoration", and the popup menu, to get comfortable. You can
+change the view to one of six plane views (top, front, etc) or the 3D
+perspective view. You can bring up any number of additional viewers by
+choosing "Settings->3D Viewer", or "Settings ->2D Viewer."
+
+Change from "viewing" mode to "editing mode" by "closing the eye" at
+the top right corner of the viewer decoration, or by pressing the
+Space bar once. The cursor changes to an arrow. Press the left mouse
+button on the cylinder object and move. Notice the yellow "drag
+manipulator" that allows you to move the object in 3D space. Click on
+the "Undo" icon to restore the original position. Choose
+"Sculptor->Direct Manips" to bring up a choice of 3D manipulators.
+Read the cue card to understand about the "transform box" manipulator.
+Choose "Transform Box" and notice how the manipulator around the
+object changes shape. Try resizing the object. Choose "Drag Point" to
+use the default manipulator (that allows you to move the object).
+"Dismiss" the "Direct Manips" window, or put it aside.
+
+Choose "Edit->Duplicate" or click on the icon. Then use the left mouse
+to drag the copy of the cylinder to a new location. Choose
+"Sculptor->Object List" or click on its icon. Notice that there are
+two ojects listed. Select the second object, and try to "Rename" it.
+Then select both objects in the list. Choose "Edit->Group". Notice
+that the two objects now move as one group. Choose "Edit->Ungroup" to
+ungroup them. Choose one object, and choose "Edit->Hide->Selected".
+Notice how the other object disappears. Use this operation to
+concentrate on the object tha you are working on currently. Chose
+"Edit->Show" to unhide all objects. Click on a region outside all
+objects to deselect all selected objects.
+
+(This works only if you already have Display PostScript installed)
+Click on the 3D text icon (or choose Sculptor->Text->3D). This brings
+up the 3D text interface. Type in some text, choose a font and say
+"Accept". Notice the 3D text appear on the viewer window. Change the
+view, and use Draw Style->As Is to get a better look at the text .
+Click in the middle of the profile line in the 3D text interface. Then
+drag that point with your left mouse button. Notice how the bevel of
+the 3D text changes in the main window. Use the "Cue Cards" help if
+you have trouble with 3D text.
+
+
+Potter: Let's Start Modeling!
+
+Delete all objects by choosing "Edit->Select All" and "Edit->Cut".
+(Alt-A-Alt-X is a keyboard shortcut for this). Then choose
+"Scultor->Potter" or click on the icon. This brings up the fancy
+"Potter" interface. Bring up the cue card and read the introduction to
+Potter. The cylindrical object in the scene is built by using a
+straight profile (in the lower Potter window) and a circular section
+(in the upper window). You can now change the section and profile by
+moving the spline points in the profile window. (Read the Potter cue
+card for details on spline editing). Notice how the object changes
+shape. You can edit the section by choosing "Section". Move the
+"twist" splider and notice the effect on the object. Choose "Axis".
+Notice how a red axis spline appears on the viewer window. Choose
+"Viewer Type->Front" in the viewer pop up menu. Move your cursor over
+the end of the axis spline, and when a green box appears, press down
+with the left mouse button and move it vertically. Notice how the
+object stretches as you change the axis. Click on the middle of the
+axis to create a new spline point. Now move any spline point and see
+how the object bends. Try moving the "Spline steps" slider to make the
+object less or more dense.
+
+"Potter" is the central modeling tool. As you learn more about it and
+become more confortable with it, you will realize that this tool can
+be used to make incredibly complicated shapes like machines, snakes
+and even dinosaurs.
+
+
+More Modeling:
+
+Choose an object that you built with "Potter" and choose
+"Sculptor->Operations->Mold" or click on its icon. Choose "Tweak
+spline points". Little blue spline points appear on the surface of the
+object. You can now drag these points any way you want.
+
+Delete all objects. Choose "Sculptor->FaceBuilder" or click on the
+icon. Click three points on the viewer dinwo, and it creates a
+triangle. Create a bunch of faces, and try moving the points around in
+"Edit Old" mode. "Face Builder" is a low-level tool for building
+individual polygons.
+
+Delete all objects. Create two objects using "Primitives". Place them
+at separate locations on the scene. Choose "Sculptor->Assemble". Click
+on a point on one object. Then click on a point on the other object.
+Observe how the first object "snaps" into place with respect to the
+other object.
+
+There are more modeling tools like "Bend" and "Mirror", that you can
+learn as you go.
+
+
+
+Costume:
+
+Choose "Draw Style->As Is" in the viewer popup menu. Select an object.
+and choose "Costume->Color" or click on the icon. This brings up the
+color editor.. Move the little marker on the color wheel, and observe
+the color change on the object.  Choose "Sculptor->Material" and bring
+up the Material editor. Play around with Transparency and other
+values.
+
+Choose "Draw Style->As Is" in the viewer popup menu. Select an object.
+and choose "Costume->Texture" or click on the icon. This brings up the
+texture editor interface and gives you a default "palette" of
+textures. Click on one of the images, and see the object on the test
+window texture mapped. Try different textures by clicking on them. If
+you want to see the blown up texture image, choose "Image->View". Try
+translating, scaling and rotating the texture map using the sliders on
+the left. Once you have the texture map set up right, choose "Update
+Main window" for the texture map to appear on the main scene.
+"Dismiss" the texture interface.
+
+
+Limelight:
+
+Choose "Limelight->Lights". This brings up the light editor. By
+default, you are editing the "headlight" (a light that moves with the
+camera and always lights up the scene. Try changing the color of the
+headlight. To create a new light, choose "Create New", and choose
+"Spotlight". Then choose "Create". Notice the spotlight icon in the
+viewer window. Try moving it using the left mouse button, and changing
+its color. You can "Remove" the light or turn off "Show icon".
+"Dismiss" the interface.
+
+(Does not work for Demo copy) Choose "Limelight->Render Options
+Setup". Choose "Render to file". Choose "Test Render" or "Render".
+After a little while, a rendering window comes up. Notice how the
+scene is ray traced progressively. Depending on your scene, you may
+notice shadows and reflections. You can also "Render to file". You may
+have noticed that some of the interface items in Movieola, like
+"Photoreal Property..." or "Render Options Setup", are colored blue.
+This means that you will see the effect of your actions only in the
+rendering stage, not in the viewer window.
+
+
+Wrapping up:
+
+Save your project by choosing "File->Save" or clicking on the "piggy
+bank" icon. To exit the program, choose "File->Exit".
+
+Hope you enjoyed getting started with Movieola. The best way to get
+the most out of the product is to do a serious project using it.
+

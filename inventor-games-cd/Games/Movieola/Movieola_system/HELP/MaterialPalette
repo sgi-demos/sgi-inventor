@@ -1,0 +1,24 @@
+Costume->Material Palette
+
+Material Palette..is the next selection found in the "Costume" menu.
+
+Material Palette Editor contains the following selections in its menu
+:
+
+File, Edit, Palettes.
+
+File : Menu is used to load a new palette into the editor. Generally
+there are a number of basic materials available as defaults.
+
+Edit : This menu contains "Cut", "Copy", "Paste" and "Delete" options.
+When a material is edited/created in this editor, it has to be
+"copied", so it can be accessed in the main material editor to set
+material for the selected object.
+
+Palettes: This menu lists all the palettes of materials that are
+shipped with the system. Material from a palette may be selected and
+modified in the Material Palette Editor and when this material setting
+is "copied", it may be pasted onto the selected material in the
+material editor.
+
+This option is not available in this release.

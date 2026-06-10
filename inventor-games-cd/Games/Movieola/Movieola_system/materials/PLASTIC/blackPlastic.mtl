@@ -1,0 +1,9 @@
+#Inventor V1.0 ascii
+
+DEF blackPlastic Material {
+    ambientColor 	0.0 0.0 0.0
+    diffuseColor 	0.01 0.01 0.01
+    specularColor 	0.50 0.50 0.50
+    shininess 		.25
+    #ALPHA 1.0
+}

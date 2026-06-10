@@ -1,0 +1,179 @@
+Sculptor->Potter
+
+"Potter" is the primary object creation tool of Movieola.. With it you
+will create most of the parts and pieces used in building up objects.
+"Potter" is a unique tool, because it combines many traditional tools
+(extrude, sweep/spin, axis path and twist) into a single new approach
+to modeling 3D objects. In its simplest form this tool extrudes and
+spins or sweeps at the same time.
+
+By default, "Potter" comes up with a circular section (in the little
+window on the top right) and a straight profile (in the bigger window
+below). Sweeping the profile about the section results in a
+cylindrical object . If the profile is a sloping line, the object will
+be a cone. If the profile is a sloping line, and the section is a
+square, the object will be a pyramid. "Potter" also allows you to
+modify the section "locally". For example, an object can be round at
+the top, then square around the middle, and so on. By default the
+object has a straight axis (backbone). You can actually specify and
+modify an axis spline path in the viewer window, and see the object
+contort itself about the axis! Finally, you can specify a twist to be
+applied to each sectional plate. The profile/sections/axis curves can
+be a continuous set of both lines and splines. The resultant object
+will be a mesh of spline surfaces, and treated as a single continuous
+mesh of vertices for rendering.
+
+ "Object Name": As with other Movieola tools, the object name appears
+in the top left corner. The user can give a meaningful name by
+selecting the default name (by dragging the left mouse pressed) and
+deleting it, and typing in a new name.
+
+"Current Operation": There are 4 choices:
+
+	Profile
+	Section
+	Local Section
+	Axis
+
+These options control what parts of the "potted" object you will be
+working on. All the buttons on the left of the potter window will now
+operate on the chosen spline. See "Spline Editing" further down on
+this section, to learn how to modify the spline.
+
+"Profile": This selects the "Profile spline" for editing in the main
+spline Editor (Large window). The "Section spline" will appear on the
+smaller window.
+
+"Section": This selects the Section spline for Editing in the main
+spline Editor (Large Window). The profile spline appears on the
+smaller window.
+
+"Local Section": This allows one or more sections to be edited without
+affecting any of the remaining sections. Select one or more points in
+the Profile editor (using the middle mouse drag box). These are the
+points, whose local sections you want to modify. Then choose Local
+Section. It brings up the "local section" in the editor window, which
+you can now modify.  To restore a group of sections back to the shape
+of the "global section", select the points in the Profile window
+(using the middle mouse), and choose "Section".  The local section
+effects go away.  .  "Axis": This selects the object's "axis"
+(backbone) for editing. The 3D axis spline should be edited in the
+viewer window(s).  The "axis" may be bent or formed into almost any
+curve shape, and the object will extend and contort itself along that
+curve.
+
+"Automatic Update": By default, the "potter" object instantly changes
+with any change to the profile/section. If the instant feedback slows
+things down, turn off Automatic Update, make all the required changes
+to the profile in the Potter editing window, and press the Update
+button whenever you want to update the potter object.
+
+"Twist": This option when used twist each section about the axis by an
+equal amount. The twist will remain, no matter what you do to the axis
+. To turn off twist, set the slider value to 0.
+
+"Spline steps": Each spline consists of "spline control points" (blue
+markers on the editing window). The spline is created by generating
+curve points in between the spline points. The "spline steps" slider
+determines the number of curve points between consecutive spline
+points. The more spline steps used, the finer or smoother the curves
+produced by the main spline points. This is very useful for fast
+modeling of spline objects using a low number of "spline steps", and
+then bumping up the smoothness while rendering.
+
+Spline Editing:
+
+This is a very powerful 3D curve editor used for creating and
+modifying splines. In the "Potter" tool, it is used for editing the
+section/profile/axis curves. In the "3D text" tool, it is used to edit
+the bevel of the text.
+
+The spline is colored white or red, and the spline control points are
+colored blue. The cursor is a red cross-hair. A green rubber-band
+extends from the current cursor position to the nearest end of the
+spline. If you move the cursor over the spline, that part of the
+spline turns green. If you move the cursor over a blue spline point, a
+green box appears over it.
+
+To move a blue spline point, move your cursor over it until a green
+box appears over it. Press on the left mouse button. The green box
+turns yellow . Move the point while keeping the mouse button pressed.
+Notice how the spline changes shape! In a 2D viewer (see
+Settings->2Dviewer), the object can be moved in the viewing plane. In
+the 3D viewer (see Settings->3Dviewer), you can actually move it in
+any direction. The manipulator choose which 3D axis direction to move
+in, based on your mouse movement. If you keep the "Shift" key pressed,
+the movement will be constrained along the nearest axis (which will be
+colored a brighter yellow). If you keep the "Alt" key pressed, the
+movement will be constrained along the plane indicated by the first
+gesture of the mouse.
+
+To move a group of points together, press down the middle mouse button
+and drag a rectangular box around the required points. When you let up
+on the button, a "box manipulator" shows up around the box. You can
+now press down on the left mouse to move the box (and the points
+inside it). You can also resize the box by pressing down on the corner
+and side "handles". The box turns yellow during movement.
+
+You can make a "closed" spline by pressing "j" (the Potter tool also
+has a "Join Ends" toggle interface). You can constrain the movement of
+points by choosing "Snap to Grid" in Settings->Grid Settings. You can
+even set the coarseness of the "snap" grid (see Settings->Grid
+Settings).
+
+To add a new spline point, simply click on the left mouse button. The
+green rubber band indicates which end of the spline will be extended.
+To add a new point in the middle of the spline, go over the spline
+until that part of the spline turns green, then click on the left
+mouse button. The new point can then be moved the usual way.
+
+The spline itself can consist of several curve segments, each of which
+can either be a spline or a line. To switch between "spline" and
+"line" mode, press "s" or "l" respectively (in Potter, there is also a
+line/spline toggle interface). To start a new curve segment, keep the
+"Shift" key pressed while clicking on the left mouse button to create
+a new point. The new point will now be in a different curve segment.
+Notice that the junction spline point is red. You can "split" a curve
+segment into two by pressing "Shift" while clicking the left mouse on
+the curve. You can use multiple curve segments in a spline either to
+create spline/line combinations, or create "cusps" in the spline.
+
+To delete a point, move over it until the green box appears. Then
+press "d" or "Backspace" or "Delete" on the keyboard. If you have
+"Shift" pressed at the same time, the entire curve segment is deleted.
+If you have both "Shift" and "Ctrl" pressed at the same time, the
+entire spline (all curve segments) is deleted.
+
+"Undo": This is exactly the same as Edit->Undo in the main title bar
+(and the undo icon). It is used to retract the effect of the last
+operation performed (and is usually used in conjunction with Potter
+spline editing).
+
+"Clear":This clears the currently selected spline (Profile, Section,
+Local Section or Axis). This allows you to start over using the spline
+editor, or loading a new spline.
+
+"Join Ends": This toggle is used to make the spline "closed".
+
+"Line/Spline": This is used to select the current mode for spline
+editing (See "Spline editing" below").
+
+"Primitive": This brings up a menu of spline templates or primitives.
+These can be loaded as the currently selected spline. The menu
+includes standard spline shapes like Circle.s (the ".s" says that it
+is a spline curve), SemiCircle.l (".l" says that it is made up of
+lines), Square.l, and so on. By using the right combination of splines
+for the section, profile and axis, you can create a number of Potter
+shapes.
+
+"Load": This brings up a file selector, and you can load a spline from
+file, as the current profile/section/axis.
+
+"Save": This brings up the Sculptor->Save menu, and you can save the
+current spline onto a file. This allows you to create your own library
+of splines and reuse them.
+
+"New": This is used when you want to work on a new Potter object. If
+you select another object and choose "New", that object is now loaded
+into Potter. If no object is selected, you are given a new default
+Potter object.

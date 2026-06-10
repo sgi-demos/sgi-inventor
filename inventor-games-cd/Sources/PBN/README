@@ -1,0 +1,18 @@
+PBN is a computer version of the Paint By Numbers puzzle game
+created by Non Ishida for London's Sunday Telegraph and popularized in
+the USA by Games magazine.
+
+------------------------------------------------------------------
+
+The pbnsolve program allows you to solve a previously-created puzzle.
+
+Run
+
+	pbnsolve puzzles/0.pbn
+
+and select the "Help" menu button to get started.
+
+------------------------------------------------------------------
+
+The pbncreate program allows you to create a new puzzle. It is also
+described in the help file.

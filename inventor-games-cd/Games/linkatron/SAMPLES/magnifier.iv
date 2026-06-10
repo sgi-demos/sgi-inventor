@@ -1,0 +1,139 @@
+#Inventor V2.0 ascii
+
+Separator {
+    Arrow {
+	origin	-2.58169 3.7262 -1.66893e-06
+	dirPoint	-0.399979 2.29842 -1.11312e-05
+	length	5.66565
+	originAxle		Axle {
+	    origin	-2.58169 3.7262 -1.66893e-06
+	    leadingAxle	NULL
+	}
+
+	dirPointAxle		Axle {
+	    origin	-0.399979 2.29842 -1.11312e-05
+	    zRotation	-1.31747
+	    leadingAxle		    DEF +0 Axle {
+		pinActivationDist	-1
+		leadingAxle	NULL
+	    }
+
+	}
+
+	inertAxle		DEF +1 Axle {
+	    pinActivationDist	-1
+	    leadingAxle	NULL
+	}
+
+	sizingDragger		Translate1Dragger {
+	    translation	5.66565 0 0
+	}
+
+    }
+    Arrow {
+	origin	0 1 0
+	dirPoint	2.15902 0.623734 -2.38419e-07
+	length	6.91064
+	originAxle		Axle {
+	    origin	0 1 0
+	    leadingAxle	NULL
+	}
+
+	dirPointAxle		Axle {
+	    origin	2.15902 0.623734 -2.38419e-07
+	    zRotation	-0.579484
+	    leadingAxle		    USE +1
+
+	}
+
+	inertAxle		DEF +2 Axle {
+	    pinActivationDist	-1
+	    leadingAxle	NULL
+	}
+
+	sizingDragger		Translate1Dragger {
+	    translation	6.91064 0 0
+	}
+
+    }
+    Wheel {
+	origin	-0.650605 3.2665 -1.74645
+	radius	1
+	zRotation	0
+	offsetRotation	-1.31747
+	originAxle		Axle {
+	    origin	-0.650605 3.2665 -1.74645
+	    zRotation	0
+	    leadingAxle		    DEF +3 Axle {
+		origin	-0.650605 3.2665 -1.74644
+		zRotation	0
+		canFollowRot	FALSE
+		leadingAxle	NULL
+	    }
+
+	}
+
+	inertAxle		USE +0
+
+	rotatorRing		RotateDiscDragger {
+	    rotation	0 0 -1  1.31747
+	}
+
+	sizingRing		Scale2UniformDragger {
+	}
+
+    }
+    DoubleStrut {
+	origin	6.80802 -0.186504 0
+	endPoint	8.63489 -4.7337 9.83477e-07
+	size1	9.2473
+	size2	8.66564
+	strut1		Strut {
+	    origin	6.80802 -0.186504 0
+	    endPoint	16.055 -0.257699 7.05091e-07
+	    originAxle		    Axle {
+		origin	6.80802 -0.186504 0
+		zRotation	-0.172547
+		leadingAxle			USE +2
+
+	    }
+
+	    endPointAxle		    Axle {
+		origin	16.055 -0.257699 7.05091e-07
+		pinActivationDist	-1
+		leadingAxle	NULL
+	    }
+
+	}
+
+	strut2		Strut {
+	    origin	16.055 -0.257699 7.05091e-07
+	    endPoint	8.63489 -4.7337 9.83477e-07
+	    originAxle		    Axle {
+		origin	16.055 -0.257699 7.05091e-07
+		leadingAxle	NULL
+	    }
+
+	    endPointAxle		    Axle {
+		origin	8.63489 -4.7337 9.83477e-07
+		leadingAxle	NULL
+	    }
+
+	}
+
+    }
+    RotorMotor {
+	origin	-0.650605 3.2665 -1.74644
+	on	FALSE
+	onOffButton		DEF +4 ToggleButton {
+	    isOn	FALSE
+	}
+
+	axle		USE +3
+
+	speedStick		DEF +5 RotateDiscDragger {
+	    rotation	0 0 1  1
+	}
+
+    }
+}

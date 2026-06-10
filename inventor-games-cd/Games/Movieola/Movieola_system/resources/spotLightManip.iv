@@ -1,0 +1,94 @@
+#Inventor V1.0 ascii
+
+Separator {
+    Label {
+	label "dragPointDragger"
+    }
+    Label {
+	label "dragPointDraggerActive"
+    }
+    Complexity { value 0.3 }
+    Scale { scaleFactor 1.73 1.73 1.73 }
+    Sphere { radius 1.0 }
+
+    # Rays of light emanating from sphere
+
+    PickStyle { style UNPICKABLE }
+
+    Coordinate3 { point [   1.0608  1.0608 0, 1.326  1.326 0,
+			   -1.0608 -1.0608 0,-1.326 -1.326 0, 
+			   -1.0608  1.0608 0,-1.326  1.326 0,
+			    1.0608 -1.0608 0, 1.326 -1.326 0,
+
+                           0  1.0608  1.0608, 0  1.326  1.326,
+			   0 -1.0608 -1.0608, 0 -1.326 -1.326, 
+			   0 -1.0608  1.0608, 0 -1.326  1.326,
+			   0  1.0608 -1.0608, 0  1.326 -1.326,
+
+                            1.0608 0  1.0608, 1.326 0  1.326,
+			   -1.0608 0 -1.0608,-1.326 0 -1.326, 
+			   -1.0608 0  1.0608,-1.326 0  1.326,
+			    1.0608 0 -1.0608, 1.326 0 -1.326 ] }
+    LineSet { numVertices [ 2, 2, 2, 2, 
+			    2, 2, 2, 2, 
+			    2, 2, 2, 2 ] }
+}
+
+Separator {
+    Label {
+	label "rotateSphericalRotater"
+    }
+    Label {
+	label "rotateSphericalRotaterActive"
+    }
+
+    Coordinate3 { point [ 0 0 -1, 0 0 -10 ] }
+    LineSet {}
+
+    Translation { translation 0 0 -10 }
+    RotationXYZ { axis X angle -1.57079 }
+    Cone { height 2 bottomRadius 1 }
+
+}
+
+# don't show the feedback axis for the rotater
+Separator {
+    Label {
+	label "rotateSphericalCenterFeedback"
+    }
+    Label {
+	label "rotateSphericalCenterFeedbackActive"
+    }
+}
+
+Separator {
+    Label {
+	label "scale2UniformScaler"
+    }
+    Label {
+	label "scale2UniformScalerActive"
+    }
+
+    Translation { translation 0 0 -1 }
+
+    Separator {
+	RotationXYZ { axis X angle 1.57079 }
+	Translation { translation 0 -1 0 }
+	Cone { height 2.0 bottomRadius 2.0 }
+    }
+}
+
+Separator {
+    Label {
+	label "scale2UniformCenterFeedback"
+    }
+    Label {
+	label "scale2UniformCenterFeedbackActive"
+    }
+    Label {
+	label "scale2UniformNormalFeedback"
+    }
+    Label {
+	label "scale2UniformNormalFeedbackActive"
+    }
+}

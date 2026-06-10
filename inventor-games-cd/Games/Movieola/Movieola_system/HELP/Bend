@@ -1,0 +1,10 @@
+Sculptor->Bend
+
+"Bend" is used to bend objects about an arbitary axis. The user can
+first manipulate the starting axis (the intrinsic axis of the object).
+Then after choosing "Bend Axis", the user can bend this axis, and the
+whole object bends accordingly.
+
+The axis is a spline that is edited exactly the same way as in Potter
+(See Sculptor->Potter).
+

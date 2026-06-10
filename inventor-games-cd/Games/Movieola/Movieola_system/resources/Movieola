@@ -1,0 +1,218 @@
+!
+!  Application Resource for Inventor (DorianGrey)
+!
+!
+
+!! Inventor specific resources - set them as you please
+!! (they are initially commented out here)
+
+!!
+!! <any color> - can be a name or a hex value
+!!	name: red, yellow, salmon, light blue, etc.
+!!	hex value: #rrggbb (e.g. #ff00ff is magenta)
+
+!!
+!! SoXtRenderArea
+!!	backgroundColor: <any color>
+!!
+!*SoXtRenderArea*BackgroundColor: black
+
+!!
+!! SoXtFullViewer
+!!	decoration: on | off
+!!	seekAnimationTime: float
+!!	seekTo: point | object
+!!	seekDistanceUsage: percentage | absolute
+!!	zoomMin: float
+!!	zoomMax: float
+!!	autoClipping: on | off
+!!	nearDistance (when autoClipping is off): float
+!!	farDistance (when autoClipping is off): float
+!!
+!*SoXtFullViewer.decoration:		on
+!*SoXtFullViewer.seekAnimationTime:	2.0
+!*SoXtFullViewer.seekTo: 		point
+!*SoXtFullViewer.seekDistanceUsage:	percentage
+!*SoXtFullViewer.zoomMin: 		1.0
+!*SoXtFullViewer.zoomMax: 		179.0
+!*SoXtFullViewer.autoClipping:		on
+!*SoXtFullViewer.nearDistance:		2.4
+!*SoXtFullViewer.farDistance:		2.8
+
+!!
+!! SoXtExaminerViewer
+!!	spinAnimation: on | off
+!!	pointOfRotationAxes: on | off
+!!	axesSize (if pointOfRotationAxes is on): short (pixels)
+!!
+!*SoXtExaminerViewer.spinAnimation:		on
+!*SoXtExaminerViewer.pointOfRotationAxes:	off
+!*SoXtExaminerViewer.axesSize: 			20
+
+!!
+!! SoXtColorEditor
+!!	wysiwyg: true | false | on | off
+!!	colorSliders: none | intensity | rgb | hsv | rgb_v | rgb_hsv
+!!	updateFrequency: continuous | manual
+!!
+!*SoXtColorEditor.wysiwyg:		false
+!*SoXtColorEditor.colorSliders:		intensity
+!*SoXtColorEditor.updateFrequency:	continuous
+
+!!
+!! SoXtMaterialEditor
+!!	tile1Color: <any color>
+!!	tile2Color: <any color>
+!!	light1Color: <any color>
+!!	light2Color: <any color>
+!!	updateFrequency: continuous | manual
+!!
+!*SoXtMaterialEditor.tile1Color:	#4c4c4c
+!*SoXtMaterialEditor.tile2Color:	#999999
+!*SoXtMaterialEditor.light1Color:	white
+!*SoXtMaterialEditor.light2Color:	white
+!*SoXtMaterialEditor.updateFrequency:	continuous
+
+
+!!
+!! Fonts
+!!
+
+!! all labels should be bold
+*XmLabel*fontList:	-*-helvetica-bold-r-normal-*-14-*-*-*-*-*-iso8859-1
+*XmLabelGadget*fontList:  -*-helvetica-bold-r-normal-*-14-*-*-*-*-*-iso8859-1
+*XmScale*fontList: 	-*-helvetica-bold-r-normal-*-14-*-*-*-*-*-iso8859-1
+*XmBulletinBoard*labelFontList: -*-helvetica-bold-r-normal-*-14-*-*-*-*-*-iso8859-1
+
+
+!! all buttons, toggles, and radio buttons should be plain
+*XmPushButton*fontList: -*-helvetica-medium-r-normal-*-14-*-*-*-*-*-iso8859-1
+*XmPushButtonGadget*fontList: -*-helvetica-medium-r-normal-*-14-*-*-*-*-*-iso8859-1
+*XmIconGadget*fontList: -*-helvetica-medium-r-normal-*-14-*-*-*-*-*-iso8859-1
+*XmBulletinBoard*buttonFontList: -*-helvetica-medium-r-normal-*-14-*-*-*-*-*-iso8859-1
+*XmToggleButton*fontList: -*-helvetica-medium-r-normal-*-14-*-*-*-*-*-iso8859-1
+*XmToggleButtonGadget*fontList: -*-helvetica-medium-r-normal-*-14-*-*-*-*-*-iso8859-1
+
+
+!! menuBar entries, panes, popups, and option menus should be oblique
+!*menuBar*fontList:  	-*-helvetica-bold-o-normal-*-14-*-*-*-*-*-iso8859-1
+*optionMenu*fontList: -*-helvetica-medium-r-normal-*-14-*-*-*-*-*-iso8859-1
+!! for entries in popup menus
+*XmMenuShell*XmPushButton*fontList:  -*-helvetica-bold-o-normal-*-14-*-*-*-*-*-iso8859-1
+*XmMenuShell*XmLabelGadget*fontList:	-*-helvetica-bold-o-normal-*-14-*-*-*-*-*-iso8859-1
+*XmMenuShell*XmPushButtonGadget*fontList:  -*-helvetica-bold-o-normal-*-14-*-*-*-*-*-iso8859-1
+*XmMenuShell*XmCascadeButton*fontList: -*-helvetica-bold-o-normal-*-14-*-*-*-*-*-iso8859-1
+*XmMenuShell*XmCascadeButtonGadget*fontList: -*-helvetica-bold-o-normal-*-14-*-*-*-*-*-iso8859-1
+*XmMenuShell*XmToggleButton*fontList: -*-helvetica-bold-o-normal-*-14-*-*-*-*-*-iso8859-1
+*XmMenuShell*XmToggleButtonGadget*fontList: -*-helvetica-bold-o-normal-*-14-*-*-*-*-*-iso8859-1
+
+
+*XmList*fontList:  -*-helvetica-medium-r-normal-*-14-*-*-*-*-*-iso8859-1
+
+
+!!
+!! Text fonts  (important that at least the SourceView be constant width)
+!!
+*XmText.fontList: -*-lucidatypewriter-medium-r-*-*-14-*-*-*-*-*-iso8859-1
+*XmTextField.fontList: -*-lucidatypewriter-medium-r-*-*-14-*-*-*-*-*-iso8859-1
+
+
+!!
+!! Spacing stuff, probably belongs in master scheme file
+!!
+
+!! buttons shouldn't look "cramped"
+!! (24 pixels across face from top to bottom and 8 in margin on face)
+*XmPushButton*marginHeight: 	4
+*XmPushButton*marginWidth: 	7
+
+!! move the text in lists slightly right to improve legibility
+*XmList*listMarginWidth:        3
+
+!! height of menuBar should be 22 pixels 
+*menuBar*marginHeight: 	1
+*menuBar.marginHeight: 	0
+*menuBar*marginLeft:  	1
+*menuBar.spacing:  		7
+*XmMenuShell*marginLeft:  	3
+*XmMenuShell*marginRight:  	4
+!! spacing between indicator and label should be only 6 in menus
+*XmMenuShell*XmToggleButtonGadget*spacing: 	 	2
+*XmMenuShell*XmToggleButtonGadget*marginHeight:  	0
+*XmMenuShell*XmToggleButtonGadget*indicatorSize: 	10
+
+*XmMenuShell*XmLabelGadget*marginHeight: 4
+
+!! spacing between indicator and label should be 8 outside of menus
+*XmToggleButtonGadget*spacing: 	4
+*XmToggleButton*spacing: 		4
+
+!! spacing between scrollbars and clients should be 2 pixels
+*XmScrolledWindow*spacing: 		0
+
+!! for some bizarre reason, setting the SourceView scrollBar to 20
+!! yields 10 pixels across the top of the thumb where the
+!! ExpressionView and the CallStack need 18 to get the same thing
+*XmScrollBar*width:     18
+!! for the CallStack's horizontal scrollBar
+*XmScrollBar*height:    18
+
+!! sliders should be slightly narrower than scrollbars ->
+!! 12 pixels across the trough as opposed to 14
+*XmScale*scaleHeight:   20
+
+!! in a perfect world, text fields would be the same size as buttons
+!! (28 pixels including shadow) but since lucidatypwriter14 is really
+!! only 13 pixels, our text fields will be 27 pixels high
+*XmText*marginHeight:    4
+
+!!
+!! Color Mappings
+!!
+
+*foreground:			 	Black
+*background:			 	#c1c1c1
+*XmList*background:     	#999999
+*XmPushButton*background:	 	#adadad
+*XmText.background:		 	#c19797
+*XmTextField.background:	 	#c19797
+
+!! color all dialogs, warnings, and errors the same
+*XmSelectionBox*background:	 	#c1c1c1
+*XmSelectionBox*XmText*background:	 	#c19797
+*XmMessageBox*background:	 	#c1c1c1
+
+!! color all radio and toggle buttons when they are selected
+*fillOnSelect:		True
+*visibleWhenOff:		True
+*selectColor:		#ffff00
+
+!! highlights for keyboard traversal
+*XmText*highlightColor:		 	Black
+*XmTextField*highlightColor:		Black
+*XmPushButton*highlightColor:		Black
+*XmText*highlightThickness:		1
+*XmTextField*highlightThickness:	1
+*XmPushButton*highlightThickness:	1
+!! no need for anything else to highlight itself
+*highlightThickness:	0
+
+
+!! Movieola-specific defaults
+!!
+!! Put wish-list here marked as !TODO <...>
+
+
+!! Positioning, size etc. of frames (main view + 3 ortho views)
+*Movieola.geometry: 725x606+247+141
+
+*iconMenu.geometry: +80+141
+*Potter.geometry: +10+10
+
+*confirm-1.geometry: +200+200
+*confirm-2.geometry: +200+200
+
+*Help.geometry: 638x302+330+10
+
+*rsSecurity.geometry: +403+223
+*rsCustomer.geometry: +80+50

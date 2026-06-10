@@ -1,0 +1,16 @@
+Sculptor->Save
+
+This allows the user to save parts of the current scene to a separate
+file (different from the project scene file). By default, these files
+are saved in the project scene folder. This operation allows the user
+to create a library of objects, or save off multiple versions, while
+keeping the current scene uncluttered.
+  
+You can save the entire scene (objects, lights, environment, etc), or
+just all the objects, or just the object selected. While using the
+Potter tool (see Potter) you can also save profile/section spline
+curves. You can save it in any one of the supported file formats
+(Inventor Binary is the default , and also the fastest to save and
+reload). You just have to type in a name (Example: dinosaur), and
+Movieola will automatically add the extensions for file type and file
+format (Example: dinosaur.object.iv).

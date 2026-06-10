@@ -1,0 +1,63 @@
+#! /bin/sh
+
+# @(#)rs_insert_header 1.1 93/06/15
+
+##########################################################################
+# 
+# Copyright (c) 1993 by Radiance Software
+#
+# All rights reserved. This listing of source code is proprietary and
+# confidential to Radiance Software. It may not be copied or made 
+# available in any form (electronic or hard copy) to any person not
+# authorized by Radiance Software.
+# Unpublished - Rights reserved under all copyright laws
+#
+# Radiance Software, 1726 Francisco Street, Berkeley, CA 94703
+#
+##########################################################################
+
+###########################################################################
+#
+# Script to install Movieola
+#
+#
+###########################################################################
+
+# Get installation dir from command-line (current dir by default)
+
+case $# in
+   0) INSTALLDIR=".";;
+   1) INSTALLDIR=$1;;
+   *) echo "Usage: ";
+      echo "Movieola.install <install-directory>";
+      exit 1;;
+esac
+
+cd $INSTALLDIR
+MOVIEOLAHOME=`pwd`/Movieola_system
+
+if [ -w $MOVIEOLAHOME ]; then
+
+# Edit the Movieola script to set RSHOME
+
+SCRIPTFILE=$MOVIEOLAHOME/bin/Movieola
+ed - $SCRIPTFILE >/dev/null <<_END_
+/setenv MOVIEOLAHOME/
+s?.*?setenv MOVIEOLAHOME $MOVIEOLAHOME?
+w
+q
+_END_
+
+#cp $SCRIPTFILE $INSTALLDIR
+
+fi
+
+#  Link textures from showcase
+
+if [ -r /usr/data/textures]; then
+   ln -s /usr/data/textures/* $MOVIEOLAHOME/subsystems/textures
+fi
+
+
+
+

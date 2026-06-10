@@ -1,0 +1,15 @@
+#Inventor V2.0 ascii
+
+Group {
+    DEF ShipCamera     PerspectiveCamera {
+    }
+    DEF ShipHeadLight DirectionalLight {
+	direction 0 1 -1
+	intensity .8
+    }
+    DEF ShipFixedLight DirectionalLight {
+	direction 0 -1 0
+	intensity .8
+    }
+}
+

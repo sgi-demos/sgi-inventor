@@ -1,0 +1,18 @@
+Sculptor-> Object List
+
+"Object List" is used to find objects by name. This tool can be used
+to "grab" objects singly or in groups for selection. This is very
+handy in densely packed scenes where it would be difficult to "reach
+through" to a particular object or group of objects.
+
+Once you have activated the object list you may use it as an alternate
+selection tool, you may also use it to select and rename objects as
+you build a complex scene. Select an object by clicking on the object
+name in the list. Deselect by clicking on it again. You can select
+more than one object by clicking on the names one by one. The selected
+object names will be highlighted.
+
+Once an object is selected from with in "Object List" it will be
+treated as if it had been selected in the active window and any
+operation which would act upon a selected object using the mouse
+cursor will work the normal way.

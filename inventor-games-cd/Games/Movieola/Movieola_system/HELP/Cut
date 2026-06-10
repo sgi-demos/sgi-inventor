@@ -1,0 +1,7 @@
+Edit->Cut
+
+"Cut" is used to remove the selected object or group of objects from
+the scene. "Cut" copies the object(s) to a 3D clipboard. The contents
+of clipboard can be "pasted" back onto the scene, or into another
+program like SceneViewer or Showcase.
+

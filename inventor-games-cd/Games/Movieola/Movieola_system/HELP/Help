@@ -1,0 +1,32 @@
+CUE CARDS - online help
+
+
+"Cue Cards" is a unque and extremely useful wayof providing help to
+the users as when and when they actually need it.
+
+CueCards->Help Mode: If this is turned on, subsequent actions by the
+user do not perform the actual operation, but bring up online help on
+that feature instead. This is an excellent way to get answers for
+"What does that do? And this one?"
+
+CueCards->On-line Tutorial This brings up an online tutorial. If you
+are running Movieola for the first time, this comes up automatically.
+It is strongly recommended that you go through the tutorial before
+starting to use the program seriously.
+
+CueCards->On Context This brings up a cue card on whatever you are
+doing currently. If you keep the cue card window up, it constantly
+updates to give you help on whatever you are doing currently. As a
+beginner, you will find the context-sensitive help invaluable. More
+experienced users can also use this as a reference.
+
+CueCards->On Topic This brings up a list of topics, that you can get
+help on.
+
+CueCards->On Cue Cards This brings up this information.
+
+CueCards->On Product Philosophy This brings up a little essay on
+Movieola, its design philosphy, and its user focus.
+
+CueCards->On Movieola This brings up information about Radiance
+Software and how to call customer support.

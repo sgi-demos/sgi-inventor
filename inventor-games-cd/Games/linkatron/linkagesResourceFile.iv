@@ -1,0 +1,764 @@
+#Inventor V2.0 ascii
+
+#----------------------------------------
+# colors shared by other resources below
+#----------------------------------------
+DEF BLUE Material {
+    diffuseColor	0 0.710535 0.8
+    emissiveColor	0 0.0906295 0.102041
+}
+DEF YELLOW Material {
+    diffuseColor	0.8 0.8 0
+    emissiveColor	0.1 0.1 0
+}
+DEF ORANGE Material {
+    diffuseColor	1.0 0.7 0
+    emissiveColor	0.12 0.08 0
+}
+DEF PINK Material {
+    diffuseColor	0.8 0 0.266667
+    emissiveColor	0.102041 0 0.0340136
+}
+DEF MAGENTA Material {
+    diffuseColor	0.5 0 0.5
+    emissiveColor	0.1 0 0.1
+}
+DEF LAVENDER Material {
+    diffuseColor	0.8 0 0.8
+    emissiveColor	0.102041 0 0.1
+}
+DEF WHITE Material {
+    diffuseColor	0.8 0.8 0.8
+    emissiveColor	0.1 0.1 0.1
+}
+
+DEF LIGHT_GREY Material {
+    diffuseColor	0.6 0.6 0.6
+    emissiveColor	0.075 0.075 0.075
+}
+
+DEF CHARCOAL Material {
+    diffuseColor	0.1 0.1 0.1
+    emissiveColor	0.1 0.1 0.1
+}
+
+DEF WHITE_LINE Material {
+    emissiveColor	0.8 0.8 0.8
+    diffuseColor	0.8 0.8 0.8
+}
+DEF YELLOW_LINE Material {
+    emissiveColor	1   1   0
+    diffuseColor	1   1   0
+}
+DEF PURPLE_LINE Material {
+    emissiveColor	1   0   1
+    diffuseColor	1   0   1
+}
+
+#----------------------------------------
+# used by the LinkBase class
+#----------------------------------------
+
+DEF linkBaseErrorMaterial Material {
+    diffuseColor	1  0 0
+    emissiveColor	.5 0 0
+}
+
+#----------------------------------------
+# used by the graph paper class 
+#----------------------------------------
+
+DEF graphPaperPaperAppearance AppearanceKit {
+    material USE WHITE
+}
+
+DEF graphPaperLineAppearance AppearanceKit {
+    material USE LIGHT_GREY
+    drawStyle DrawStyle { lineWidth 3 }
+}
+
+
+#----------------------------------------
+#used by the TableTop class
+#----------------------------------------
+
+DEF tableNearLeftTranslator Separator {
+    renderCaching ON
+    USE PINK
+    File { name "parts/ulCorner.iv" }
+}
+DEF tableNearLeftTranslatorActive Separator {
+    renderCaching ON
+    USE YELLOW
+    File { name "parts/ulCorner.iv" }
+}
+DEF tableFarLeftTranslator Separator {
+    renderCaching ON
+    USE PINK
+    File { name "parts/llCorner.iv" }
+}
+DEF tableFarLeftTranslatorActive Separator {
+    renderCaching ON
+    USE YELLOW
+    File { name "parts/llCorner.iv" }
+}
+DEF tableNearRightTranslator Separator {
+    renderCaching ON
+    USE PINK
+    File { name "parts/urCorner.iv" }
+}
+DEF tableNearRightTranslatorActive Separator {
+    renderCaching ON
+    USE YELLOW
+    File { name "parts/urCorner.iv" }
+}
+DEF tableFarRightTranslator Separator {
+    renderCaching ON
+    USE PINK
+    File { name "parts/lrCorner.iv" }
+}
+DEF tableFarRightTranslatorActive Separator {
+    renderCaching ON
+    USE YELLOW
+    File { name "parts/lrCorner.iv" }
+}
+
+DEF tableBottomTranslator Separator {
+    renderCaching ON
+    USE MAGENTA
+    Translation { translation -.05 0 0 }
+    Cube { width .1 }
+}
+DEF tableBottomTranslatorActive Separator {
+    renderCaching ON
+    USE YELLOW
+    Translation { translation -.05 0 0 }
+    Cube { width .1 }
+}
+
+DEF tableTopTranslator Separator {
+    renderCaching ON
+    USE PINK
+    Cube { width .1 height 2 depth .1 }
+}
+DEF tableTopTranslatorActive Separator {
+    renderCaching ON
+    USE YELLOW
+    Cube { width .1 height 2 depth .1 }
+}
+
+DEF tableActivePlaneGeom Separator {
+    renderCaching ON
+    USE WHITE_LINE
+    Coordinate3 { point [ -1 -1 0, -1 1 0, 1 1 0, 1 -1 0 ] }
+    LineSet {}
+}
+
+DEF tableActivePlaneTranslator Separator {
+    renderCaching ON
+    Separator {
+	USE PINK
+	Translation { translation 0 0 .75 }
+	Cube { width .5 height .15 depth .5 }
+    }
+    USE WHITE_LINE
+    PickStyle { style UNPICKABLE }
+    Coordinate3 { point [ 0 0 0, 0 0 1 ] }
+    LineSet {}
+}
+
+DEF tableActivePlaneTranslatorActive Separator {
+    renderCaching ON
+    USE YELLOW
+    Separator {
+	Translation { translation 0 0 .75 }
+	Cube { width .5 height .15 depth .5 }
+    }
+    Coordinate3 { point [ 0 0 0, 0 0 1 ] }
+    LineSet {}
+}
+
+#----------------------------------------
+#used by the ButtonStrip class
+#----------------------------------------
+
+DEF buttonStripBacking Separator {
+    renderCaching ON
+    USE LIGHT_GREY
+    Cube { width 1.8 height 1.8 depth 0.2 }
+}
+
+DEF buttonStripBackingActive Separator {
+    renderCaching ON
+    USE WHITE
+    Cube { width 1.8 height 1.8 depth 0.2 }
+}
+
+#----------------------------------------
+#used by the AxleShaft class
+#----------------------------------------
+
+DEF axleShaftTranslator Separator {}
+DEF axleShaftTranslatorActive Separator {}
+DEF axleShaftTranslatorInert Separator {}
+
+DEF AXLE_SHAFT_Z_SCALED_TRANSLATOR_GEOM Group {
+    Cube { width .3 height  .05 depth 2.0 }
+    Cube { width .05 height  .3 depth 2.0 }
+}
+DEF axleShaftZScaledTranslator Separator {
+    renderCaching ON
+    USE PINK
+    USE AXLE_SHAFT_Z_SCALED_TRANSLATOR_GEOM
+}
+DEF axleShaftZScaledTranslatorActive Separator {
+    renderCaching ON
+    USE YELLOW
+    USE AXLE_SHAFT_Z_SCALED_TRANSLATOR_GEOM
+}
+DEF axleShaftZScaledTranslatorInert Separator {
+    renderCaching ON
+    USE BLUE
+    USE AXLE_SHAFT_Z_SCALED_TRANSLATOR_GEOM
+}
+
+DEF axleShaftFeedback Separator {}
+DEF axleShaftFeedbackActive Separator {}
+DEF axleShaftXAxisFeedback Separator {}
+DEF axleShaftYAxisFeedback Separator {}
+
+#----------------------------------------
+#used by the AxleLeg class
+#----------------------------------------
+
+DEF AXLE_LEG_TRANSLATOR_GEOM Group {
+    Translation { translation 0 0 -.15 }
+    Cube { width .4 height .4 depth .05 }
+    Translation { translation 0 0 .3 }
+    Cube { width .4 height .4 depth .05 }
+}
+
+DEF axleLegTranslator Separator {
+    renderCaching ON
+    USE PINK
+    USE AXLE_LEG_TRANSLATOR_GEOM
+}
+DEF axleLegTranslatorActive Separator {
+    renderCaching ON
+    USE YELLOW
+    USE AXLE_LEG_TRANSLATOR_GEOM
+}
+DEF axleLegTranslatorInert Separator {
+    renderCaching ON
+    USE BLUE
+    USE AXLE_LEG_TRANSLATOR_GEOM
+}
+
+DEF AXLE_LEG_Y_SCALED_TRANSLATOR_GEOM Group {
+    Translation { translation 0 0 -.15 }
+    Cube { width .05  height 2 depth .05 }
+    Translation { translation 0 0 .3 }
+    Cube { width .05  height 2 depth .05 }
+}
+DEF axleLegYScaledTranslator Separator {
+    renderCaching ON
+    USE PINK
+    USE AXLE_LEG_Y_SCALED_TRANSLATOR_GEOM
+}
+DEF axleLegYScaledTranslatorActive Separator {
+    renderCaching ON
+    USE YELLOW
+    USE AXLE_LEG_Y_SCALED_TRANSLATOR_GEOM
+}
+DEF axleLegYScaledTranslatorInert Separator {
+    renderCaching ON
+    USE BLUE
+    USE AXLE_LEG_Y_SCALED_TRANSLATOR_GEOM
+}
+DEF axleLegFeedback Separator {}
+DEF axleLegFeedbackActive Separator {}
+
+#----------------------------------------
+#used by the AxlePin class
+#----------------------------------------
+
+DEF axlePinTranslator Separator {
+    renderCaching ON
+    USE MAGENTA
+    Cube { width .5 height  .1 depth .1 }
+}
+DEF axlePinTranslatorActive Separator {
+    renderCaching ON
+    USE YELLOW
+    Cube { width .5 height  .1 depth .1 }
+}
+DEF axlePinTranslatorInert Separator {
+    renderCaching ON
+    USE BLUE
+    Cube { width .5 height  .1 depth .1 }
+}
+DEF axlePinFeedback Separator {}
+DEF axlePinFeedbackActive Separator {}
+
+#----------------------------------------
+#used by the Axle class
+#----------------------------------------
+
+DEF axleMovingFeedback Separator {
+    renderCaching ON
+    USE PURPLE_LINE
+    Coordinate3 { point [ 0 0 -1, 0 0 1 ] }
+    LineSet {}
+}
+DEF axleConnectFeedback Separator {
+    renderCaching ON
+    USE PURPLE_LINE
+    Coordinate3 { point [ 0 0 -1, 0 0 1 ] }
+    LineSet {}
+    USE YELLOW_LINE
+    DrawStyle { lineWidth 3 linePattern 0xf0f0 }
+    Coordinate3 { point [ 0 0 -4, 0 0 4 ] }
+    LineSet {}
+}
+DEF axleDisconnectFeedback Separator {
+    renderCaching ON
+    USE PURPLE_LINE
+    Coordinate3 { point [ 0 0 -1, 0 0 1 ] }
+    LineSet {}
+    USE YELLOW_LINE
+    DrawStyle { lineWidth 3 linePattern 0xf0f0 }
+    Coordinate3 { point [ 0 -4 0, 0 4 0 ] }
+    LineSet {}
+}
+
+#----------------------------------------
+# shared by Strut-type classes
+#----------------------------------------
+DEF STRUT_BODY_GEOM Separator {
+    renderCaching ON
+    Translation { translation .5 0 0 }
+    Cube { width 1 height .1 depth .1 }
+}
+DEF STRUT_END_GEOM Separator { 
+    renderCaching ON
+    Cube { width .2 height .2 depth .2 } 
+}
+
+#----------------------------------------
+# Used by Strut class
+#----------------------------------------
+DEF strutOriginTranslateGeom Separator { }
+DEF strutAngleRotateGeom Separator { 
+    renderCaching ON
+    USE STRUT_END_GEOM 
+}
+DEF strutEndPointTranslateGeom Separator { 
+    renderCaching ON
+    USE STRUT_END_GEOM 
+}
+DEF strutOneDScaleGeom Separator { 
+    renderCaching ON
+    USE STRUT_BODY_GEOM 
+}
+DEF strutTwoDScaleGeom Separator { }
+DEF strutThreeDScaleGeom Separator { }
+DEF strutMaterial Material {
+    diffuseColor	0 0.710535 0.8
+    emissiveColor	0 0.0906295 0.102041
+}
+
+#----------------------------------------
+# Used by RigidStrut class
+#----------------------------------------
+DEF rigidStrutOriginTranslateGeom Separator { }
+DEF rigidStrutAngleRotateGeom Separator { 
+    renderCaching ON
+    USE STRUT_END_GEOM 
+}
+DEF rigidStrutEndPointTranslateGeom Separator { 
+    renderCaching ON
+    USE STRUT_END_GEOM 
+}
+DEF rigidStrutOneDScaleGeom Separator { 
+    renderCaching ON
+    USE STRUT_BODY_GEOM 
+}
+DEF rigidStrutTwoDScaleGeom Separator { }
+DEF rigidStrutThreeDScaleGeom Separator { }
+DEF rigidStrutMaterial Material {
+    diffuseColor	0 0.710535 0.8
+    emissiveColor	0 0.0906295 0.102041
+}
+
+#----------------------------------------
+# Used by DoubleStrut class
+#----------------------------------------
+DEF doubleStrutOriginTranslateGeom Separator { }
+DEF doubleStrutAngleRotateGeom Separator { 
+    renderCaching ON
+    USE STRUT_END_GEOM 
+}
+DEF doubleStrutEndPointTranslateGeom Separator { 
+    renderCaching ON
+    USE STRUT_END_GEOM 
+}
+DEF doubleStrutOneDScaleGeom Separator { 
+    renderCaching ON
+    USE STRUT_BODY_GEOM
+}
+DEF doubleStrutTwoDScaleGeom Separator { }
+DEF doubleStrutThreeDScaleGeom Separator { }
+DEF doubleStrutMaterial Material {
+    diffuseColor	0 0.710535 0.8
+    emissiveColor	0 0.0906295 0.102041
+}
+
+#----------------------------------------
+# Used by Wheel class
+#----------------------------------------
+DEF wheelOriginTranslateGeom Separator { }
+DEF wheelAngleRotateGeom Separator {}
+DEF wheelEndPointTranslateGeom Separator {}
+DEF wheelOneDScaleGeom Separator {}
+DEF wheelTwoDScaleGeom Separator { 
+    renderCaching ON
+    RotationXYZ { axis X angle 1.57079 }
+    Cylinder { radius 0.85 height .1 }
+}
+DEF wheelThreeDScaleGeom Separator {}
+DEF wheelMaterial Material {
+    diffuseColor	0 0.710535 0.8
+    emissiveColor	0 0.0906295 0.102041
+}
+DEF wheelRotator Separator { 
+    renderCaching ON
+    USE PINK
+    RotationXYZ { axis X angle 1.57079 }
+    Cylinder { radius 1.15 height .05 }
+}
+DEF wheelRotatorActive Separator { 
+    renderCaching ON
+    USE YELLOW
+    RotationXYZ { axis X angle 1.57079 }
+    Cylinder { radius 1.15 height .05 }
+}
+DEF wheelScaler Separator { 
+    renderCaching ON
+    USE PINK
+    Cube { width 1.5 height .1 depth .15 }
+    Cube { width .1 height 1.5 depth .15 }
+}
+DEF wheelScalerActive Separator { 
+    renderCaching ON
+    USE YELLOW
+    Cube { width 1.5 height .1 depth .15 }
+    Cube { width .1 height 1.5 depth .15 }
+}
+
+#----------------------------------------
+# Used by Arrow class
+#----------------------------------------
+DEF arrowOriginTranslateGeom Separator { }
+DEF arrowAngleRotateGeom Separator { 
+    renderCaching ON
+    Cube { width .5 height .5 depth .2 } 
+}
+DEF arrowEndPointTranslateGeom Separator { 
+    renderCaching ON
+    Cube { width .5 height .5 depth .2 } 
+}
+DEF arrowOneDScaleGeom Separator { 
+    renderCaching ON
+    Translation { translation .5 0 0 }
+    Translation { translation 0 .2 0 }
+    Cube { width 1 height .1 depth .2 }
+    Translation { translation 0 -.4 0 }
+    Cube { width 1 height .1 depth .2 }
+}
+DEF arrowTwoDScaleGeom Separator {}
+DEF arrowThreeDScaleGeom Separator {}
+DEF arrowMaterial Material {
+    diffuseColor	0 0.710535 0.8
+    emissiveColor	0 0.0906295 0.102041
+}
+DEF arrowLengthTranslator Separator { 
+    renderCaching ON
+    USE PINK
+    Translation { translation -.4 0 0 }
+    RotationXYZ { axis Z angle -1.57079 }
+    Cylinder { radius .2 height .5 }
+}
+DEF arrowLengthTranslatorActive Separator { 
+    renderCaching ON
+    USE YELLOW
+    Translation { translation -.4 0 0 }
+    RotationXYZ { axis Z angle -1.57079 }
+    Cylinder { radius .2 height .5 }
+}
+
+#----------------------------------------
+# Used by DoubleArrow class
+#----------------------------------------
+DEF doubleArrow1OriginTranslateGeom Separator { }
+DEF doubleArrow1AngleRotateGeom Separator { 
+    renderCaching ON
+    Cube { width .5 height .5 depth .2 } 
+}
+DEF doubleArrow1EndPointTranslateGeom Separator {}
+DEF doubleArrow1OneDScaleGeom Separator { 
+    renderCaching ON
+    Translation { translation .5 0 0 }
+    Translation { translation 0 .2 0 }
+    Cube { width 1 height .1 depth .2 }
+    Translation { translation 0 -.4 0 }
+    Cube { width 1 height .1 depth .2 }
+}
+DEF doubleArrow1TwoDScaleGeom Separator {}
+DEF doubleArrow1ThreeDScaleGeom Separator {}
+DEF doubleArrow1Material Material {
+    diffuseColor	0 0.710535 0.8
+    emissiveColor	0 0.0906295 0.102041
+}
+DEF doubleArrow1LengthTranslator Separator { 
+    renderCaching ON
+    USE PINK
+    Translation { translation .15 0 0 }
+    RotationXYZ { axis Z angle -1.57079 }
+    Cylinder { radius .3 height .3 }
+}
+DEF doubleArrow1LengthTranslatorActive Separator { 
+    renderCaching ON
+    USE YELLOW
+    Translation { translation .15 0 0 }
+    RotationXYZ { axis Z angle -1.57079 }
+    Cylinder { radius .3 height .3 }
+}
+
+DEF doubleArrow2OriginTranslateGeom Separator { }
+DEF doubleArrow2AngleRotateGeom Separator { 
+    renderCaching ON
+    Cube { width .5 height .5 depth .2 } 
+}
+DEF doubleArrow2EndPointTranslateGeom Separator {}
+DEF doubleArrow2OneDScaleGeom Separator { 
+    renderCaching ON
+    Translation { translation .5 0 0 }
+    Cube { width 1 height .1 depth .2 }
+}
+DEF doubleArrow2TwoDScaleGeom Separator {}
+DEF doubleArrow2ThreeDScaleGeom Separator {}
+DEF doubleArrow2Material Material {
+    diffuseColor	0 0.710535 0.8
+    emissiveColor	0 0.0906295 0.102041
+}
+DEF doubleArrow2LengthTranslator Separator { 
+    renderCaching ON
+    USE PINK
+    Translation { translation .15 0 0 }
+    RotationXYZ { axis Z angle -1.57079 }
+    Cylinder { radius .1 height .3 }
+}
+DEF doubleArrow2LengthTranslatorActive Separator { 
+    renderCaching ON
+    USE YELLOW
+    Translation { translation .15 0 0 }
+    RotationXYZ { axis Z angle -1.57079 }
+    Cylinder { radius .1 height .3 }
+}
+
+#----------------------------------------
+# Used by Bell class
+#----------------------------------------
+DEF bell1OriginTranslateGeom Separator { }
+DEF bell1AngleRotateGeom Separator { 
+    renderCaching ON
+    Cube { width .5 height .5 depth .2 } 
+}
+DEF bell1EndPointTranslateGeom Separator {}
+DEF bell1OneDScaleGeom Separator { 
+    renderCaching ON
+    Translation { translation .5 0 0 }
+    Cube { width 1 height .1 depth .2 }
+}
+DEF bell1TwoDScaleGeom Separator {}
+DEF bell1ThreeDScaleGeom Separator {}
+DEF bell1Material Material {
+    diffuseColor	0 0.710535 0.8
+    emissiveColor	0 0.0906295 0.102041
+}
+DEF bell1LengthTranslator Separator { 
+    renderCaching ON
+    USE PINK
+    Translation { translation -.15 0 0 }
+    RotationXYZ { axis Z angle -1.57079 }
+    Cylinder { radius .15 height .3 }
+}
+DEF bell1LengthTranslatorActive Separator { 
+    renderCaching ON
+    USE YELLOW
+    Translation { translation -.15 0 0 }
+    RotationXYZ { axis Z angle -1.57079 }
+    Cylinder { radius .15 height .3 }
+}
+
+DEF bell2OriginTranslateGeom Separator {}
+DEF bell2AngleRotateGeom Separator {}
+DEF bell2EndPointTranslateGeom Separator {}
+DEF bell2OneDScaleGeom Separator {}
+DEF bell2TwoDScaleGeom Separator {
+    renderCaching ON
+    Rotation { rotation 1 0 0 1.57079 }
+    Rotation { rotation 0 1 0 1.57079 }
+    Scale { scaleFactor .4 1 .4 }
+    Translation { translation 0 0 1.5 } 
+    File { name "parts/bell.iv" }
+}
+DEF bell2ThreeDScaleGeom Separator {}
+DEF bell2Material Material {
+    diffuseColor	0 0.710535 0.8
+    emissiveColor	0 0.0906295 0.102041
+}
+DEF bell2LengthTranslator Separator { 
+    renderCaching ON
+    USE PINK
+    Translation { translation -.15 0 0 }
+    RotationXYZ { axis Z angle -1.57079 }
+    Cylinder { radius .15 height .3 }
+}
+DEF bell2LengthTranslatorActive Separator { 
+    renderCaching ON
+    USE YELLOW
+    Translation { translation -.15 0 0 }
+    RotationXYZ { axis Z angle -1.57079 }
+    Cylinder { radius .15 height .3 }
+}
+
+#----------------------------------------
+# Used by the MotorBase class
+#----------------------------------------
+DEF motorBaseButtonGeom Separator {
+    renderCaching ON
+    USE PINK
+    Translation { translation 0 1 -2 }
+    Cube  { width 1 height 1 depth 1 }
+}
+DEF motorBaseButtonActiveGeom Separator {
+    renderCaching ON
+    USE YELLOW
+    Translation { translation 0 1 -2 }
+    Cube  { width 1 height .5 depth 1 }
+}
+DEF motorBaseButtonText Separator {}
+DEF motorBaseButtonActiveText Separator {}
+DEF motorBaseBody Separator { 
+    renderCaching ON
+    USE BLUE
+    Translation { translation 0 0 -1 }
+    RotationXYZ { axis X angle 1.57079 }
+    Cylinder {}
+    Translation { translation  0 -1.1 0 }
+    Cube { width 2 height .2 depth 1 }
+}
+
+#----------------------------------------
+# Used by the RotorMotor class
+#----------------------------------------
+DEF rotorMotorButtonGeom Separator {
+    renderCaching ON
+    USE PINK
+    Translation { translation 0 1 -1 }
+    Cube  { width 1 height 1 depth 1 }
+}
+DEF rotorMotorButtonActiveGeom Separator {
+    renderCaching ON
+    USE YELLOW
+    Translation { translation 0 1 -1 }
+    Cube  { width 1 height .5 depth 1 }
+}
+DEF rotorMotorButtonText Separator {}
+DEF rotorMotorButtonActiveText Separator {}
+DEF rotorMotorSpeedStickGeom Separator {
+    renderCaching ON
+    USE PINK
+    Translation { translation 0 1 -.25 }
+    Cylinder { radius .075 }
+    Translation { translation 0 1 0 }
+    Sphere { radius .15 }
+}
+DEF rotorMotorSpeedStickGeomActive Separator {
+    renderCaching ON
+    USE YELLOW
+    Translation { translation 0 1 -.25 }
+    Cylinder { radius .075 }
+    Translation { translation 0 1 0 }
+    Sphere { radius .15 }
+}
+DEF rotorMotorBody Separator { 
+    renderCaching ON
+    USE PINK
+    File { name "parts/motorArrow.iv" }
+    USE BLUE
+    Translation { translation 0 0 -1.02 }
+    RotationXYZ { axis X angle 1.57079 }
+    Cylinder {}
+    Translation { translation  0 0 1.1 }
+    Cube { width 2 height 2 depth .2 }
+}
+
+#----------------------------------------
+#used by the button class
+#----------------------------------------
+
+DEF buttonButtonGeom Separator {
+    renderCaching ON
+    Material { diffuseColor 1 .5 .5 }
+    Translation { translation 3.3 .4 -.0251 }
+    Cube { width 7.5 height 1.5 depth .05 }
+}
+DEF buttonButtonText Separator {
+    renderCaching ON
+    Font { size 1 }
+    Material { diffuseColor 1 1 1 }
+    Text3 { string "Push Me" }
+}
+DEF buttonButtonActiveGeom Separator {
+    renderCaching ON
+    Material { diffuseColor 1 1 .5 }
+    Translation { translation 3.3 .4 -.0251 }
+    Cube { width 7.5 height 1.5 depth .05 }
+}
+DEF buttonButtonActiveText Separator {
+    renderCaching ON
+    Font { size 1 }
+    Material { diffuseColor 0 .2 0 }
+    Text3 { string "BOINK!" }
+}
+
+#----------------------------------------
+#used by the ToggleButton class
+#----------------------------------------
+
+DEF toggleButtonButtonGeom Separator {
+    renderCaching ON
+    Material { diffuseColor 1 .5 .5 }
+    Translation { translation 3.3 .4 -.0251 }
+    Cube { width 7.5 height 1.5 depth .05 }
+}
+DEF toggleButtonButtonText Separator {
+    renderCaching ON
+    Font { size 1 }
+    Material { diffuseColor 1 1 1 }
+    Text3 { string "Stopped" }
+}
+DEF toggleButtonButtonActiveGeom Separator {
+    renderCaching ON
+    Material { diffuseColor 1 1 .5 }
+    Translation { translation 3.3 .4 -.0251 }
+    Cube { width 7.5 height 1.5 depth .05 }
+}
+DEF toggleButtonButtonActiveText Separator {
+    renderCaching ON
+    Font { size 1 }
+    Material { diffuseColor 0 .2 0 }
+    Text3 { string "Running" }
+}

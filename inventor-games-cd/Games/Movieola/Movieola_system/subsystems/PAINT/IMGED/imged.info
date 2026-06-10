@@ -1,0 +1,19 @@
+     imged is a pixel-based editor for making changes to image files stored in
+     the SGI imglib format. Images may be stored in colormap, RGB, or
+     greyscale format.
+
+     imged may also be used to create a new colormap or RGB image by
+     specifying an X and Y size on the command line.  If the -rgb flag is
+     given, the new image is created as RGB, otherwise it is created as a
+     colormap image.  New images are initialized with a solid grey background.
+     The imged window contains a scaled representation of the image being
+     edited. The scale of the image can be changed by resizing the window. The
+     pixels in the image will appear as squares, optionally separated by black
+     lines.  The title of the imged window indicates the type of image that is
+     being edited.
+     The three mouse buttons all have a function within imged . The left and
+     middle buttons both act as brushes. Each brush remembers a "current
+     color". While the brush buttons are pressed, drawing will take place in
+     the color of that brush. If the Shift key is held down, pushing a brush
+     button causes the brush to change color to the color of the pixel
+     directly under the cursor. 

@@ -1,0 +1,12 @@
+Sculptor->Assemble
+
+"Assemble" is used to position one object in relation to another, to
+create a more complex assembly.
+
+The user first picks a point on the object to be moved, and then picks
+a point on the "dock" object. The tool automatically moves the first
+object so that the two selected points line up. The tool does a
+"gee-wiz" animation of the assembling process (whose speed the user
+can control using the slider!). You can then use "Direct Manips" or
+"Slider Manips" to further adjust the relative positions.
+ 

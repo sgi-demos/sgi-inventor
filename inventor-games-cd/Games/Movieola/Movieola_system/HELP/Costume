@@ -1,0 +1,23 @@
+COSTUME - Materials and Textures
+ 
+
+This is the fourth drop-down menu found in the main Movieola titlebar.
+
+To use this tool, move the mouse curser over the word "Costume" and
+press the left mouse button. This will prompt a drop down menu with
+the following selections:
+
+	Costume:
+		Color...
+		Texture...
+		Material...
+		Material Palette...
+		Photo-real Property...
+
+After "Sculptor", "Costume" is the most often tool used in creating
+photo-real objects in Movieola.
+
+Each selection under the "Costume" menu (Color, Texture etc.)
+functions only when an object is selected. They are used to set the
+"costume" of an object. When invoked without an object selected, they
+do not affect any object in the main scene.

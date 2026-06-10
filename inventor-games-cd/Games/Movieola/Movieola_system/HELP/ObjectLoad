@@ -1,0 +1,11 @@
+Sculptor->Load
+
+The first selection in the "Sculptor" menu is "Load". This option is
+simular to the "Open" option in "File", except that it is used to load
+object and scene files into the MOVIEOLA environment.. The default
+file path is the project scene folder, but the user may use the file
+selector to choose another path. The file may be in anyof the
+supported formats (listed in the Sculptor Save menu). If the file
+contains one or more objects, all the objects are added to the current
+scene. If the file contains a scene, all the objects and lights are
+added to the current scene.

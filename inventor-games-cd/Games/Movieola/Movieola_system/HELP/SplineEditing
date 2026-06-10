@@ -1,0 +1,62 @@
+Spline Editing:
+
+This is a very powerful 3D curve editor used for creating and
+modifying splines. In the "Potter" tool, it is used for editing the
+section/profile/axis curves. In the "3D text" tool, it is used to edit
+the bevel of the text.
+
+The spline is colored white or red, and the spline control points are
+colored blue. The cursor is a red cross-hair. A green rubber-band
+extends from the current cursor position to the nearest end of the
+spline. If you move the cursor over the spline, that part of the
+spline turns green. If you move the cursor over a blue spline point, a
+green box appears over it.
+
+To move a blue spline point, move your cursor over it until a green
+box appears over it. Press on the left mouse button. The green box
+turns yellow . Move the point while keeping the mouse button pressed.
+Notice how the spline changes shape! In a 2D viewer (see
+Settings->2Dviewer), the object can be moved in the viewing plane. In
+the 3D viewer (see Settings->3Dviewer), you can actually move it in
+any direction. The manipulator choose which 3D axis direction to move
+in, based on your mouse movement. If you keep the "Shift" key pressed,
+the movement will be constrained along the nearest axis (which will be
+colored a brighter yellow). If you keep the "Alt" key pressed, the
+movement will be constrained along the plane indicated by the first
+gesture of the mouse.
+
+To move a group of points together, press down the middle mouse button
+and drag a rectangular box around the required points. When you let up
+on the button, a "box manipulator" shows up around the box. You can
+now press down on the left mouse to move the box (and the points
+inside it). You can also resize the box by pressing down on the corner
+and side "handles". The box turns yellow during movement.
+
+You can make a "closed" spline by pressing "j" (the Potter tool also
+has a "Join Ends" toggle interface). You can constrain the movement of
+points by choosing "Snap to Grid" in Settings->Grid Settings. You can
+even set the coarseness of the "snap" grid (see Settings->Grid
+Settings).
+
+To add a new spline point, simply click on the left mouse button. The
+green rubber band indicates which end of the spline will be extended.
+To add a new point in the middle of the spline, go over the spline
+until that part of the spline turns green, then click on the left
+mouse button. The new point can then be moved the usual way.
+
+The spline itself can consist of several curve segments, each of which
+can either be a spline or a line. To switch between "spline" and
+"line" mode, press "s" or "l" respectively (in Potter, there is also a
+line/spline toggle interface). To start a new curve segment, keep the
+"Shift" key pressed while clicking on the left mouse button to create
+a new point. The new point will now be in a different curve segment.
+Notice that the junction spline point is red. You can "split" a curve
+segment into two by pressing "Shift" while clicking the left mouse on
+the curve. You can use multiple curve segments in a spline either to
+create spline/line combinations, or create "cusps" in the spline.
+
+To delete a point, move over it until the green box appears. Then
+press "d" or "Backspace" or "Delete" on the keyboard. If you have
+"Shift" pressed at the same time, the entire curve segment is deleted.
+If you have both "Shift" and "Ctrl" pressed at the same time, the
+entire spline (all curve segments) is deleted.

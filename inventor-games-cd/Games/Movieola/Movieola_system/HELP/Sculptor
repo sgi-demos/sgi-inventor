@@ -1,0 +1,22 @@
+SCULPTOR - Modeling Operations
+
+This is the third menu in the Movieola title bar. This menu has a set
+of modeling operations that can be used to create and manipulate 3D
+objects. "Sculptor" has the following options:
+
+	Load
+	Object List
+	Primitives
+	Text	>
+		2D Text
+		3D Text
+	Potter...
+	Face Builder
+	Operations	>
+		Mold
+		Bend
+		Mirror
+		Branch
+	Assemble
+	Direct Manips
+	Slider Manips

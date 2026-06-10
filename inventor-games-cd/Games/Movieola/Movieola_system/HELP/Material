@@ -1,0 +1,51 @@
+Costume->Material
+
+Selecting "Edit" from thee Material Editor displays the following:
+
+	Materials List
+	          Palettes
+		metal
+		plastic
+		rubber
+		stone
+
+	Continuous/Manual
+	Edit Light 1
+	Edit Light 2
+
+	Copy
+	Paste
+	Help
+
+The Material editor contains a display window in which you will see a
+sphere. This sphere will show the user how editing changes affect the
+material being applied to the selected object in Movieola. To the
+right of this display are the controls of the Material Editor.
+
+	Edit Color
+	        Amb : (Slider/Field)
+	        Diff : (Slider/Field)
+	        Spec : (Slider/Field)
+	        Emis : (Slider/Field)
+
+	Shininess : (Slider/Field)
+	Transp : (Slider/Field)
+
+Amb : This sets the reflected color of the selected object in response
+to the ambient lighting in the scene.
+
+Diff : This sets the base color of the selected object in Movieola.
+
+Spec : This sets the reflective quality of the selected object's
+highlights.
+
+Emis : This sets the light emitted by the selected object.
+
+Shininess : This sets the degree of shininess of an object's surfaces,
+ranging from 0.0 for a diffuse surface with no shininess to a maximum
+of 1.0 for a highly polished surface..
+
+Transp : This is the level of transparency of the object selected in
+Movieola. A value of 0.0 corresponds to an opaque surface and a value
+of 1.0 to a completely transparent surface.
+

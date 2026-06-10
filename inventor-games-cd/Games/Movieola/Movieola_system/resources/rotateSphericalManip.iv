@@ -1,0 +1,186 @@
+#Inventor V1.0 ascii
+
+
+#from:    File { name "pieces/xFeedbackAxis.iv" }
+DEF X_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ -1.25 0 0, 1.25 0 0 ] }
+    LineSet {}
+}
+
+#from:    File { name "pieces/yFeedbackAxis.iv" }
+DEF Y_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ 0 -1.25 0, 0 1.25 0 ] }
+    LineSet {}
+}
+
+#from:    File { name "pieces/zFeedbackAxis.iv" }
+DEF Z_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ 0 0 -1.25, 0 0 1.25 ] }
+    LineSet {}
+}
+
+#from:    File { name "pieces/yCircle.iv" }
+DEF Y_CIRCLE
+Group {
+    Coordinate3 {
+	point [
+
+	    # first quadrant
+	    1.0  0  0.0,
+
+	    0.980785  0  0.195090,
+	    0.923880  0  0.382683,
+	    0.831470  0  0.555570,
+	    0.707107  0  0.707107,
+	    0.555570  0  0.831470,
+	    0.382683  0  0.923880,
+	    0.195090  0  0.980785,
+
+	    # second quadrant
+	    0.0  0  1.0,
+
+	    -0.195090  0  0.980785,
+	    -0.382683  0  0.923880,
+	    -0.555570  0  0.831470,
+	    -0.707107  0  0.707107,
+	    -0.831470  0  0.555570,
+	    -0.923880  0  0.382683,
+	    -0.980785  0  0.195090,
+
+	    # third quadrant
+	    -1.0  0  0.0,
+
+	    -0.980785  0  -0.195090,
+	    -0.923880  0  -0.382683,
+	    -0.831470  0  -0.555570,
+	    -0.707107  0  -0.707107,
+	    -0.555570  0  -0.831470,
+	    -0.382683  0  -0.923880,
+	    -0.195090  0  -0.980785,
+
+	    # fourth quadrant
+	    0.0  0  -1.0,
+
+	    0.195090  0  -0.980785,
+	    0.382683  0  -0.923880,
+	    0.555570  0  -0.831470,
+	    0.707107  0  -0.707107,
+	    0.831470  0  -0.555570,
+	    0.923880  0  -0.382683,
+	    0.980785  0  -0.195090,
+
+	    1.0  0  0.0,
+
+	]
+    }
+    Normal {
+	vector [ 
+
+	    # first quadrant
+	    1.0  0  0.0,
+
+	    0.980785  0  0.195090,
+	    0.923880  0  0.382683,
+	    0.831470  0  0.555570,
+	    0.707107  0  0.707107,
+	    0.555570  0  0.831470,
+	    0.382683  0  0.923880,
+	    0.195090  0  0.980785,
+
+	    # second quadrant
+	    0.0  0  1.0,
+
+	    -0.195090  0  0.980785,
+	    -0.382683  0  0.923880,
+	    -0.555570  0  0.831470,
+	    -0.707107  0  0.707107,
+	    -0.831470  0  0.555570,
+	    -0.923880  0  0.382683,
+	    -0.980785  0  0.195090,
+
+	    # third quadrant
+	    -1.0  0  0.0,
+
+	    -0.980785  0  -0.195090,
+	    -0.923880  0  -0.382683,
+	    -0.831470  0  -0.555570,
+	    -0.707107  0  -0.707107,
+	    -0.555570  0  -0.831470,
+	    -0.382683  0  -0.923880,
+	    -0.195090  0  -0.980785,
+
+	    # fourth quadrant
+	    0.0  0  -1.0,
+
+	    0.195090  0  -0.980785,
+	    0.382683  0  -0.923880,
+	    0.555570  0  -0.831470,
+	    0.707107  0  -0.707107,
+	    0.831470  0  -0.555570,
+	    0.923880  0  -0.382683,
+	    0.980785  0  -0.195090,
+
+	    1.0  0  0.0,
+	]
+    }
+
+    LineSet {}
+}
+
+Separator {
+    Label {
+	label "rotateSphericalRotater"
+    }
+    Label {
+	label "rotateSphericalRotaterActive"
+    }
+
+    # This is what the user will actually see.
+
+    # scale up so that a unit circle and sphere will surround
+    # the bounding box.
+    Scale { scaleFactor 1.732 1.732 1.732 }
+
+    # circle around x axis
+    Separator {
+	RotationXYZ { axis Z angle 1.57079 }
+	USE Y_CIRCLE
+    }
+    # circle around y axis
+    USE Y_CIRCLE
+
+    # circle around z axis
+    Separator {
+	RotationXYZ { axis X angle 1.57079 }
+	USE Y_CIRCLE
+    }
+
+    # Draw a full sphere so there's something meaty
+    # for the mouse to pick
+    DrawStyle { style INVISIBLE }
+    Separator {
+	Sphere {}
+    }
+}
+
+Separator {
+    Label {
+	label "rotateSphericalCenterFeedback"
+    }
+    Label {
+	label "rotateSphericalCenterFeedbackActive"
+    }
+    # A skinny set of axes.
+
+    #x-axis
+    USE X_FEEDBACK_AXIS
+
+    #y-axis
+    USE Y_FEEDBACK_AXIS
+
+    #z-axis
+    USE Z_FEEDBACK_AXIS
+}

@@ -1,0 +1,131 @@
+#Inventor V1.0 ascii
+
+#from: File { name "pieces/scaleKnob.iv" }
+DEF SCALE_KNOB
+Cube { height 0.1 width 0.1 depth 0.1 }
+
+
+#from: File { name "pieces/xAxis.iv" }
+# A thick line along the x axis
+DEF X_AXIS
+Separator {
+
+    Coordinate3 { point [ -1 0 0, 1 0 0 ] }
+    LineSet {}
+
+}
+
+#from: File { name "pieces/yAxis.iv" }
+# A thick line along the y axis
+DEF Y_AXIS
+Separator {
+
+    Coordinate3 { point [ 0 -1 0, 0 1 0 ] }
+    LineSet {}
+
+}
+
+#from: File { name "pieces/zAxis.iv" }
+# A thick line along the z axis
+DEF Z_AXIS
+Separator {
+
+    Coordinate3 { point [ 0 0 -1, 0 0 1 ] }
+    LineSet {}
+
+}
+
+#from: File { name "pieces/xFeedbackAxis.iv" }
+DEF X_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ -1.25 0 0, 1.25 0 0 ] }
+    LineSet {}
+}
+
+
+#from: File { name "pieces/yFeedbackAxis.iv" }
+DEF Y_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ 0 -1.25 0, 0 1.25 0 ] }
+    LineSet {}
+}
+
+
+#from: File { name "pieces/zFeedbackAxis.iv" }
+DEF Z_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ 0 0 -1.25, 0 0 1.25 ] }
+    LineSet {}
+}
+
+#from: File { name "pieces/wireBox.iv" }
+DEF WIRE_BOX
+Separator {
+    DrawStyle {
+	style LINES
+	lineWidth 1
+    }
+    Cube { width 2.2 height 2.2 depth 2.2 }
+}
+
+DEF SCALING_OBJECT
+Separator {
+
+    Scale { scaleFactor 1.1 1.1 1.1 }
+
+    # a thick line (axis) to connect the two scale knobs.
+    USE X_AXIS
+
+    # left scale knob 
+    Translation { translation 1.05 0 0 }
+    USE SCALE_KNOB
+
+    # right scale knob 
+    Translation { translation -2.1 0 0 }
+    USE SCALE_KNOB
+}
+
+Separator {
+    Label {
+	label "scale1Scaler"
+    }
+    USE SCALING_OBJECT
+}
+
+Separator {
+    Label {
+	label "scale1ScalerActive"
+    }
+    USE WIRE_BOX
+    USE SCALING_OBJECT
+}
+
+Separator {
+    Label {
+	label "scale1CenterFeedback"
+    }
+    Label {
+	label "scale1CenterFeedbackActive"
+    }
+    # A skinny set of axes.
+
+    #no x-axis. This is because it would be coincident 
+    # with the axis in the scaler part.
+
+    #y-axis
+    USE Y_FEEDBACK_AXIS
+
+    #z-axis
+    USE Z_FEEDBACK_AXIS
+}
+
+# By default, we make no use of this part
+Separator {
+    Label {
+	label "scale1DirectionFeedback"
+    }
+    Label {
+	label "scale1DirectionFeedbackActive"
+    }
+}
+

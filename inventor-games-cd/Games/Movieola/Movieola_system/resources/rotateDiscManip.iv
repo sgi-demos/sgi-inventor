@@ -1,0 +1,214 @@
+#Inventor V1.0 ascii
+
+#from: File { name "pieces/yCircle.iv" }
+DEF Y_CIRCLE
+Group {
+    Coordinate3 {
+	point [
+
+	    # first quadrant
+	    1.0  0  0.0,
+
+	    0.980785  0  0.195090,
+	    0.923880  0  0.382683,
+	    0.831470  0  0.555570,
+	    0.707107  0  0.707107,
+	    0.555570  0  0.831470,
+	    0.382683  0  0.923880,
+	    0.195090  0  0.980785,
+
+	    # second quadrant
+	    0.0  0  1.0,
+
+	    -0.195090  0  0.980785,
+	    -0.382683  0  0.923880,
+	    -0.555570  0  0.831470,
+	    -0.707107  0  0.707107,
+	    -0.831470  0  0.555570,
+	    -0.923880  0  0.382683,
+	    -0.980785  0  0.195090,
+
+	    # third quadrant
+	    -1.0  0  0.0,
+
+	    -0.980785  0  -0.195090,
+	    -0.923880  0  -0.382683,
+	    -0.831470  0  -0.555570,
+	    -0.707107  0  -0.707107,
+	    -0.555570  0  -0.831470,
+	    -0.382683  0  -0.923880,
+	    -0.195090  0  -0.980785,
+
+	    # fourth quadrant
+	    0.0  0  -1.0,
+
+	    0.195090  0  -0.980785,
+	    0.382683  0  -0.923880,
+	    0.555570  0  -0.831470,
+	    0.707107  0  -0.707107,
+	    0.831470  0  -0.555570,
+	    0.923880  0  -0.382683,
+	    0.980785  0  -0.195090,
+
+	    1.0  0  0.0,
+
+	]
+    }
+    Normal {
+	vector [ 
+
+	    # first quadrant
+	    1.0  0  0.0,
+
+	    0.980785  0  0.195090,
+	    0.923880  0  0.382683,
+	    0.831470  0  0.555570,
+	    0.707107  0  0.707107,
+	    0.555570  0  0.831470,
+	    0.382683  0  0.923880,
+	    0.195090  0  0.980785,
+
+	    # second quadrant
+	    0.0  0  1.0,
+
+	    -0.195090  0  0.980785,
+	    -0.382683  0  0.923880,
+	    -0.555570  0  0.831470,
+	    -0.707107  0  0.707107,
+	    -0.831470  0  0.555570,
+	    -0.923880  0  0.382683,
+	    -0.980785  0  0.195090,
+
+	    # third quadrant
+	    -1.0  0  0.0,
+
+	    -0.980785  0  -0.195090,
+	    -0.923880  0  -0.382683,
+	    -0.831470  0  -0.555570,
+	    -0.707107  0  -0.707107,
+	    -0.555570  0  -0.831470,
+	    -0.382683  0  -0.923880,
+	    -0.195090  0  -0.980785,
+
+	    # fourth quadrant
+	    0.0  0  -1.0,
+
+	    0.195090  0  -0.980785,
+	    0.382683  0  -0.923880,
+	    0.555570  0  -0.831470,
+	    0.707107  0  -0.707107,
+	    0.831470  0  -0.555570,
+	    0.923880  0  -0.382683,
+	    0.980785  0  -0.195090,
+
+	    1.0  0  0.0,
+	]
+    }
+
+    LineSet {}
+}
+
+#from:	File { name "pieces/yCylinder.iv" }
+DEF Y_CYLINDER
+Separator {
+    
+    Coordinate3 { point [ -1 -1 0, -1 1 0 ,
+			   1 -1 0, 1 1 0 ,
+			   0 -1 1, 0 1 1 ,
+			   0 -1 -1, 0 1 -1,
+			   .707107 -1 .707107, .707107 1 .707107,
+			   -.707107 -1 .707107, -.707107 1 .707107,
+			   -.707107 -1 -.707107, -.707107 1 -.707107,
+			   .707107 -1 -.707107, .707107 1 -.707107,
+			   ] }
+    Normal { vector [ -1 0 0, -1 0 0 ,
+			   1 0 0, 1 0 0 ,
+			   0 0 1, 0 0 1 ,
+			   0 0 -1, 0 0 -1,
+			   .707107 0 .707107, .707107 0 .707107,
+			   -.707107 0 .707107, -.707107 0 .707107,
+			   -.707107 0 -.707107, -.707107 0 -.707107,
+			   .707107 0 -.707107, .707107 0 -.707107,
+			   ] }
+    LineSet { numVertices [ 2, 2, 2, 2, 2, 2, 2, 2 ] }
+
+    Translation { translation 0 1 0 }
+    USE Y_CIRCLE
+
+    Translation { translation 0 -2 0 }
+    USE Y_CIRCLE
+}
+
+#from:    File { name "pieces/zFeedbackAxis.iv" }
+DEF Z_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ 0 0 -1.25, 0 0 1.25 ] }
+    LineSet {}
+}
+
+#from:    File { name "pieces/invisibleBox.iv" }
+# An invisible cube
+DEF INVISIBLE_BOX
+Separator {
+    DrawStyle { style INVISIBLE }
+    Cube { width 2.2 height 2.2 depth 2.2 }
+}
+
+#from:    File { name "pieces/wireBox.iv" }
+DEF WIRE_BOX
+# A thin wire frame cube
+Separator {
+    DrawStyle {
+	style LINES
+	lineWidth 1
+    }
+    Cube { width 2.2 height 2.2 depth 2.2 }
+}
+
+Separator {
+    Label {
+	label "rotateDiscRotater"
+    }
+    Separator {
+	# A thin cylinder aligned with z
+	RotationXYZ { axis X    angle 1.57079 }
+	Scale { scaleFactor 1.73 0.1 1.73}
+
+	USE Y_CYLINDER
+
+	DrawStyle { style INVISIBLE }
+	    Cylinder {}
+    }
+
+    # So we have something nice and big to pick on
+    USE INVISIBLE_BOX
+}
+
+Separator {
+    Label {
+	label "rotateDiscRotaterActive"
+    }
+    Separator {
+	# A thin cylinder aligned with z
+	RotationXYZ { axis X    angle 1.57079 }
+	Scale { scaleFactor 1.73 0.1 1.73}
+
+	USE Y_CYLINDER
+
+	DrawStyle { style INVISIBLE }
+	    Cylinder {}
+    }
+    USE WIRE_BOX
+}
+
+Separator {
+    Label {
+	label "rotateDiscAxisFeedback"
+    }
+    Label {
+	label "rotateDiscAxisFeedbackActive"
+    }
+    # An arrow aligned with z
+    USE Z_FEEDBACK_AXIS
+
+}

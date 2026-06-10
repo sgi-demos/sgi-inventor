@@ -1,0 +1,150 @@
+#Inventor V2.0 ascii
+
+Separator {
+    RotorMotor {
+	origin	0 1 -3.41744
+	on	FALSE
+	onOffButton		ToggleButton {
+	    isOn	FALSE
+	}
+
+	axle		DEF +0 Axle {
+	    origin	0 1 -3.41744
+	    zRotation	0
+	    canFollowRot	FALSE
+	    leadingAxle	NULL
+	}
+
+	speedStick		RotateDiscDragger {
+	    rotation	0 0 -1  0.788468
+	}
+
+    }
+    Wheel {
+	origin	0 1 -2.89352
+	radius	2.28751
+	zRotation	-75.405
+	offsetRotation	-0.00507437
+	originAxle		Axle {
+	    origin	0 1 -2.89352
+	    zRotation	-75.405
+	    leadingAxle		    USE +0
+
+	}
+
+	inertAxle		DEF +1 Axle {
+	    pinActivationDist	-1
+	    leadingAxle	NULL
+	}
+
+	rotatorRing		RotateDiscDragger {
+	}
+
+	sizingRing		Scale2UniformDragger {
+	    scaleFactor	2.28751 2.28751 1
+	}
+
+    }
+    RotorMotor {
+	origin	2.28734 0.972914 -0.13634
+	on	FALSE
+	onOffButton		ToggleButton {
+	    isOn	FALSE
+	}
+
+	axle		DEF +2 Axle {
+	    origin	2.28734 0.972914 -0.13634
+	    zRotation	0
+	    canFollowRot	FALSE
+	    leadingAxle		    USE +1
+
+	}
+
+	speedStick		RotateDiscDragger {
+	    rotation	0 0 1  2.13826
+	}
+
+    }
+    Wheel {
+	origin	2.28734 0.972914 -0.136339
+	radius	1
+	zRotation	283.319
+	offsetRotation	0
+	originAxle		Axle {
+	    origin	2.28734 0.972914 -0.136339
+	    zRotation	283.319
+	    leadingAxle		    USE +2
+
+	}
+
+	inertAxle		DEF +3 Axle {
+	    pinActivationDist	-1
+	    leadingAxle	NULL
+	}
+
+	rotatorRing		RotateDiscDragger {
+	}
+
+	sizingRing		Scale2UniformDragger {
+	}
+
+    }
+    Bell {
+	origin	3.12596 1.51764 1.93367
+	endPoint	-0.160144 -2.12927 1.93367
+	soundFileName	"sounds/bell.aiff"
+	overlapping	FALSE
+	arrow1		Arrow {
+	    origin	3.12596 1.51764 1.93367
+	    dirPoint	-0.160144 -2.12927 1.93367
+	    length	1.5
+	    originAxle		    Axle {
+		origin	3.12596 1.51764 1.93367
+		zRotation	283.319
+		leadingAxle			USE +3
+
+	    }
+
+	    dirPointAxle		    Axle {
+		origin	-0.160144 -2.12927 1.93367
+		leadingAxle	NULL
+	    }
+
+	    inertAxle		    Axle {
+		pinActivationDist	-1
+		leadingAxle	NULL
+	    }
+
+	    sizingDragger		    Translate1Dragger {
+		translation	1.5 0 0
+	    }
+
+	}
+
+	arrow2		Arrow {
+	    origin	-0.160144 -2.12927 1.93367
+	    dirPoint	3.12596 1.51764 1.93367
+	    length	1
+	    originAxle		    Axle {
+		origin	-0.160144 -2.12927 1.93367
+		leadingAxle	NULL
+	    }
+
+	    dirPointAxle		    Axle {
+		origin	3.12596 1.51764 1.93367
+		leadingAxle	NULL
+	    }
+
+	    inertAxle		    Axle {
+		pinActivationDist	-1
+		leadingAxle	NULL
+	    }
+
+	    sizingDragger		    Translate1Dragger {
+		translation	1 0 0
+	    }
+
+	}
+
+    }
+}

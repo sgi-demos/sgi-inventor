@@ -1,0 +1,9 @@
+Settings->Info Options
+
+This tool brings up the Info Options editor which has more options on
+displaying and recording information displayed in the Movieola info
+window. You can choose to record all information printed by Movieola
+on to an external file for viewing later. The Info Options editor has
+options for selecting the info file name, path etc. It also lets the
+user set the number of lines (history) of information that is
+displayed in the info window.

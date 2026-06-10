@@ -1,0 +1,42 @@
+Welcome to Movieola!
+
+	MOVIEOLA is a fully functional, low-cost modeling and 
+photo-real rendering system from Radiance Software.
+
+This is a "preview" copy of Movieola. In "preview" mode, you
+will be able to preview the interface and texture map a default
+object created using Movieola's intuitive "Potter" tool. You can
+manipulate the default object's section and profile inside the 
+"Potter" tool.  You will also be able to view a series of rendered 
+images all created using Movieola.
+
+On-line "on context" help is always enabled in "preview" mode. If
+you find this help dialog box popping up a little irritating, you
+may want to push the help window behind the main Movieola window.
+
+If you would like to use all the other Movieola tools, you will have
+to obtain an evaluation license or a fully functional license for
+Movieola. You can do so by calling Radiance Technical Support at
+(510) 848-7621 or by sending e-mail to support@radiance.com.
+
+To run Movieola from your CDROM, just go into the 'Movieola' folder 
+(if you are not already there) and double-click on 'Movieola'.
+
+To install Movieola on your machine, copy the 'Movieola' folder to a 
+convenient location on your disk. To run Movieola, go into the 'Movieola' 
+folder, and run the 'Movieola' script there. (The program will run faster 
+if you install it on your machine. But make sure you have about 13 Meg of 
+free disk space).
+
+
+If you would like more information on Movieola or any other Radiance
+product, please contact:
+
+Radiance Software International
+1726 Francisco Street
+Berkeley, Ca 94703
+
+Tel: (510) 848-7621
+Fax: (510) 848-7613
+
+support@radiance.com

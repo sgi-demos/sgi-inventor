@@ -1,0 +1,228 @@
+#Inventor V1.0 ascii
+
+#from: File { name "pieces/scaleKnob.iv" }
+DEF SCALE_KNOB
+Cube { height 0.1 width 0.1 depth 0.1 }
+
+#from: File { name "pieces/yFeedbackAxis.iv" }
+DEF Y_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ 0 -1.25 0, 0 1.25 0 ] }
+    LineSet {}
+}
+
+DEF LEFT_ARROWHEAD
+#from: File { name "pieces/leftArrowhead.iv" }
+# A left-pointing arrowhead, used for translations.
+Group {
+    RotationXYZ { axis Z angle 1.57079 }
+    Cone { height 0.1 bottomRadius 0.05 }
+}
+
+DEF RIGHT_ARROWHEAD
+#from: File { name "pieces/rightArrowhead.iv" }
+# A right-pointing arrowhead, used for translations.
+Group {
+    RotationXYZ { axis Z angle -1.57079 }
+    Cone { height 0.1 bottomRadius 0.05 }
+}
+
+DEF DOWN_ARROWHEAD
+#from: File { name "pieces/downArrowhead.iv" }
+# A down-pointing arrowhead, used for translations.
+Group {
+    RotationXYZ { axis Z angle 3.14159 }
+    Cone { height 0.1 bottomRadius 0.05 }
+}
+
+DEF UP_ARROWHEAD
+#from: File { name "pieces/upArrowhead.iv" }
+# A up-pointing arrowhead, used for translations.
+Group {
+    Cone { height 0.1 bottomRadius 0.05 }
+}
+
+#from: File { name "pieces/smallCrosshairs.iv" }
+DEF SMALL_CROSSHAIRS
+Group {
+    # little x axis
+    Coordinate3 { point [ -0.5 0 0, 0.5 0 0 ] }
+    LineSet {}
+
+    # little y axis
+    Coordinate3 { point [ 0 -0.5 0, 0 0.5 0 ] }
+    LineSet {}
+
+    Separator {
+	Translation { translation -.5 0 0 }
+	Scale { scaleFactor .75 .75 .75 }
+	USE LEFT_ARROWHEAD
+    }
+    Separator {
+	Translation { translation .5 0 0 }
+	Scale { scaleFactor .75 .75 .75 }
+	USE RIGHT_ARROWHEAD
+    }
+    Separator {
+	Translation { translation 0 -.5 0 }
+	Scale { scaleFactor .75 .75 .75 }
+	USE DOWN_ARROWHEAD
+    }
+    Separator {
+	Translation { translation 0 .5 0 }
+	Scale { scaleFactor .75 .75 .75 }
+	USE UP_ARROWHEAD
+    }
+}
+
+# Geometry for the scaler part. This is the same 
+# as the default, but we leave out the wireframe 
+# that appears when it's active.
+
+DEF SCALING_OBJECT
+Separator {
+
+    # 8 cubes, one at each corner.
+    # front upper left
+    Translation { translation -1.1 1.1 1.1 }
+    USE SCALE_KNOB
+
+    # front upper right
+    Translation { translation 2.2 0 0 }
+    USE SCALE_KNOB
+
+    # front lower right
+    Translation { translation 0 -2.2 0 }
+    USE SCALE_KNOB
+
+    # front lower left
+    Translation { translation -2.2 0 0 }
+    USE SCALE_KNOB
+
+    # rear upper left
+    Translation { translation 0 2.2 -2.2 }
+    USE SCALE_KNOB
+
+    # rear upper right
+    Translation { translation 2.2 0 0 }
+    USE SCALE_KNOB
+
+    # rear lower right
+    Translation { translation 0 -2.2 0 }
+    USE SCALE_KNOB
+
+    # rear lower left
+    Translation { translation -2.2 0 0 }
+    USE SCALE_KNOB
+
+}
+
+Separator {
+    Label {
+	label "scaleUniformScaler"
+    }
+    USE SCALING_OBJECT
+}
+
+Separator {
+    Label {
+	label "scaleUniformScalerActive"
+    }
+    USE SCALING_OBJECT
+}
+
+
+# Geometry for the rotater parts. The default for
+# each of the three rotators is four extra thick lines
+# aligned with the edges of the canonical bounding
+# box that are parallel to the axis of rotation.
+# Invisible cylinders are added to make picking
+# easier
+Separator {
+    Label {
+	label "rotateCylindricalRotater"
+    }
+    Label {
+	label "rotateCylindricalRotaterActive"
+    }
+
+    Complexity { value .01 }
+    Scale { scaleFactor 1.1 1.1 1.1 }
+
+    Coordinate3 { point [  1 -1  1,  1 1  1,
+    			   1 -1 -1,  1 1 -1,
+    			  -1 -1 -1, -1 1 -1,
+    			  -1 -1  1, -1 1  1 ] }
+
+    Normal { vector [  .707107 0  .707107,  .707107 0  .707107,
+    		       .707107 0 -.707107,  .707107 0 -.707107,
+    		      -.707107 0 -.707107, -.707107 0 -.707107,
+    		      -.707107 0  .707107, -.707107 0  .707107 ] }
+
+    LineSet { numVertices [ 2, 2, 2, 2 ] }
+
+    # now draw invisible cylinders to make picking easier
+#    DrawStyle { style INVISIBLE }
+#    Translation {  translation 1 0 1 }
+#    Cylinder { height 2 radius .04 }
+#
+#    Translation {  translation 0 0 -2 }
+#    Cylinder { height 2 radius .04 }
+#
+#    Translation {  translation -2 0 0 }
+#    Cylinder { height 2 radius .04 }
+#    
+#    Translation {  translation 0 0 2  }
+#    Cylinder { height 2 radius .04 }
+}
+
+# Geometry for the translater parts.
+# By default it is just the front 
+# face of a cube.
+Separator {
+    Label {
+	label "translate2Translater"
+    }
+    Label {
+	label "translate2TranslaterActive"
+    }
+    Scale { scaleFactor 1.1 1.1 1.1 }
+    Coordinate3 { 
+	point [ 1 -1  1,  1  1  1, -1  1  1, -1 -1  1]
+    }
+    FaceSet {}
+}
+
+Separator {
+    Label {
+	label "rotateCylindricalAxisFeedbackActive"
+    }
+    USE Y_FEEDBACK_AXIS
+}
+
+Separator {
+    Label {
+	label "translate2NormalFeedbackActive"
+    }
+
+    Scale { scaleFactor 1.1 1.1 1.1 }
+
+    Translation { translation 0 0 1 }
+    USE SMALL_CROSSHAIRS
+}
+
+# Don't use the feedback of the canonical manips.
+Separator {
+    Label {
+	label "scaleUniformCenterFeedback"
+    }
+    Label {
+	label "scaleUniformCenterFeedbackActive"
+    }
+    Label {
+	label "rotateCylindricalAxisFeedback"
+    }
+    Label {
+	label "translate2NormalFeedback"
+    }
+}

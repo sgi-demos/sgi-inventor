@@ -1,0 +1,44 @@
+#Inventor V2.0 ascii
+
+Separator {
+
+    renderCaching OFF
+
+    DEF SCECB EventCallback {}
+
+    DEF SCMainSwitch Switch {
+	whichChild -3
+
+	Separator {
+	    renderCaching OFF
+
+	    DEF SCShip Group {
+		# Ship camera/lights get inserted here
+	    }
+
+	    DEF SCTunnelSep Separator {
+		renderCaching OFF
+		Environment {
+		    ambientIntensity	.4
+		    fogType			HAZE
+		    fogColor		0 0 0
+		    fogVisibility		120
+		}
+		Material {
+		    ambientColor	.1 .1 .2
+		    specularColor	.5 .5 .5
+		    shininess	0.7
+		}
+
+		# Tunnel graph goes here
+	    }
+
+	    # Blaster graph gets added here
+	    DEF SCBlasterSep Separator {
+		renderCaching OFF
+	    }
+	}
+    }
+
+    DEF SCChamberSwitch Switch {}
+}

@@ -1,0 +1,89 @@
+#Inventor V2.0 ascii
+
+# Initial startup screen
+
+Separator {
+    OrthographicCamera {
+	position 0 0 200
+	nearDistance 0.1
+	farDistance  1000.0
+	focalDistance 1.0
+	height 150
+    }
+    LightModel { model BASE_COLOR }
+    Complexity { value .8 }
+    Separator {
+	DirectionalLight { direction 1 0 0 }
+	PointLight { location  380 60 140 intensity 1.0 color 0.4 0 1.0 }
+	LightModel { model PHONG }
+	Transform { translation 0 -50 100 scaleFactor 3 2 5 rotation 0 1 0 0.8 }
+	Material {
+	    diffuseColor 0.3 0 0.1
+	    specularColor 0.9 0 0.3
+	    shininess 0.5
+	}
+	Translation { translation 0 48 0 }
+	Font { name Utopia-Italic size 18 }
+	Text3 { parts ( FRONT | SIDES ) string "SlotCars" justification CENTER }
+    }
+    Separator {
+	BaseColor { rgb 1 1 1 }
+	Translation { translation 0 32 0 }
+	Font { name Utopia-Regular size 8 }
+	Complexity { value 0.5 }
+	Text3 { string [ 
+		"Move mouse up/down to go faster/slower.",
+		"Click left/right mouse buttons to change lanes.",
+		"Use arrow keys to change view.",
+		"Stop at start/finish line to start a new race.",
+		]
+		spacing 1.3
+		justification CENTER }	
+    }
+    Separator {
+	Separator {
+	    Translation { translation 0 -11 0 }
+	    Material { shininess 0.6 specularColor .5 0 .9 diffuseColor .05 0 0.2 }
+	    Separator {
+		BaseColor { rgb .20 0 0.4 }
+		Translation { translation 0 -5 0 }
+		DEF StartButton Cube { width 46 height 18 depth 4 }
+	    }
+	}
+
+	BaseColor { rgb 1 1 1 }
+	PickStyle { style UNPICKABLE }
+	Translation { translation 0 -21 11.1 }
+	Font { name Utopia-Regular size 18 }
+	Text3 { string "Start" justification CENTER }
+    }
+    Separator {
+	# Big polygon as background
+	PickStyle { style UNPICKABLE }
+	MaterialBinding { value PER_VERTEX }
+	BaseColor { rgb [ .2 0 .4, .2 0 .4, .9 .6 0, .9 .6 0 ] }
+	Coordinate3 {
+	    point [ -200 -80 -550, 200 -80 -550,
+		   200 80 -550, -200 80 -550 ]
+	}
+	FaceSet { numVertices 4 }
+    }
+    Separator {
+	DirectionalLight { color 1 1 1 intensity 0.7 direction 0 -1 1.0 }
+	DirectionalLight { color 1 0.7 0.2 intensity 0.6 direction 0 0 -1 }
+	DirectionalLight { color 0.3 0.0 0.9 intensity 0.5 direction 1 -0.3 -0.6 }
+	DirectionalLight { color 1 1 1 intensity 0.5 direction -1 0 0 }
+	PickStyle { style UNPICKABLE }
+
+	Rotation { rotation 1 0 0 0.1 }
+	Transform {
+	    translation -28 -55 29
+            rotation 0 1 0 -2.5
+	    scaleFactor 7.0 7.0 7.0
+	}
+	LightModel { model PHONG }
+	File { name "carEd.iv" }
+	Transform { translation 2 0 62 scaleFactor 0.3 0.1 5.0 }
+	File { name "Straight.iv" }
+    }
+}

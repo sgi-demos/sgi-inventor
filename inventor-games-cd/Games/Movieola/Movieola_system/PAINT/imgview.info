@@ -1,0 +1,12 @@
+imgview - displays image files
+
+   Forces startup in color-index mode. By default the color mode will
+          be selected depending on the capabilities of the display server.
+
+     When multiple images are specified on the command line they will be
+     stacked with the first image on top.  Image views may be dragged around
+     with left-mouse.  The image may be roamed inside a view with middle-
+     mouse. Right-mouse will bring up a menu with various display options.  If
+     an image is larger than the window, the center portion of the image will
+     be displayed initially; the roam function can be used to navigate around
+     the full image.

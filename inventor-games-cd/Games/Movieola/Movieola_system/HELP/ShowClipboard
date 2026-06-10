@@ -1,0 +1,6 @@
+Edit->Show Clipboard
+
+"Show clipboard" is used to see the contents of the 3D clipboard. When
+you do "Cut" or "Copy" in Movieola or other 3D applications like
+SceneViewer and Showcase, the 3D clipboard is filled. "Show Clipboard"
+brings up a standard 3D viewer.

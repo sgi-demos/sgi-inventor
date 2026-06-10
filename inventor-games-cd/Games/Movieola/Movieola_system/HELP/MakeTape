@@ -1,0 +1,11 @@
+File->Make Tape
+
+The "Make tape" option displays three choices:
+
+ 	Entire project
+	Object and Textures
+	Rendered Images.
+
+This will put the appropriate work onto the local tar tape. This
+enambles you to work on several large projects without choking the
+system.

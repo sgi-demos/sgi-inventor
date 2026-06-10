@@ -1,0 +1,186 @@
+#Inventor V1.0 ascii
+
+#from: File { name "pieces/wireBox.iv" }
+DEF WIRE_BOX
+Separator {
+    DrawStyle {
+	style LINES
+	lineWidth 1
+    }
+    Cube { width 2.2 height 2.2 depth 2.2 }
+}
+
+#from: File { name "pieces/yAxis.iv" }
+# A thick line along the y axis
+DEF Y_AXIS
+Separator {
+
+    Coordinate3 { point [ 0 -1 0, 0 1 0 ] }
+    LineSet {}
+
+}
+
+DEF DOWN_ARROWHEAD
+#from: File { name "pieces/downArrowhead.iv" }
+# A down-pointing arrowhead, used for translations.
+Group {
+    RotationXYZ { axis Z angle 3.14159 }
+    Cone { height 0.1 bottomRadius 0.05 }
+}
+
+DEF UP_ARROWHEAD
+#from: File { name "pieces/upArrowhead.iv" }
+# A up-pointing arrowhead, used for translations.
+Group {
+    Cone { height 0.1 bottomRadius 0.05 }
+}
+
+Separator {
+    Label {
+	label "dragPointDragger"
+    }
+    Label {
+	label "dragPointDraggerActive"
+    }
+    USE WIRE_BOX
+}
+
+# By default, we make no use of this part.
+Separator {
+    Label {
+	label "dragPointLocationFeedback"
+    }
+    Label {
+	label "dragPointLocationFeedbackActive"
+    }
+}
+
+DEF Y_AXIS_WITH_ARROWHEADS
+Group {
+    Scale { scaleFactor 25 25 25 }
+    USE Y_AXIS
+    Separator {
+	Transform { translation 0 1.025 0 }
+	Scale { scaleFactor 0.5 0.5 0.5 }
+	USE UP_ARROWHEAD
+    }
+    Transform { translation 0 -1.025 0 }
+    Scale { scaleFactor 0.5 0.5 0.5 }
+    USE DOWN_ARROWHEAD
+}
+
+Separator {
+    Label {
+	label "dragPointXAxis"
+    }
+    Label {
+	label "dragPointXConstraintAxis"
+    }
+    Label {
+	label "dragPointYAxis"
+    }
+    Label {
+	label "dragPointYConstraintAxis"
+    }
+    Label {
+	label "dragPointZAxis"
+    }
+    Label {
+	label "dragPointZConstraintAxis"
+    }
+}
+Separator {
+    Label {
+	label "dragPointXAxisActive"
+    }
+    Label {
+	label "dragPointXConstraintAxisActive"
+    }
+    RotationXYZ {
+	axis  Z
+	angle 1.57079
+    }
+    USE Y_AXIS_WITH_ARROWHEADS
+}
+
+Separator {
+    Label {
+	label "dragPointYAxisActive"
+    }
+    Label {
+	label "dragPointYConstraintAxisActive"
+    }
+    USE Y_AXIS_WITH_ARROWHEADS
+}
+
+Separator {
+    Label {
+	label "dragPointZAxisActive"
+    }
+    Label {
+	label "dragPointZConstraintAxisActive"
+    }
+    RotationXYZ {
+	axis  X
+	angle 1.57079
+    }
+    USE Y_AXIS_WITH_ARROWHEADS
+}
+
+DEF XZ_CONSTRAINT_PLANE
+Group {
+    Scale { scaleFactor 25 25 25 }
+    Coordinate3 {
+	point [ -1 0 -1, -1 0 1 , 1 0 1, 1 0 -1, -1 0 -1 ]
+    }
+    Normal {
+	vector [ 0 1 0 ]
+    }
+    NormalBinding {
+	value OVERALL
+    }
+    # outline of the square
+    LineSet {
+    }
+    # filled square 
+    FaceSet {
+    }
+}
+
+Separator {
+    Label {
+	label "dragPointYZConstraintPlane"
+    }
+    Label {
+	label "dragPointYZConstraintPlaneActive"
+    }
+    RotationXYZ {
+	axis  Z
+	angle 1.57079
+    }
+    USE XZ_CONSTRAINT_PLANE
+}
+
+Separator {
+    Label {
+	label "dragPointXZConstraintPlane"
+    }
+    Label {
+	label "dragPointXZConstraintPlaneActive"
+    }
+    USE XZ_CONSTRAINT_PLANE
+}
+
+Separator {
+    Label {
+	label "dragPointXYConstraintPlane"
+    }
+    Label {
+	label "dragPointXYConstraintPlaneActive"
+    }
+    RotationXYZ {
+	axis  X
+	angle 1.57079
+    }
+    USE XZ_CONSTRAINT_PLANE
+}

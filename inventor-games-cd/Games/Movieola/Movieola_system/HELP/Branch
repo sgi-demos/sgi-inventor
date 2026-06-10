@@ -1,0 +1,32 @@
+Sculptor->Branch
+
+"Branch" is a tool which provides a method of building "branched
+objects" stemming out of the base object..  The branch tool is used in
+conjunction with "Potter" and other "Sculptor" tools . Branch can be
+used to create "hierarchically linked" objects such as coffee cup
+handles, animal legs or arms, heads, door knobs and so on.
+
+The branch of an object is constrained to be at a certain position on
+the main object's body. Even if the shape of the object or its branch
+is changed, this constraint is maintained.
+
+"Branch" has two active modes:
+
+"Create New": Choose "Create New", then go into the viewer window and
+click a point on the object. This will immediately sprout a new branch
+object (default Potter object) at that point. You can now move the
+branch in a single direction in and out of the main object. This
+allows you to "bury" the branch at a given distance to avoid seams. If
+you have an existing branch selected before choosing "Create New", you
+can click a new point on the object. The branch will now be
+repositioned at the new spot.
+
+"Edit Old": Select an existing branch of the main object, and choose
+"Edit Old". You can now "rebury" the branch with respect to the main
+object.
+
+"Remove": Select a branch of the main object, and choose "Remove".
+That will remove the "branch" connection. That is, the two objects are
+no longer constrained to each other. (You can now delete the branch
+altogether by using "Cut").
+

@@ -1,0 +1,37 @@
+#!/bin/csh -f
+set argc = ${#argv}
+
+setenv PATH $MOVIEOLAHOME/subsystems/sbin:/usr/sbin:$PATH
+
+if ($argc == 3) then  
+    set inFile = $argv[1]
+    set imgFormat = $argv[2]
+    set imgName = $argv[3]
+else goto usage
+endif
+
+if( $imgFormat == "gif") then
+    togif $inFile $imgName
+else if( $imgFormat == "targa") then
+    totarga $inFile $imgName
+else if( $imgFormat == "tiff") then
+    totiff $inFile $imgName
+else if( $imgFormat == "ps") then
+    tops $inFile > $imgName
+else if( $imgFormat == "pict") then
+    topict $inFile $imgName
+else if( $imgFormat == "bw") then
+    tobw $inFile $imgName
+else goto unrecognizedFormat
+endif
+
+rm -rf $inFile
+exit 0
+
+usage:
+
+echo "Usage: MvlaImageFormat <rgb filename> <image format> <formatted filename>"
+exit 0
+
+unrecognizedFormat:
+echo "ERROR: Unrecognized image format '$imgFormat'"

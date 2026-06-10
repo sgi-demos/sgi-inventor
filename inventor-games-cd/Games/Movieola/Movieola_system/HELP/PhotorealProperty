@@ -1,0 +1,52 @@
+Costume->Photo-real Property
+
+Photo-real Property...is the next selection found in the "Costume"
+menu.  Photo-real Property editor is used to set the Photo-real
+property of the object selected in Movieola. You will notice all the
+menu items in this editor colored blue. This means that these settings
+will not affect objects in the main Movieola scene. But rather, they
+will affect the photo-real look of the object when rendered using the
+Photo-real Render feature in Movieola. (Rayshade, RenderMan etc.)
+
+All the photo-real object settings are specific to the photo-realistic
+renderer you've selected. Please also refer to the accompanying
+documentation for the photo-realistic rendering option you have
+purchased for Movieola. (Rayshade, RenderMan, etc.)
+
+Photo-real Property editor contains the following options:
+
+	Reflectivity
+	Refractivity
+	Translucency
+	Extinction Coefficient
+	Specular Power
+
+	Use Defaults (Button)
+	Dismiss (Button)
+
+Reflectivity: This control sets the specular reflectivity of the
+surface of the object selected in Movieola. In other words, it sets
+how reflective the object will appear when rendered.
+
+Refractivity: This control sets the index of refraction for the
+object. The default value is equal to the index of refraction of the
+atmosphere surrounding the eye.
+
+Translucency: This control sets the translucency, diffusely
+transmitted color, and Phong exponent for transmitted specular
+highlights for the selected object.
+
+Extinction Coefficient: This control sets the extinction coefficient
+value of the interior of the object. This coefficient is raised to a
+power equal to the distance the transmitted ray travels through the
+object. The overall intensity of specularly transmitted rays will be
+proportional to this factor multiplied by the surface's body color
+multiplied by the transparency of he object.
+
+Specular Power: This control sets the size of specular highlight. The
+larger the exponent, the smoother the apparent finish.
+
+Use Defaults (Button) is used to reset to the default photo-real
+values for the selected object.
+
+Dismiss (Button) when selected dismisses the Photo-real editor .

@@ -1,0 +1,158 @@
+Limelight->Lights
+
+Lights is the first selection found in the Limelight menu. When
+selected, it brings up the Light Editor.
+
+The Light Editor contains the following options and controls.
+
+	Light name (Editable field)
+	OK (Push button)
+	Create New (Radio button)
+	Edit Old (Radio button)
+
+	Light Controls
+	on/off (Toggle)
+	Show Icon (Toggle)
+	Cast Shadows (Toggle)
+
+	
+	Light type selector (Radio button)
+	Ambient
+	Headlight
+	Directional
+	Spot
+	Point
+
+	Light List (List selection menu)
+
+	Light Color Editor
+
+	Create	Dismiss	Remove (Push buttons)
+
+
+Light Name (Editable field) is the first option in the light editor.
+It is used to set the name of the light source for future referencing.
+Lights are treated as objects for manipulation usage but will not
+appear in the final rendered image.
+
+Create New: This toggle is used to create a new light. "Create New" is
+a toggle button connected to "Edit Old". It is used to begin the
+process of creating a light source in Movieola. In this mode, you
+cannot select previously created light sources. To create a light,
+first select the type of light (Directional, Spot or Point) you want
+to create, set its color using the color editor and press "Create". If
+you have the "show icon" option on, you will notice the light icon
+appear on the upper left corner of your main Movieola window. You may
+then manipulate the parameters of the light either by adjusting the
+controls on the light icon or by setting controls in the light editor.
+When you press "Create" and a light is created, the Light editor
+automatically goes into "Edit Old" mode and makes the newly created
+light the current light for manipulation. If you want to create
+another light source, simply select the "Create New" option again and
+follow the same steps as above.
+
+Edit Old: This toggle is used to edit an old or existing light. "Edit
+Old" is used to begin the process of editing a previously created
+light source. To edit the light source you want, simply select the
+name of the light from the "Light list" selection menu. Or "pick" the
+light icon (if visible) in the main view and light corresponding to
+the picked icon will be selected.
+	
+Light controls
+
+on/off: This toggle is used to turn on or off a light created in the
+Light Editor. This is a simple switch device.
+
+show icon: This toggle is used to turn on/off display of the light
+icon in the Movieola environment. You may want to have the "show icon"
+option on if you want to manipulate the light's parameters using the
+light's icon in the main Movieola view. Light icons visible in the
+Movieola environment are not rendered in a test or final rendered
+image..
+
+Cast Shadows: Turns on or off the shadow casting of a light. This
+feature is on a per light basis, not per object basis. This feature is
+not available in this release.
+
+Light list: This is a listing of all lights in the current Movieola
+scene. By default, Movieola creates an Ambient light source and a
+headlight attached to the camera in the main view.. The simplest way
+to select a light source is to "pick" the light icon in the main
+window. Lights may also be selected using this light list menu if the
+light icon is not displayed in the main window or if it is in such a
+position that it is inaccesible or inconvenient to select using the
+mouse in the main window.
+
+Headlight: : This light points at the Movieola environment from the
+"Front" view. The headlight is a directional light and is always
+attached to the current camera position in the main view and moves
+with the camera.  So this light affects all objects no mater what
+their postional configuration might be. The Headlight is often used
+for better viewing and then turned off for rendering. Headlights
+cannot be created -- they can only be turned on or off.
+
+Ambient: This light is like the sun. It has no location and affects
+all the objects in the scene. It produces a constant illumination on
+all surfaces, regardless of their orientation. Unfortunately, ambient
+light by itself produces very unrealistic images since few real
+environments are illuminated solely by ambient light. There can be
+only one ambient light in the Movieola scene.
+
+Directional : This light illuminates uniformly along a particular
+direction. Since it is infinitely far away, it has no location in 3-D
+space. The icon for the directional light is for light direction
+manipulation purposes only -- you will find that moving it along the
+same direction does not produce any change in light effects. The light
+intensity does not change with distance. The increase or decrease of
+the light falling on an object is the result of the angular change.
+The angular shift in shadows is the same as would be expected in
+nature. This means that as you change the direction of the Directional
+light, you will see a corresponding change in shadows. The directional
+light's icon may be used to change its direction by "picking" the end
+of the arrow in the icon and dragging it in the desired direction.
+
+Spot : This light works like the traditional spot light producing a
+tight and adjustable light source. It may be placed anywhere in the
+Movieola environment and pointed in any direction. The cone of the
+light is adjustable in size .
+
+Point : This light is like a star radiating light in all directions
+evenly, It is much like a solar source with the exception that it may
+be positioned anywhere in the Movieola environment. It will produce
+proper sun rise shadow effects.
+
+Light Color:
+
+The light color editor is used to set the color of the light being
+edited. This editor consist of three main parts, the first is a set of
+windows which set the main and secondary color of the current light,
+the second part is a color wheel which contains all the colors
+selectable with this editor. The third is a set of 4 sliders which can
+be used to set the values of the color componest that make up any
+given color emitted from the light being created.  The user may vary
+the color of the light by draging the circular cursor from point to
+point in the color wheel or by moving the color sliders to the desired
+value. One nice feature of this system is that the two "sub editors"
+are linked so that if one is used, the other also moves to reflect the
+changes made in the first. This makes it possible to set the color in
+any of the two ways. The sliders provide a more exact way of setting
+the Red, Green and Blue components of the color.
+
+	In addition, once a light has been created and positioned in
+the Movieola environment, the editor may be used to make changes which
+will be seen immediately in the Movieola environment thus allowing
+fine tuning of lighs . There is no limit on the number of spot lights,
+directional lights or point lights that can be created in Movieola.
+
+Create (Button) works only in "Create New" mode. It creates a light of
+selected light type and other light paramers and immediately adds it
+to the scene. Once a light is created, the light editor immediately
+switches to "Edit Old" mode to allow you to edit the attributes of the
+light. If you want to create another light source, simply select the
+"Create New" option again.
+
+Dismiss (Button) is used to dismiss the Light Editor.
+
+Remove (Button) when pressed will remove the currently selected light
+source from the Movieola environment.
+

@@ -1,0 +1,139 @@
+#Inventor V2.0 ascii
+
+Separator {
+Label {
+    label	"SoSceneViewer Environment v3.0"
+}
+PerspectiveCamera {
+    position	0 -675.069 416.118
+    orientation	1 0 0  1.02974
+    nearDistance	637.585
+    farDistance	922.46
+    focalDistance	778.81
+    heightAngle	0.296252
+}
+Environment {
+    fogType	NONE
+    fogColor	0 0 0
+}
+Group {
+}
+DirectionalLight {
+    intensity	1
+    color	1 1 1
+    direction	0.2 -0.2 -0.979796
+}
+    LightModel { model BASE_COLOR }
+    ShapeHints { 
+	vertexOrdering COUNTERCLOCKWISE
+	shapeType SOLID
+	faceType CONVEX
+    }
+    NormalBinding {
+	value  PER_FACE
+    }
+
+    
+    # ice
+    Separator {
+	BaseColor { rgb .8 .8 .8 }
+	Normal {
+	    vector [ 0 0 1 ]
+	}
+	DEF iceCoords Coordinate3 {
+	    point [
+		100 150 0, 
+		-100 150 0, 
+		-100 -150 0, 
+		100 -150 0
+	    ]
+	}
+	FaceSet {}
+    }
+    
+    # red boards and goal
+    Separator {
+	BaseColor { rgb .6 .2 .2 }
+	Normal {
+	    vector [ 0 -1 0 ]
+	}
+	DEF redWallCoords Coordinate3 {
+	    point [
+		100 150 0, 
+		100 150 30, 
+		20 150 30, 
+		20 150 0, 
+		-20 150 0, 
+		-20 150 30, 
+		-100 150 30, 
+		-100 150 0, 
+	    ]
+	}
+	FaceSet {
+	    numVertices [ 4, 4 ]
+	}
+    }
+
+    # blue boards and goal
+    Separator {
+	BaseColor { rgb .2 .2 .6 }
+	Normal {
+	    vector [ 0 1 0 ]
+	}
+	DEF blueWallCoords Coordinate3 {
+	    point [
+		-100 -150 0, 
+		-100 -150 30, 
+		-20 -150 30, 
+		-20 -150 0, 
+		20 -150 0, 
+		20 -150 30, 
+		100 -150 30, 
+		100 -150 0, 
+	    ]
+	}
+	FaceSet {
+	    numVertices [ 4, 4 ]
+	}
+    }
+
+    # blue gun
+    Separator {
+	DEF redGunColor BaseColor { rgb .2 .2 .6 }
+	DEF redGunPos Translation {
+	}
+	Translation {
+	    translation 0 -150 5
+	}
+	DEF redGunRot RotationXYZ {
+	    axis Z
+	}
+	Cylinder { 
+	    radius 2.0
+	    height 25.0
+	}
+    }
+
+    # side boards
+    Separator {
+	BaseColor { rgb .4 .4 .4 }
+	Normal {
+	    vector [ 1 0 0, -1 0 0 ]
+	}
+	Coordinate3 {
+	    point [
+		-100 150 0, 
+		-100 150 30, 
+		-100 -150 30, 
+		-100 -150 0, 
+		100 -150 0, 
+		100 -150 30, 
+		100 150 30, 
+		100 150 0, 
+	    ]
+	}
+	FaceSet {
+	    numVertices [ 4, 4 ]
+	}
+    }
+}

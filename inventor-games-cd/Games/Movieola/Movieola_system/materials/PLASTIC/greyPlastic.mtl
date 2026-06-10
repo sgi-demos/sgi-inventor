@@ -1,0 +1,9 @@
+#Inventor V1.0 ascii
+
+DEF greyPlastic Material {
+    ambientColor 	0.0 0.0 0.0
+    diffuseColor 	0.15 0.15 0.15
+    specularColor 	0.60 0.60 0.60
+    shininess 		.25
+    #ALPHA 1.0
+}

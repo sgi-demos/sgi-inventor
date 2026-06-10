@@ -1,0 +1,75 @@
+Limelight->Environment
+
+Environment... is the next selection in the Limelight menu. When
+selected, it brings up the Environment Editor.
+
+The Environment Editor is used to edit the global attributes of the
+environment in Movieola. This environment will affect all other
+lighting elements as might be expected in a real world context. You
+might think of it like this, if you selected "Fog" then all elements
+of lighting in the environment will have the "Fog" effect imparted to
+them.
+
+The Environment Editor consist of the following tools and options:
+
+	Environment Type (Radio button)
+	   	Fog
+	   	Mist
+		None
+
+	Environment - Fog Type (Radio button)
+		linear
+		exponential
+		exponential squared
+
+	Density (Slider)
+	Refraction Index (Slider)
+
+
+	Background Color (Editor)
+
+	Use Defaults	Dismiss
+
+
+Environment Type is the first selection in the Environment Editor.
+Three different environment types are possible -- fog, mist and none
+(default) environment.
+
+Fog: This sets the environment type to fog. This can be used to
+simulate various atmospheric effects such as fog, haze, pollution, and
+smoke. For general purposes, all these atmospheric effects are grouped
+under the term fog. The difference between fog and haze, for example,
+is simply the color and density.
+
+Mist: You will notice that this toggle button is colored blue. What
+this means is that setting the environment type to "Mist" will not
+cause any change in the Movieola scene. The effects only show in the
+final rendered image produced using Movieola's photo-realistic
+rendering module. A global low-altitude mist effect of the specified
+color is produced in the rendered image. The density value sets the
+transmitivity value of the fog/mist for each color channel.  rendering
+module.
+
+None: This option sets the default environment with no fog or mist
+effects.
+
+Density: This slider sets the density of the fog. In other words, how
+quickly the opacity of the fog increases with distance from the
+camera.
+
+Refraction Index: This slider is colored blue meaning its effects will
+only show in the final rendered image. This sets the index of
+refraction of the specified medium -- fog, mist or default.
+
+Background Color Editor:
+
+This color editor sets the color of the background in Movieola. You
+may use either the color wheel or the RGB-value color sliders to set
+the value of the background color. If you have set the fog or mist
+option, the background color also serves as the fog color.
+
+Use Defaults: This push button resets the environment settings to
+default values.
+
+Dismiss: This dismisses the Environment editor.
+

@@ -1,0 +1,52 @@
+Sculptor->Operations->Mold
+
+"Mold" is a tool which can be used to alter the surface of any object.
+It has two active modes: "Tweak points" and "Mold with Tool".
+
+"Tweak Points": In the "Tweak points" operation, the user can tweak
+individual spline control points (in case of spline objects), or
+individual vertices (in case of polygonal objects), using direct 3D
+manipulation in the viewer windows. In the case of spline objects,
+little blue points represent the spline control points.
+
+To move a point, move the cursor over it until a green box appears.
+Then press down on the left mouse button and move the point. In a 2D
+viewer (see Settings->2Dviewer), the point can be moved in the viewing
+plane. In the 3D viewer (see Settings->3Dviewer), you can actually
+move it in any direction. The manipulator choose which 3D axis
+direction to move in, based on your mouse movement. If you keep the
+"Shift" key pressed, the movement will be constrained along the
+nearest axis (which will be colored a brighter yellow). If you keep
+the "Alt" key pressed, the movement will be constrained along the
+plane indicated by the first gesture of the mouse.
+
+You can also move a group of points by dragging a rectangular box
+around them using the middle mouse button. A "box manipulator" appears
+over the box. You can move the box (and the points within it) by
+pressing the left mouse button and moving. You can also resize the box
+by pressing on the corner and side "handles" of the box manipulator.
+
+"Mold with tool": (Currently not available): "Mold with tool" works
+exactly the same way that a sculptor's fingers do with modeling clay.
+The user is given a second object as a "mold tool".  The mold tool is
+manipulated in any viewer window with the mouse. The "Mold" tool is
+pressed against the surface of the object, and the surface of the
+model will deform to match the shape of the mold tool. The more the
+tool is pushed into the object surface the more the surface conforms
+to the shape of the mold tool. The mold tool may be used on the out
+side of the object to press in or inside the object to push out.
+Movieola comes with several default mold tool shapes. Custom mold tool
+shapes can be created using the standard modeling tools, and converted
+to Mold tools in desired.
+
+"Spline Steps": For spline objects, the tool allows the user to
+control the number of steps between two consecutive spline points. The
+more the number of steps, the denser the object..
+
+"Polygonize": This converts a spline object into a polygonal object.
+This allows you to have lower-level control over the shape of the
+object, but you lose the spline information.
+
+"New": To mold another object, choose "Idle" mode, select the object
+and choose "New".
+

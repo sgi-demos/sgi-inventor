@@ -1,0 +1,42 @@
+#! /bin/csh -f
+
+##########################################################################
+# 
+# Copyright (c) 1993 by Radiance Software
+#
+# All rights reserved. This listing of source code is proprietary and
+# confidential to Radiance Software. It may not be copied or made 
+# available in any form (electronic or hard copy) to any person not
+# authorized by Radiance Software.
+# Unpublished - Rights reserved under all copyright laws
+#
+# Radiance Software, 1726 Francisco Street, Berkeley, CA 94703
+#
+##########################################################################
+
+###########################################################################
+#
+# Run-time environment for Movieola
+#
+###########################################################################
+
+# Assume MOVIEOLAHOME is set
+if (! $?MOVIEOLAHOME) then
+   echo "Movieola not installed properly (MOVIEOLAHOME not set)
+endif
+
+
+# The following is a run-time environment for movieola
+
+# Renderman
+setenv PATH $MOVIEOLAHOME/bin:/usr/local/prman/bin:$PATH
+
+# Movieola resource for manipulators/materials/textures
+
+setenv SO_MANIP_DIR     $MOVIEOLAHOME/resources
+setenv SO_MATERIAL_DIR  $MOVIEOLAHOME/materials
+setenv SO_TEXTURE_DIR   $MOVIEOLAHOME/textures
+
+# Resource file
+setenv XFILESEARCHPATH /usr/lib/X11/app-defaults/%N:$MOVIEOLAHOME/resources/%N
+

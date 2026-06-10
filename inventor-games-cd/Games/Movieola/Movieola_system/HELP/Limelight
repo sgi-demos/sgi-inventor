@@ -1,0 +1,24 @@
+LIMELIGHT - Lights, Camera, Action ...
+
+This is the fifth drop-down menu found in the main Movieola titlebar.
+
+To use this tool, move the mouse cursor over the word "Limelight" and
+left-mouse-click on "Limelight". This will prompt a drop down menu
+with the following options :
+	
+	Lights...	Alt+L
+	Environment...
+	Paint Options Setup...
+	Paint
+	Render Options Setup...
+	Render	Alt+R
+
+
+Limelight: is a group of tools used to setup and then render the
+scenes created in the Movieola environment. Limelight may be used to
+setup rendering options on a full scene or individual objects within a
+scene. Normally, different objects will have different rendering
+requirements.. Rendering may be done in the background while other
+Movieola operations are in progress. Once Limelight is initiated to
+render a scene, Movieola may be exited and other system applications
+used while Limelight continues to render a Movieola scene..

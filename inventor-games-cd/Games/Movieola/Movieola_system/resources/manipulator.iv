@@ -1,0 +1,398 @@
+#Inventor V1.0 ascii
+
+#
+# STYLES FOR MANIPULATORS
+#
+#-----------------------------------------------------------------------
+# PRIMARY OBJECTS   -- Styles 0 through 9 
+#-----------------------------------------------------------------------
+#
+# style0   inactive:  OPAQUE  WHITE  
+#            active:    ""    YELLOW 
+#
+# style1   inactive:  FROSTY  WHITE  
+#            active:    ""    YELLOW 
+#
+# style2   inactive:  LINES   WHITE  
+#            active:    ""    YELLOW 
+#
+# style3   inactive:  INVISIBLE
+#            active:    ""
+#
+#-----------------------------------------------------------------------
+# SECONDARY OBJECTS -- Styles 10 through 19
+#-----------------------------------------------------------------------
+#
+# style10   inactive:  OPAQUE  DIM GREEN  
+#             active:    ""    BRIGHT GREEN 
+#
+# style11   inactive:  FROSTY  DIM GREEN  
+#             active:    ""    BRIGHT GREEN 
+#
+# style12   inactive:  LINES   DIM GREEN  
+#             active:    ""    BRIGHT GREEN 
+#
+#-----------------------------------------------------------------------
+# FEEDBACK OBJECTS -- Styles 20 through 21
+#-----------------------------------------------------------------------
+#
+# style20   inactive:  OPAQUE  DIM PURPLE  
+#             active:    ""    BRIGHT PURPLE 
+#
+# style21   inactive:  FROSTY  DIM PURPLE  
+#             active:    ""    BRIGHT PURPLE 
+#
+# style22   inactive:  LINES   DIM PURPLE  
+#             active:    ""    BRIGHT PURPLE 
+#
+#-----------------------------------------------------------------------
+
+
+Group {
+    Label {
+	label "style0"
+    }
+    Material {
+	diffuseColor	[ 0. 1. 0. ]     # GREEN
+	emissiveColor	[ 0. 1. 0. ]
+	transparency    0.0
+    }
+    DrawStyle {
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+Group {
+    Label {
+	label "style0Active"
+    }
+    Material {
+	diffuseColor	[ 1.0 1.0 0.0 ]  # BRIGHT YELLOW
+	emissiveColor	[ 1.0 1.0 0.0 ]
+	transparency    0.0
+    }
+    DrawStyle {
+	lineWidth 3
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+
+Group {
+    Label {
+	label "style1"
+    }
+    Material {
+	diffuseColor	[ 0.0 0.5 0.0 ]
+	emissiveColor	[ 0.0 0.5 0.0 ]
+	transparency    0.5
+    }
+    DrawStyle {
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+Group {
+    Label {
+	label "style1Active"
+    }
+    Material {
+	diffuseColor	[ 1.0 1.0 0.0 ]
+	emissiveColor	[ 1.0 1.0 0.0 ]
+	transparency    0.5
+    }
+    DrawStyle {
+	lineWidth 3
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+
+Group {
+    Label {
+	label "style2"
+    }
+    Material {
+	diffuseColor	[ 0.0 0.5 0.0 ]
+	emissiveColor	[ 0.0 0.5 0.0 ]
+	transparency    0.0
+    }
+    DrawStyle {
+	style LINES
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+Group {
+    Label {
+	label "style2Active"
+    }
+    Material {
+	diffuseColor	[ 1.0 1.0 0.0 ]
+	emissiveColor	[ 1.0 1.0 0.0 ]
+	transparency    0.0
+    }
+    DrawStyle {
+	style LINES
+	lineWidth 3
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+
+Group {
+    Label {
+	label "style3"
+    }
+    Label {
+	label "style3Active"
+    }
+    DrawStyle {
+	style INVISIBLE
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+
+Group {
+    Label {
+	label "style10"
+    }
+    Material {
+	diffuseColor	[ 0.5 0 0 ] # BRIGHT RED
+	emissiveColor	[ 0.5 0 0 ] 
+	transparency	0.0
+    }
+    DrawStyle {
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+Group {
+    Label {
+	label "style10Active"
+    }
+    Material {
+	diffuseColor	[ 1.0 0 0 ]
+	emissiveColor	[ 1.0 0 0 ]
+	transparency	0.0
+    }
+    DrawStyle {
+	lineWidth 3
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+Group {
+    Label {
+	label "style11"
+    }
+    Material {
+	diffuseColor	[ 0.5 0 0 ]
+	emissiveColor	[ 0.5 0 0 ]
+
+	transparency	0.5
+    }
+    DrawStyle {
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+Group {
+    Label {
+	label "style11Active"
+    }
+    Material {
+	diffuseColor	[ 1.0 0 0 ]
+	emissiveColor	[ 1.0 0 0 ]
+
+	transparency	0.5
+    }
+    DrawStyle {
+	lineWidth 3
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+
+Group {
+    Label {
+	label "style12"
+    }
+    Material {
+	diffuseColor	[ 0.5 0 0 ]
+	emissiveColor	[ 0.5 0 0 ]
+	transparency	0.0
+    }
+    DrawStyle {
+	style LINES
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+Group {
+    Label {
+	label "style12Active"
+    }
+    Material {
+	diffuseColor	[ 1.0 0 0 ]
+	emissiveColor	[ 1.0 0 0 ]
+	transparency	0.0
+    }
+    DrawStyle {
+	style LINES
+	lineWidth 3
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+Group {
+    Label {
+	label "style20"
+    }
+    PickStyle { style UNPICKABLE }
+    Material {
+	diffuseColor	[ 0.5 0.5 0.0 ]
+	emissiveColor	[ 0.5 0.5 0.0 ]
+	transparency    0.0
+    }
+    DrawStyle {
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+
+Group {
+    Label {
+	label "style20Active"
+    }
+    PickStyle { style UNPICKABLE }
+    Material {
+	diffuseColor	[ 0.4 0.4 0.0 ]
+	emissiveColor	[ 0.4 0.4 0.0 ]
+	transparency    0.0
+    }
+    DrawStyle {
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+Group {
+    Label {
+	label "style21"
+    }
+    PickStyle { style UNPICKABLE }
+    Material {
+	diffuseColor	[ 0.5 0.5 0.0 ]
+	emissiveColor	[ 0.5 0.5 0.0 ]
+
+	transparency	0.8
+
+    }
+    DrawStyle {
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+Group {
+    Label {
+	label "style21Active"
+    }
+    PickStyle { style UNPICKABLE }
+    Material {
+	diffuseColor	[ 0.4 0.4 0.0 ]
+	emissiveColor	[ 0.4 0.4 0.0 ]
+
+	transparency	0.8
+
+    }
+    DrawStyle {
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+
+Group {
+    Label {
+	label "style22"
+    }
+    PickStyle { style UNPICKABLE }
+    Material {
+	diffuseColor	[ 0.5 0.5 0.0 ]
+	emissiveColor	[ 0.5 0.5 0.0 ]
+
+	transparency    0.0
+    }
+    DrawStyle {
+	style LINES
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}
+
+Group {
+    Label {
+	label "style22Active"
+    }
+    PickStyle { style UNPICKABLE }
+    Material {
+	diffuseColor	[ 0.4 0.4 0.0 ]
+	emissiveColor	[ 0.4 0.4 0.0 ]
+	transparency    0.0
+    }
+    DrawStyle {
+	style LINES
+	lineWidth 2
+    }
+    LightModel {
+	model PHONG
+    }
+    Texture2 {}
+}

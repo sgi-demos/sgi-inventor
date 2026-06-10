@@ -1,0 +1,45 @@
+#Inventor V1.0 ascii
+#
+# Movieola Axes
+
+Separator {
+
+    Scale      { scaleFactor 1 1 1 }
+
+    LightModel { model BASE_COLOR }
+
+    MaterialBinding { value OVERALL }
+    Separator {
+    	BaseColor{ rgb 0 1 0 }
+	Translation { translation  .2 0 0 }
+	Text2 { string "R" }
+    }
+    Separator {
+    	BaseColor{ rgb 0 1 0 }
+	Translation { translation 0 .2 0 }
+	Text2 { string "T" }
+    }
+    Separator {
+    	BaseColor{ rgb 0 1 0 }
+	Translation { translation 0 0 .2 }
+	Text2 { string "F" }
+    }
+
+    Scale { scaleFactor .2 .2 .2 }
+
+    MaterialBinding { value PER_PART }
+    DrawStyle { lineWidth 1 }
+    Coordinate3 { point [0 0 0, 1 0 0, 0  1 0, 0 0  1,
+                               -1 0 0, 0 -1 0, 0 0 -1] }
+    BaseColor { rgb [0 0 1, 0 0 1, 0 0 1] }
+    IndexedLineSet { coordIndex [1, 0, 2, -1, 0, 3] }
+    DrawStyle { lineWidth 1 }
+    IndexedLineSet { coordIndex [4, 0, 5, -1, 0, 6] }
+    
+}
+
+
+
+
+
+

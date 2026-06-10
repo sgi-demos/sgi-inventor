@@ -1,0 +1,81 @@
+Sculptor->Direct Manips
+
+This brings up a selection of direct 3D manipulators. This controls
+which manipulator is used when an object is selected. By default, a
+"drag manipulator" is provided. These 3D manipulators provide direct
+3D rotation, linear/non-linear scaling, and translation of the object.
+Each manipulator has a 3D geometry of its own. By grabbing and moving
+appropriate parts of the manipulator object, you can move, scale and
+rotate the actual object.
+
+"Replace": This toggle button indicates whether the manipulators for
+all currently selected objects should be changed when you switch to a
+new manipulator. If you have this turned off, it allows you to have
+different manipulators on different objects.
+
+"Drag Point": This is the default manipulator. It is shaped like a
+wireframe cube around the object being manipulated. Pressing down on
+the left mouse button and dragging the box moves the object along with
+it. In a 2D viewer (see Settings->2Dviewer), the object can be moved
+in the viewing plane. In the 3D viewer (see Settings->3Dviewer), you
+can actually move it in any direction. The manipulator chooses which
+3D axis direction to move in, based on your mouse movement. If you
+keep the "Shift" key pressed, the movement will be constrained along
+the nearest axis (which will be colored a brighter yellow). If you
+keep the "Alt" key pressed, the movement will be constrained along the
+plane indicated by the first gesture of the mouse.
+
+"Trackball": This manipulator allows independent free rotation,
+constrained rotation about the major axes, as well as constrained
+rotation about an arbitrary axis.
+
+The manipulator appears as three rings around the object. Dragging on
+one of these rings (using the left mouse button) will constrain
+rotation to the axis the ring surrounds. Dragging on the sphere
+defined by the three rings (but not on the rings) allows free
+rotation.
+
+Holding the "Shift" key, then clicking and dragging with the left
+mouse button will cause a user-defined axis and ring to appear.
+Holding the "Alt" key, then dragging on the manipulator with the left
+mouse button will scale the manipulator and the object it is editing.
+
+
+"Handle Box": This manipulator allows independent translation along
+one and two dimensions, as well as scaling in one or three dimensions.
+
+The manipulator appears as a cube with scaling knobs at the corners
+and in the middle of the faces. The face knobs control scaling along
+one direction. The corner knobs allow uniform scaling in 3 dimensions.
+By default scaling occurs about the center of the box. Holding the
+"Alt" key causes scaling to occur about the opposite face or corner,
+respectively.
+
+Grabbing any face of the cube causes translation on that plane.
+Holding the "Alt" key causes the translation to occur in one
+dimension, perpendicular to that face.
+
+Holding the "Ctrl" key, then dragging on the manipulator with the left
+mouse button will scale the size of the manipulator, without affecting
+the object it is editing.
+
+
+"Jack": This manipulator allows you to perform rotations, uniform
+scales and translations, all in one spiffy gadget that looks like a
+children's toy.
+
+Translation works like the "Drag Point" manipulator. Rotation works
+like the "Trackball" manipulator. Grabbing on the end of a jack
+handles and pulling scales the object uniformly.
+
+
+"Transform Box": This manipulator allows independent translation in
+two dimensions, uniform scaling in three dimensions, and rotation
+about any of the major axes.
+
+The manipulator appears as a cube with scaling knobs at the corners.
+Picking on any of these knobs causes uniform scaling about the center.
+Picking on any face causes 2D translation along the plane of the face.
+Picking on any of the edges of the cube causes a rotation about the
+axis parallel to that edge, running through the center of the cube.
+

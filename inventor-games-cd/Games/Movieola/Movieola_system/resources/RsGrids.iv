@@ -1,0 +1,77 @@
+#Inventor V1.0 ascii
+#
+# Grids object for Movieola
+#
+
+Separator {
+
+    Scale      { scaleFactor 1 1 1 }
+
+    PickStyle  { style UNPICKABLE }
+    LightModel { model BASE_COLOR }
+
+    Label      { label "GRIDS" }
+
+    Switch {     whichChild -1 # SO_SWITCH_NONE
+
+	    Separator { # GRID_FRONT
+
+	        Transform  { }
+		DEF _GRID_DIV_GEOM Switch { whichChild -3
+		
+   		   Separator {
+		   
+		     BaseColor { rgb .9 .4 .9 }
+		     # Program inserts global grid division geometry here
+
+		     BaseColor { rgb 0. 0. 1. }
+		     # Program inserts global grid zero-line geometry here
+
+		   }
+                }
+
+		DEF _GRID_SUBDIV_GEOM Switch { whichChild -3
+
+		   Separator {
+		   
+		     BaseColor { rgb .4 .1 .4 }
+		     # Program inserts global grid subdivision geometry here
+                   }
+		}
+            }
+    }
+
+    Switch {    whichChild -1  # SO_SWITCH_NONE
+
+	    Separator { # GRID_GROUND
+
+	        Transform  { rotation 1 0 0 -1.5707963267948966192 }
+		USE _GRID_DIV_GEOM
+                USE _GRID_SUBDIV_GEOM
+	   }
+    }
+
+    Switch {    whichChild -1 # SO_SWITCH_NONE
+
+	    Separator { # GRID_SIDE
+
+	        Transform  { rotation 0 1 0 1.570796326794896619 }
+                USE _GRID_DIV_GEOM
+                USE _GRID_SUBDIV_GEOM
+            }
+    }
+
+    Switch {    whichChild -1 # SO_SWITCH_NONE
+
+	    Separator {
+	    
+	       # Program inserts axis geometry here
+            }
+    }
+
+}
+
+
+
+
+

@@ -1,0 +1,7 @@
+Edit->Delete
+
+"Delete" is similar to "Cut" in that it removes the selected object(s)
+from the scene, but it does not copy the removed objects to the
+clipboard. Hence you cannot repaste the removed objects using "Paste".
+You can use "Undo" to reverse the action of "Delete".
+

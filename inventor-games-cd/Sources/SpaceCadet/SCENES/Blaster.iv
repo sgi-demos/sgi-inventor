@@ -1,0 +1,19 @@
+#Inventor V2.0 ascii
+
+Separator {
+    renderCaching OFF
+    LightModel { model BASE_COLOR }
+    BaseColor { rgb 1 .4 .1 }
+    Switch {
+	DEF BlastObj Separator {
+	    renderCaching ON
+	    Complexity { value 0 }
+	    Scale { scaleFactor 1.5 1.5 1 }
+	    Sphere { radius .01 }
+	}
+    }
+    DEF BlastSep Separator {
+	renderCaching OFF
+	# Blasts go here
+    }
+}

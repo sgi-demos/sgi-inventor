@@ -1,0 +1,99 @@
+#Inventor V2.0 ascii
+
+Separator {
+    RigidStrut {
+	origin	-1.52835 2.34903 -2.08616e-07
+	originAxle		Axle {
+	    origin	-1.52835 2.34903 -2.08616e-07
+	    zRotation	2.12745
+	    leadingAxle		    DEF +0 Axle {
+		pinActivationDist	-1
+		leadingAxle	NULL
+	    }
+
+	}
+
+	endPointAxle		DEF +1 Axle {
+	    origin	-0.709595 3.91266 -3.01003e-06
+	    pinActivationDist	-1
+	    leadingAxle	NULL
+	}
+
+    }
+    Wheel {
+	origin	-1 1.5 -0.65309
+	radius	1
+	zRotation	0
+	offsetRotation	2.12745
+	originAxle		Axle {
+	    origin	-1 1.5 -0.65309
+	    zRotation	0
+	    leadingAxle	NULL
+	}
+
+	inertAxle		USE +0
+
+	rotatorRing		RotateDiscDragger {
+	    rotation	0 0 1  2.12745
+	}
+
+	sizingRing		Scale2UniformDragger {
+	}
+
+    }
+    RigidStrut {
+	origin	-0.709595 3.91266 -1.2517e-06
+	originAxle		Axle {
+	    origin	-0.709595 3.91266 -1.2517e-06
+	    zRotation	0
+	    leadingAxle		    USE +1
+
+	}
+
+	endPointAxle		DEF +2 Axle {
+	    origin	0.290405 3.91266 -1.2517e-06
+	    pinActivationDist	-1
+	    leadingAxle	NULL
+	}
+
+    }
+    DoubleStrut {
+	origin	0.290405 3.91266 2.38419e-07
+	endPoint	1.5 1 0
+	size1	2
+	size2	2
+	strut1		Strut {
+	    origin	0.290405 3.91266 2.38419e-07
+	    endPoint	2.0313 2.92814 1.19209e-07
+	    originAxle		    Axle {
+		origin	0.290405 3.91266 2.38419e-07
+		zRotation	0
+		leadingAxle			USE +2
+
+	    }
+
+	    endPointAxle		    Axle {
+		origin	2.0313 2.92814 1.19209e-07
+		pinActivationDist	-1
+		leadingAxle	NULL
+	    }
+
+	}
+
+	strut2		Strut {
+	    origin	2.0313 2.92814 1.19209e-07
+	    endPoint	1.5 1 0
+	    originAxle		    Axle {
+		origin	2.0313 2.92814 1.19209e-07
+		leadingAxle	NULL
+	    }
+
+	    endPointAxle		    Axle {
+		origin	1.5 1 0
+		leadingAxle	NULL
+	    }
+
+	}
+
+    }
+}

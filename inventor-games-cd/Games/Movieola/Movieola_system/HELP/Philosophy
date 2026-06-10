@@ -1,0 +1,111 @@
+ Congratulations and welcome to Movieola.
+
+	This introduction to Movieola will help you to understand the
+interface and direction this software application was intended to go
+in. Our philosophy of "artists need not be programmers or have deep
+pockets to create the best computer art " will appeal both to existing
+UNIX users as well as Mac, Amiga or Atari users looking for cheap,
+user-friendly software on a more powerful platform.
+
+	MOVIEOLA is intended to be an entry level tool used to create
+photo-realistic computer graphics animations and static images.  The
+old adage "if it seems too good to be true then it isnt", does not
+hold true for MOVIEOLA. And so doesnt, "If it's cheap, it's got to be
+bad". MOVIEOLA compares favorably with the very best and most
+expensive modelers at less than 1/10th the cost!  Movieola's price of
+less than $4500 (for hardware systems price pointed at $10K) would
+seem rather cheap compared with established packages like Alias or
+Wavefront.  With features like splines, "potter", molding, 3Dtext, 3D
+manipulation, layered texture / bump mapping, and a highly interactive
+"non-techie" interface, Movieola will surprise you when you try it.
+For users of low end machines looking to switch to the more powerful
+SGI platform, but are dismayed by the lack of cheap, user-friendly
+modeling software, Movieola may be the answer.
+
+	When the designers and engineers here at Radiance Software
+first sat down to begin the task of creating MOVIEOLA, the first item
+to consider was the complaints that we hear most often from the users
+of currently available computer modeling and animation applications.
+The next question was what could we possibly do to help these users.
+We came to the conclusion that what was needed was a simple set of
+tools that placed most of the creative power in the hands of the user.
+This was the birth of tools like "potter" and "mold", simple tools
+that perform on the computer, what artistans have been doing for
+thousands of years - making clay pots, and molding little lumps of
+clay into exquisite objects just by pushing their fingers.  As you
+begin to use the Potter tool, thespline editors and the Mold tool, you
+will understand how much like the real world MOVIEOLA is!
+
+	MOVIEOLA was intended for the creative artist who has little
+or no UNIX experience. As this is a tool intended for the
+UNIX-illiterate user, you will find that virtuallly every operation
+is through a graphical interface. This may be a graphics window, it
+may be a dialog box or it may be an alert box which is telling you
+something. Everything you do will be presented to you in this way. You
+will find no need to type in UNIX shell comands, run compilers, or
+chase through a maze of UNIX directories. Online context-sensitive
+"cue cards" help you at every stage of your project. Like many modern
+computer graphics applications MOVIEOLA uses a mixed paradigm in its
+interface: a combination of sculture, old theater and modern movie
+studio. You will notice the names of modules like "Potter", "Mold",
+"Costume" , "Limelight" and "Cue Cards". As you begin to work with
+MOVIEOLA, if you think of the MOVIEOLA environment in these terms you
+will find it a very comfortable place to work in. While being both
+flexible and restrictive at the same time, Movieola has just one
+simple goal: increasing your productivity.
+
+	MOVIEOLA's biggest feature is its simplicity. Once you
+actually begin to use the software you will note that MOVIEOLA does
+not really have very many tools. You will also see that the tools
+appear overly simple, there is no layering of effects or elaborate
+modifiers found in "high-end" packages. The MOVIEOLA environment is
+meant to represent a real world in which things work as you might
+expect them to, with instantaneous 3D feedback. You start with a
+simple template object, then use "Potter" to modify its section or
+profile or backbone, just as a real potter would. Then you start
+pressing and pulling with your "fingers" in the Mold tool, and "Bend"
+the object anyway you want, just as a real sculptor would.  Then
+"slice", "mirror" or "branch" off limbs. Resize and move in the 3D
+world using real 3D manipulators. Apply materials and textures. Shine
+lights on the objects.  Render the scene to get a photorealistic
+image.  All using the mouse, with instant feedback!
+
+	MOVIEOLA is a full function computer graphics animation system
+that will eventually feature modeling, rendering, paint, animation,
+and video recording.  MOVIEOLA-3D is the Modeler and Renderer. While
+MOVIEOLA comes bundled with a public domain renderer (RayShade), it
+provides a clean way of plugging any other renderer of choice (such as
+Renderman) You will note some "grayed out" selections, these are the
+animation and recording features not currently activated. These will
+be turned on as they are ready for release. When ready these "parts"
+will be available at a few hundred dollars, not thousands. MOVIEOLA is
+an entry level application and intended to be inexpensive.
+
+	Internally, Movieola makes use of highly sophisticated
+modeling technology (multiple NURBS patches generated from
+section/profile/axis splines, collision detection, and so on) and the
+latest in software technology (SGI's INVENTOR 3D toolkit, C++ and so
+on). But the real challenge is in providing this technology to the
+user in an unobtrusive, unintimidating and user-friendly environment.
+
+	The documentation comes in several forms. One is the
+traditional printed hard copy. This material is laid out in a stright
+forward descriptive format appearing in the same order that the tool,
+function or option appears in the software. Documentation also comes
+in the form of "on-line" cue cards from within MOVIEOLA.  These cue
+cards will give you help on whichever operation you are doing at the
+moment, or on the topic you want.
+	
+
+TOOLS THAT WORK IN PREVIEW MODE
+
+Sculptor->Potter
+Costume->Color
+Costume->Material
+Costume->Texture
+Cuecards->
+
+[This is the on-line, context sensitive help module in Movieola. You
+may want to push this window below the main Movieola window before
+you begin using/previewing the product.]
+

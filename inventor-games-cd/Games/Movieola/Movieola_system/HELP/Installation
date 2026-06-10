@@ -1,0 +1,51 @@
+
+If you are installing from tape:
+
+1. Insert the Movieola tape in the drive.
+
+2. You have to be "super-user".  Go into the Console window (or a Shell window), and type:
+         cd /; su
+
+3. Extract the installation program. For a stand-alone machine, type:
+         tar xv Movieola_install 
+3a. Or, for reading from a tape on another machine on the network, type:
+         tar xvf <machine-name>:/dev/tape Movieola_install
+
+4. Type:
+        ./Movieola_install
+
+5. This brings up a graphical interface for installation. Follow the instructions there. Ordinarily, all you will have to do is click on "Install"! 
+
+6. Once the program is installed, click on "Add Users". This will bring up a window with a list of users displayed. Select the name of a user and click on "Install User" to add a Movieola icon to the user's WorkSpace.
+
+7. Now you are ready to install license(s) for Movieola. If this is during Radiance office hours (8:00 AM - 5:00 PM Pacific Time, USA), click on "Add License" and follow instructions from there. If you are installing during Radiance's non-office hours, you can always come back into this menu by re-starting "Movieola_install" and clicking the "Add License" button again. 
+
+8.  Now exit "super-user" mode by typing:
+          exit   
+
+
+If you are installing from the ftp site:
+
+a. Get "Movieola.tar.Z" through ftp.
+
+b. You have to be "super-user". Go into the Console window (or a Shell window) and type:
+       su
+       mv Movieola.tar.Z /; cd /
+       uncompress Movieola.tar
+       tar xvf Movieola.tar Movieola_install; rm Movieola.tar
+       ./Movieola_install
+      
+c. This brings up a graphical interface for installation. Follow the instructions there. In the "Read from" field, type in "Movieola_system.tar" in place of the default "/dev/tape". Once the program is installed, choose "Add Users" to add the Movieola icon to your workspace. Then choose "Add Licenses" to activate your usage license.  Choose "Dismiss" to exit the installation program.
+
+d. To clean up and exit "super-user" mode, type:
+       rm Movieola_system.tar
+       exit
+
+
+Running Movieola:
+
+If you installed "Movieola users", you can run Movieola from your WorkSpace. Or go into a Shell and
+type:
+
+      rehash
+      Movieola

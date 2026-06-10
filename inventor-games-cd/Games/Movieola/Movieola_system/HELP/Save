@@ -1,0 +1,12 @@
+File->Save
+
+"Save" is used to save all your work. It saves the entire scene
+(including objects, lights, environment, etc) on the main scene file
+in the scene folder of the project.  To save off selected objects onto
+separate files, use Sculptor->Save.
+
+You can also turn on the auto-save option to make a backup at regular
+intervals (see Settings->Project Settings). Note that the backup file
+is different from the original , and is used while restarting the
+program after an abnormal exit (what's that?!). So it is recommended
+that you use "Save" frequently, to make your changes permanent.

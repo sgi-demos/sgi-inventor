@@ -1,0 +1,12 @@
+Edit->Hide
+
+"Hide" Is used to hide objects in the scene so that only the objects
+you are currently working on need to be displayed and manipulated.
+This option is very handy to keep object creation speed at its peak.
+It is also very useful in placing tightly grouped objects. "Show" will
+unhide the hidden objects
+
+"Hide" option contains two sub-choices: "Hide->Selected" will hide all
+the currently selected objects. "Hide->Unselected" will hide all
+objects not selected. The latter is useful to hide away all objects
+that you are not working on.

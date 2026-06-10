@@ -1,0 +1,20 @@
+
+Puck is a game for one or two players. 
+
+Just type 'puck' to play.
+
+For a two player game, the player on the faster machine
+should type 'puck', after which the other player should
+type 'puck name_of_other_machine'
+
+Type 'puck -q' to play a quiet game with no audio effects.
+
+-----
+
+Note: puck uses sockets for communication, going through socket
+ports 7777 and 7778 by default. If other processes on the machine
+are already using one of those port numbers, you'll get a message:
+"Cannot start game, sorry." If this happens, you'll need to tell puck
+to use different port numbers. To do so, setenv PUCK_SOCKET_PORT
+to some value until the game successfully starts (for instance,
+'setenv PUCK_SOCKET_PORT 1800').

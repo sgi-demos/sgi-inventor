@@ -1,0 +1,215 @@
+#Inventor V1.0 ascii
+
+# Geometry for the scaler part. The default is
+# six small cubes, one at each end of each primary 
+# axis. 
+Separator {
+    Label {
+	label "scaleUniformScaler"
+    }
+    Label {
+	label "scaleUniformScalerActive"
+    }
+    Complexity { value .2 }
+
+    Translation {  translation  1.25 0   0 }
+    DEF SMALL_CUBE Cube { width .1 height .1 depth .1 }
+    Translation {  translation -2.5   0   0 }
+    USE SMALL_CUBE
+    Translation {  translation  1.25 1.25 0 }
+    USE SMALL_CUBE
+    Translation {  translation  0  -2.5   0 }
+    USE SMALL_CUBE
+    Translation {  translation  0   1.25 1.25 }
+    USE SMALL_CUBE
+    Translation {  translation  0   0  -2.5 }
+    USE SMALL_CUBE
+}
+
+# Geometry for the rotater part. The default for
+# this is a set of three axes (the little scale
+# cubes appear to be stuck at the ends of these
+# axes).
+Separator {
+    Label {
+	label "rotateSphericalRotater"
+    }
+    Label {
+	label "rotateSphericalRotaterActive"
+    }
+    DrawStyle { lineWidth 3 }
+
+    # an X axis
+    Coordinate3 { point [ -1.25 0 0, 1.25 0 0 ] }
+    LineSet {}
+
+    # a Y axis
+    Coordinate3 { point [ 0 -1.25 0, 0 1.25 0 ] }
+    LineSet {}
+
+    # a Z axis
+    Coordinate3 { point [ 0 0 -1.25, 0 0 1.25 ] }
+    LineSet {}
+}
+
+# Don't use the feedback of the canonical manips.
+Separator {
+    Label {
+	label "scaleUniformCenterFeedback"
+    }
+    Label {
+	label "scaleUniformCenterFeedbackActive"
+    }
+
+    Label {
+	label "rotateSphericalCenterFeedback"
+    }
+    Label {
+	label "rotateSphericalCenterFeedbackActive"
+    }
+
+    Label {
+	label "dragPointDraggerActive"
+    }
+}
+
+#from: File { name "pieces/yAxis.iv" }
+# A thick line along the y axis
+DEF Y_AXIS
+Separator {
+
+    Coordinate3 { point [ 0 -1 0, 0 1 0 ] }
+    LineSet {}
+
+}
+
+DEF DOWN_ARROWHEAD
+#from: File { name "pieces/downArrowhead.iv" }
+# A down-pointing arrowhead, used for translations.
+Group {
+    RotationXYZ { axis Z angle 3.14159 }
+    Cone { height 0.1 bottomRadius 0.05 }
+}
+
+DEF UP_ARROWHEAD
+#from: File { name "pieces/upArrowhead.iv" }
+# A up-pointing arrowhead, used for translations.
+Group {
+    Cone { height 0.1 bottomRadius 0.05 }
+}
+
+DEF SMALL_Y_AXIS_WITH_ARROWHEADS
+# just like the one used by dragpoint, only smaller
+Group {
+
+    Scale { scaleFactor 3.125 3.125 3.125 }
+
+    USE Y_AXIS
+    Separator {
+	Transform { translation 0 1.025 0 }
+	Scale { scaleFactor 0.5 0.5 0.5 }
+	USE UP_ARROWHEAD
+    }
+    Transform { translation 0 -1.025 0 }
+    Scale { scaleFactor 0.5 0.5 0.5 }
+    USE DOWN_ARROWHEAD
+}
+
+Separator {
+    Label {
+	label "dragPointXAxisActive"
+    }
+    Label {
+	label "dragPointXConstraintAxisActive"
+    }
+    RotationXYZ {
+	axis  Z
+	angle 1.57079
+    }
+    USE SMALL_Y_AXIS_WITH_ARROWHEADS
+}
+
+Separator {
+    Label {
+	label "dragPointYAxisActive"
+    }
+    Label {
+	label "dragPointYConstraintAxisActive"
+    }
+    USE SMALL_Y_AXIS_WITH_ARROWHEADS
+}
+
+Separator {
+    Label {
+	label "dragPointZAxisActive"
+    }
+    Label {
+	label "dragPointZConstraintAxisActive"
+    }
+    RotationXYZ {
+	axis  X
+	angle 1.57079
+    }
+    USE SMALL_Y_AXIS_WITH_ARROWHEADS
+}
+
+DEF SMALL_XZ_CONSTRAINT_PLANE
+# just like the one used by dragpoint, only smaller
+Group {
+    
+    Scale { scaleFactor 3.125 3.125 3.125 }
+
+    Coordinate3 {
+	point [ -1 0 -1, -1 0 1 , 1 0 1, 1 0 -1, -1 0 -1 ]
+    }
+    Normal {
+	vector [ 0 1 0 ]
+    }
+    NormalBinding {
+	value OVERALL
+    }
+    # outline of the square
+    LineSet {
+    }
+    # filled square 
+    FaceSet {
+    }
+}
+
+Separator {
+    Label {
+	label "dragPointYZConstraintPlane"
+    }
+    Label {
+	label "dragPointYZConstraintPlaneActive"
+    }
+    RotationXYZ {
+	axis  Z
+	angle 1.57079
+    }
+    USE SMALL_XZ_CONSTRAINT_PLANE
+}
+
+Separator {
+    Label {
+	label "dragPointXZConstraintPlane"
+    }
+    Label {
+	label "dragPointXZConstraintPlaneActive"
+    }
+    USE SMALL_XZ_CONSTRAINT_PLANE
+}
+
+Separator {
+    Label {
+	label "dragPointXYConstraintPlane"
+    }
+    Label {
+	label "dragPointXYConstraintPlaneActive"
+    }
+    RotationXYZ {
+	axis  X
+	angle 1.57079
+    }
+    USE SMALL_XZ_CONSTRAINT_PLANE
+}

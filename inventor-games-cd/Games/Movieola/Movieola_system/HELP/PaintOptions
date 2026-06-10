@@ -1,0 +1,43 @@
+Limelight->Paint Options Setup
+
+Paint Options Setup is the next selection in the Limelight menu. When
+selected, this will bring up the Paint Options editor.
+
+The Paint Options Editor has the following options and controls:
+
+	Paint Program Selector (list selector)
+	Paint Program Name (text field) Ok (Push button)
+	Paint program path (text field) Ok (Push button)
+	
+	Select 	Dismiss 	Info
+
+
+This menu is used to select a paint process to be used in Movieola.
+This paint process will then be invoked for the selected texture
+bitmap in the Texture Editor. (Please see section on Texture Editor).
+You can also start the paint program by using the "Paint" option in
+the Limelight menu. (Please see next section).
+
+A paint program may be selected/ created in one of two ways:
+
+(1) Selecting a paint process from the Paint Program Selector. You
+will notice the paint program name and the paint program path fields
+update to reflect the current selection. When the "Select" button is
+pressed with a paint program selected, this program will thereafter
+become your Paint program of choice in Movieola.
+
+(2) By entering a new paint process name and the UNIX file path for
+locating this process. When you press the "Ok" buttons after entering
+the respective fields, you will notice the "Select" button change to a
+"Create" button. When you click the "Create" button, a new paint
+process with the entered attributes will be added to the paint program
+list and will become the paint program of choice in Movieola.
+
+Info: The info button brings up an info text window with information
+on the selected paint process. If you want to add information for a
+newly created paint process called "foo" (for instance), simply create
+a file called "foo.info" in the "paint" folder in your Movieola
+system.
+
+Dismiss: This dismisses the Paint Options editor.
+

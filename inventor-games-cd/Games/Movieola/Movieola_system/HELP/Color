@@ -1,0 +1,20 @@
+Costume-> Color
+
+Color...  is the first selection under the Costume pull-down menu.
+When this tool is invoked with an object selected, it can be used to
+set the color of the object. When invoked without any object selected,
+it does not affect any object in the main scene. The default color
+editor is an RGB color editor, which lets you set the Red, Green and
+Blue color values for the object selected. Other types of color
+sliders (HSV, RGB, Value etc.) can be chosen by selecting the
+appropriate option under the "Sliders" drop down menu.
+
+HSV sliders are used to set the Hue, Saturation and Value of color of
+an object. The Value slider is used to control the intensity of the
+color of the selected object.
+
+To use the color wheel, simply move the small circle in the color
+wheel to the desired color. As you do so, you will see the color of
+your object change to reflect the changes you are making in the
+editor.
+ 

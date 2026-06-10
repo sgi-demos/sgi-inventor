@@ -1,0 +1,15 @@
+Sculptor->Mirror
+
+"Mirror" is used to create mirrored objects, like a right hand from a
+left hand. The tool brings up a mirror in the viewer window(s), close
+to the object, and the mirrored object appears behind the mirror.
+
+You can move the mirror by moving the cursor to the base of the arrow
+until a green box appears. Then move the mirror while keeping the left
+mouse button pressed. You can rotate the mirror by moving the cursor
+to the head of the arrow until a green box appears, and moving while
+keeping the left mouse button pressed.
+
+As in other tools, the user can change the name of the new object
+created.
+

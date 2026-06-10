@@ -1,0 +1,87 @@
+#Inventor V2.0 ascii
+
+# Initial startup screen
+
+Separator {
+    PickStyle { style UNPICKABLE }
+    DirectionalLight { direction 0 0 -1 }
+    OrthographicCamera {
+	position 0 0 150
+	nearDistance 0.1
+	farDistance  1000.0
+	focalDistance 1.0
+	height 150
+    }
+    LightModel { model BASE_COLOR }
+    Complexity { value .8 }
+    Separator {
+	DirectionalLight { direction 1 0 0 }
+	PointLight { location  380 60 140 intensity 1.0 color 0.4 0 1.0 }
+	LightModel { model PHONG }
+	Transform { translation 0 0 70 scaleFactor 2 1 2 rotation 0 1 0 0.8 }
+	Material {
+	    diffuseColor 0.6 0.2 0
+	    specularColor 0.2 0.6 0 
+	    shininess 0.6 }
+	Translation { translation 0 45 0 }
+	Font { name Utopia-Italic size 24 }
+	Text3 { parts ( FRONT | SIDES ) string "Puck" justification CENTER }
+    }
+    Separator {
+	Translation { translation -80  30 0 }
+	Font { name Utopia-Regular size 6 }
+	Complexity { value 1 }
+	Text3 { string [ 
+		"Aim at the crosshair. Use the mouse to move it",
+		"To move left:  hold down the left mouse button",
+		"To move right:  hold down the right mouse button",
+		"To move up/down:  press the middle button & move the mouse",
+		"To shoot:   hit the space bar",
+		"To start a new game:  hit the 'g' key",
+		"To set the level of a single player game:",
+		"          hit '1' (beginner), '2' (advanced) or '0' (practice)",
+		"To print out a help message at any time:  hit the 'h' key",
+		]
+		spacing 1.5
+		justification LEFT }	
+	Translation { translation 108 -87 0 }
+	Text3 { string [ "Click on the", "start button" ]
+		spacing 1.2
+		justification LEFT }
+    }
+    Separator {
+	Material { 
+		shininess 0.6 
+		specularColor .6 .2 0  
+		diffuseColor .05 0.0 0.5 
+	}
+	Separator {
+	    PickStyle { style SHAPE }
+	    Transform { translation 0 -58 0 rotation 0 0 1 1.57 }
+	    LightModel { model PHONG }
+	    DEF StartButton Cylinder { radius 9 height 45 }
+	}
+
+	BaseColor { rgb 1 1 1 }
+	Translation { translation 0 -63 11.1 }
+	Font { name Utopia-Regular size 18 }
+	Text3 { string "Start" justification CENTER }
+    }
+    Separator {
+	# Big polygon as background
+	MaterialBinding { value PER_VERTEX }
+	BaseColor { rgb [ 0.6 0 0, 0.6 0 0, 0 0 0.6, 0 0 0.6 ] }
+	Coordinate3 {
+	    point [ -200 -80 -.5, 200 -80 -.5,
+		   200 80 -.5, -200 80 -.5 ]
+	}
+	FaceSet { numVertices 4 }
+    }
+    Separator {
+	Transform {
+	    translation -9 -45 20
+            rotation 0 1 0 -1.2
+	    scaleFactor 2.5 2.5 2.5
+	}
+    }
+}

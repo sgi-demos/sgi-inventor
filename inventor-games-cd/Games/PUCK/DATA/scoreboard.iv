@@ -1,0 +1,31 @@
+#Inventor V2.0 ascii
+
+Separator {
+    OrthographicCamera { height 10 }
+
+    LightModel { model BASE_COLOR }
+    Font {
+	name Helvetica-Bold
+	size 28
+    }
+
+    # home team
+    Separator {
+    	Translation { translation -5.3 4.5 0 } 
+	ColorIndex { index 1 }
+        DEF Team0Score Text2 { justification RIGHT string "0" }
+        Translation { translation .3  0  0 }
+	ColorIndex { index 2 }
+        DEF Team0 Text2 { justification LEFT }
+    }
+
+    # visiting team
+    Separator {
+    	Translation { translation 5.3 4.5 0 } 
+	ColorIndex { index 1 }
+        DEF Team1Score Text2 { justification LEFT string "0" }
+        Translation { translation -.3 0 0 }
+	ColorIndex { index 2 }
+    	DEF Team1 Text2 { justification RIGHT } 
+    }
+}

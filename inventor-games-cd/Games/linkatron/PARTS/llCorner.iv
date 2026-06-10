@@ -1,0 +1,7 @@
+#Inventor V2.0 ascii
+Separator {
+    Translation { translation 0 0 -.05 }
+    Scale { scaleFactor 1 1 .1 }
+    RotationXYZ { axis X angle 1.57079 }
+    File { name "nlCorner.iv" }
+}

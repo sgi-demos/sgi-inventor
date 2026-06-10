@@ -1,0 +1,16 @@
+Edit->Copy
+
+"Copy" copies the selected object(s) onto a 3D clipboard. The contents
+of the clipboard can then be "pasted" back into the Movieola scene, or
+by another program like SceneViewer or Showcase.
+
+The 3D clipboard can only contain one buffer at one time. You can use
+Edit->Show Clipboard to view the contents of the clipboard. The
+clipboard contents don't change until you do a "Cut" or "Copy" again.
+
+NOTE: If you are going to paste the selection back to the scene, to
+make an identical copy, use "Duplicate" rather than "Copy" and
+"Paste". It is not only easier, but also memory-efficient, because
+only one copy of the geometry is maintained as far as possible. This
+is particularly relevant for scenes with zillions of identical
+geometries (Example: a city).

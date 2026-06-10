@@ -1,0 +1,438 @@
+#Inventor V2.0 ascii
+
+Group {
+    Separator {
+	Transform {
+	    translation	-0.0186396 -0.238173 3.91155e-08
+	    rotation	0.907191 -0.0476987 -0.418006  0.0715299
+	    scaleFactor	1 1 1
+	    scaleOrientation	-0.472156 -0.870539 0.138673  0.170406
+	    center	0.015533 0.0880204 -0.0352082
+	}
+	Separator {
+	    Group {
+		# Body
+		DEF snowman_mtl Material {
+		    ambientColor	0.5 0.5 0.5
+		    diffuseColor	0.5 0.4 0.4
+		}
+	    }
+	    Separator {
+		ShapeHints {
+		    vertexOrdering	COUNTERCLOCKWISE
+		    faceType		CONVEX
+		    creaseAngle	0.628319
+		}
+		Coordinate3 {
+		    point	[ 0.0434924 0 0,
+				      0.091127 0.0248528 0,
+				      0.130477 0.0807716 0,
+				      0.111838 0.140833 0,
+				      0.0662742 0.176041 0,
+				      -0.0269239 0.176041 0,
+				      -0.0890559 0.142904 0,
+				      -0.0994112 0.060061 0,
+				      -0.0724874 0.0144975 0,
+				      0 -1.49012e-08 0,
+				      0 0 1.49012e-08,
+				      0.0434924 0 -0.0190258,
+				      0.091127 0.0248528 -0.0190258,
+				      0.130477 0.0807716 -0.0190258,
+				      0.111838 0.140833 -0.0190258,
+				      0.0662742 0.176041 -0.0190258,
+				      -0.0269239 0.176041 -0.0190258,
+				      -0.0890559 0.142904 -0.0190258,
+				      -0.0994112 0.060061 -0.0190258,
+				      -0.0724874 0.0144975 -0.0190258,
+				      0 -1.49012e-08 -0.0190258,
+				      3.25073e-29 3.18076e-29 3.17819e-29 ]
+		}
+		# face - front only
+		IndexedFaceSet {
+		    coordIndex	[ 0, 1, 9, -1, 7, 8, 9, -1,
+				      6, 7, 9, -1, 5, 6, 9, -1,
+				      4, 5, 9, -1, 3, 4, 9, -1,
+				      2, 3, 9, -1, 1, 2, 9, -1 ]
+		}
+	    }
+	}
+    }
+}
+Group {
+    Label {
+    }
+    Separator {
+	Transform {
+	    translation	-0.0444057 -0.0778044 -4.23938e-06
+	    rotation	0 1 0  0.0200017
+	    scaleFactor	1 1 1
+	    scaleOrientation	0 0 1  0
+	    center	0.022871 0.0736619 -0.0314802
+	}
+	Separator {
+	    Group {
+		# Torso
+		Label {
+		    label	"solid"
+		}
+		USE snowman_mtl
+	    }
+	    Separator {
+		ShapeHints {
+		    vertexOrdering	COUNTERCLOCKWISE
+		    faceType		CONVEX
+		    creaseAngle	0.628319
+		}
+		Coordinate3 {
+		    point	[ 0.0446172 -0.00503863 0,
+				      0.0839675 0.0218852 0,
+				      0.110891 0.0570934 0,
+				      0.10882 0.125439 0,
+				      0.0591147 0.152362 0,
+				      -0.000946298 0.14822 0,
+				      -0.0465098 0.12751 0,
+				      -0.0651494 0.0695198 0,
+				      -0.0485809 0.0177431 0,
+				      -0.000946291 -0.000896491 0,
+				      -0.000946291 0 0.000896491,
+				      0.0446172 -0.00503863 -0.0218205,
+				      0.0839675 0.0218852 -0.0218205,
+				      0.110891 0.0570934 -0.0218205,
+				      0.10882 0.125439 -0.0218205,
+				      0.0591147 0.152362 -0.0218205,
+				      -0.000946298 0.14822 -0.0218205,
+				      -0.0465098 0.12751 -0.0218205,
+				      -0.0651494 0.0695198 -0.0218205,
+				      -0.0485809 0.0177431 -0.0218205,
+				      -0.000946291 -0.000896491 -0.0218205,
+				      1 1 0 ]
+		}
+		# face - front only
+		IndexedFaceSet {
+		    coordIndex	[ 0, 1, 9, -1, 7, 8, 9, -1,
+				      6, 7, 9, -1, 5, 6, 9, -1,
+				      4, 5, 9, -1, 3, 4, 9, -1,
+				      2, 3, 9, -1, 1, 2, 9, -1 ]
+		}
+	    }
+	}
+    }
+}
+Group {
+    Label {
+    }
+    Separator {
+	Transform {
+	    translation	-0.0466349 0.0687686 -0.000365417
+	    rotation	-0.655397 0.0705348 -0.751983  0.15474
+	    scaleFactor	1.18609 1.03918 1.21571
+	    scaleOrientation	0 0 1  0
+	    center	0.0135429 0.0381591 -0.0182254
+	}
+	Separator {
+	    Group {
+		# Head
+		Label {
+		    label	"solid"
+		}
+		USE snowman_mtl
+	    }
+	    Separator {
+		ShapeHints {
+		    vertexOrdering	COUNTERCLOCKWISE
+		    faceType		CONVEX
+		    creaseAngle	0.628319
+		}
+		Coordinate3 {
+		    point	[ 0.0259693 -0.00947549 0,
+				      0.0570353 0.0195195 0,
+				      0.0591064 0.0588698 0,
+				      0.0363246 0.0857936 0,
+				      -0.0175232 0.0795805 0,
+				      -0.0320206 0.0464434 0,
+				      -0.0237364 0.0174484 0,
+				      -0.000954602 -0.0011912 0,
+				      -0.000954602 0 0.0011912,
+				      0.0259693 -0.00947549 -0.0210703,
+				      0.0570353 0.0195195 -0.0210703,
+				      0.0591064 0.0588698 -0.0210703,
+				      0.0363246 0.0857936 -0.0210703,
+				      -0.0175232 0.0795805 -0.0210703,
+				      -0.0320206 0.0464434 -0.0210703,
+				      -0.0237364 0.0174484 -0.0210703,
+				      -0.000954602 -0.0011912 -0.0210703,
+				      3.08136e-29 1 0 ]
+		}
+		# face - front only
+		IndexedFaceSet {
+		    coordIndex	[ 0, 1, 7, -1, 5, 6, 7, -1,
+				      4, 5, 7, -1, 3, 4, 7, -1,
+				      2, 3, 7, -1, 1, 2, 7, -1 ]
+		}
+	    }
+	}
+    }
+}
+Group {
+    Separator {
+	Transform {
+	    translation	0.0585924 0.16486 0.00864559
+	    rotation	0 0 -1  0.145179
+	    scaleFactor	1 1 1
+	    scaleOrientation	0 0 1  0
+	    center	-0.0910207 -0.00557862 -0.00223144
+	}
+	Separator {
+	    Group {
+		# brim
+		Label {
+		    label	"solid"
+		}
+		Material {
+		    ambientColor	0.0114679 0.0114679 0.0114679
+		    diffuseColor	0.0458716 0.0458716 0.0458716
+		    specularColor	0 0 0
+		    emissiveColor	0 0 0
+		    shininess	0
+		    transparency	0
+		}
+	    }
+	    Separator {
+		ShapeHints {
+		    vertexOrdering	COUNTERCLOCKWISE
+		    faceType		CONVEX
+		    creaseAngle	0.628319
+		}
+		Coordinate3 {
+		    point	[ 0 -1.49012e-08 0,
+				      -0.182041 -0.0111572 0,
+				      0 -1.49012e-08 -0.0413052,
+				      -0.182041 -0.0111572 -0.0413052 ]
+		}
+		IndexedFaceSet {
+		    coordIndex	[ 2, 3, 1, 0, -1 ]
+		}
+		Coordinate3 {
+		    point	[  ]
+		}
+		IndexedFaceSet {
+		    coordIndex	[  ]
+		}
+	    }
+	}
+    }
+}
+Group {
+    Separator {
+	Transform {
+	    translation	-0.0583036 0.157376 0.00341702
+	    rotation	3.8943e-07 5.35519e-06 -1  0.145179
+	    scaleFactor	1 1 1.22915
+	    scaleOrientation	-1.76617e-06 1.76617e-06 -1  1.5708
+	    center	0.0289949 0.0424569 -0.0149117
+	}
+	Separator {
+	    Group {
+		# Hat
+		Label {
+		    label	"solid"
+		}
+		Material {
+		    ambientColor	0.0114679 0.0114679 0.0114679
+		    diffuseColor	0.0458716 0.0458716 0.0458716
+		    specularColor	0 0 0
+		    emissiveColor	0 0 0
+		    shininess	0
+		    transparency	0
+		}
+	    }
+	    Separator {
+		ShapeHints {
+		    vertexOrdering	COUNTERCLOCKWISE
+		    faceType		CONVEX
+		    creaseAngle	0.628319
+		}
+		Coordinate3 {
+		    point	[ 0.0662742 0.00621319 0,
+				      0.0662742 0.0849138 0,
+				      -0.00828426 0.0745584 0,
+				      0 0 0,
+				      0.0662742 0.00621319 -0.0298234,
+				      0.0662742 0.0849138 -0.0298234,
+				      -0.00828426 0.0745584 -0.0298234,
+				      0 0 -0.0298234 ]
+		}
+		IndexedFaceSet {
+		    coordIndex	[ 4, 5, 1, 0, -1, 5, 6, 2,
+				      1, -1, 6, 7, 3, 2, -1 ]
+		}
+		Coordinate3 {
+		    point	[ 0.0662742 0.00621319 0,
+				      0.0662742 0.0849138 0,
+				      -0.00828426 0.0745584 0,
+				      0 0 0,
+				      0 0 0,
+				      0.0662742 0.00621319 -0.0298234,
+				      0.0662742 0.0849138 -0.0298234,
+				      -0.00828426 0.0745584 -0.0298234,
+				      0 0 -0.0298234,
+				      0 0 0 ]
+		}
+		# face - front only
+		IndexedFaceSet {
+		    coordIndex	[ 0, 1, 3, -1, 1, 2, 3, -1 ]
+		}
+	    }
+	}
+    }
+}
+Group {
+    Separator {
+	Transform {
+	    translation	-0.0538874 0.121812 0.00650531
+	    rotation	0 0 -1  0.14518
+	    scaleFactor	1.13974 1.15036 1
+	    scaleOrientation	0 0 1  0
+	    center	0.00537458 0.0073961 -0.00358728
+	}
+	Separator {
+	    Group {
+		# Left eye
+		Label {
+		    label	"solid"
+		}
+		Material {
+		    ambientColor	0.0114679 0.0114679 0.0114679
+		    diffuseColor	0.0458716 0.0458716 0.0458716
+		    specularColor	0 0 0
+		    emissiveColor	0 0 0
+		    shininess	0
+		    transparency	0
+		}
+	    }
+	    Separator {
+		ShapeHints {
+		    vertexOrdering	COUNTERCLOCKWISE
+		    faceType		CONVEX
+		    shapeType		SOLID
+		    creaseAngle	0.628319
+		}
+		# front face only
+		Coordinate3 {
+		    point	[ 0.000210829 0.000138052 2.79397e-09,
+				      0.00775725 -0.00206134 2.79397e-09,
+				      0.0143428 0.00486404 2.79397e-09,
+				      0.0118067 0.0152764 2.79397e-09,
+				      0.00204132 0.0168535 2.79397e-09,
+				      -0.00359362 0.00833134 2.79397e-09,
+				      -0.000103153 -0.000177376 2.79397e-09,
+				      0.000210829 0.000138052 -0.00717456,
+				      0.00775725 -0.00206134 -0.00717456,
+				      0.0143428 0.00486404 -0.00717456,
+				      0.0118067 0.0152764 -0.00717456,
+				      0.00204132 0.0168535 -0.00717456,
+				      -0.00359362 0.00833134 -0.00717456,
+				      -0.000103153 -0.000177376 -0.00717456 ]
+		}
+		IndexedFaceSet {
+		    coordIndex	[ 0, 1, 5, -1, 3, 4, 5, -1,
+				      2, 3, 5, -1, 1, 2, 5, -1 ]
+		}
+	    }
+	}
+    }
+}
+Group {
+    Label {
+    }
+    Separator {
+	Transform {
+	    translation	-0.0139789 0.118906 0.00460021
+	    rotation	-3.57628e-07 -4.91804e-06 -1  0.14518
+	    scaleFactor	1.03547 1.27871 1
+	    scaleOrientation	0 0 1  0
+	    center	0.00537458 0.0073961 -0.00358728
+	}
+	Separator {
+	    Group {
+		# Right Eye
+		Label {
+		    label	"solid"
+		}
+		Material {
+		    ambientColor	0.0114679 0.0114679 0.0114679
+		    diffuseColor	0.0458716 0.0458716 0.0458716
+		    specularColor	0 0 0
+		    emissiveColor	0 0 0
+		    shininess	0
+		    transparency	0
+		}
+	    }
+	    Separator {
+		ShapeHints {
+		    vertexOrdering	COUNTERCLOCKWISE
+		    faceType		CONVEX
+		    shapeType		SOLID
+		    creaseAngle	0.628319
+		}
+		Coordinate3 {
+		    point	[ 0.000210829 0.000138052 2.79397e-09,
+				      0.00775725 -0.00206134 2.79397e-09,
+				      0.0143428 0.00486404 2.79397e-09,
+				      0.0118067 0.0152764 2.79397e-09,
+				      0.00204132 0.0168535 2.79397e-09,
+				      -0.00359362 0.00833134 2.79397e-09,
+				      -0.000103153 -0.000177376 2.79397e-09,
+				      0.000210829 0.000138052 -0.00717456,
+				      0.00775725 -0.00206134 -0.00717456,
+				      0.0143428 0.00486404 -0.00717456,
+				      0.0118067 0.0152764 -0.00717456,
+				      0.00204132 0.0168535 -0.00717456,
+				      -0.00359362 0.00833134 -0.00717456,
+				      -0.000103153 -0.000177376 -0.00717456 ]
+		}
+		# face - front only
+		IndexedFaceSet {
+		    coordIndex	[ 0, 1, 5, -1, 3, 4, 5, -1,
+				      2, 3, 5, -1, 1, 2, 5, -1 ]
+		}
+	    }
+	}
+    }
+}
+Group {
+    Label {
+    }
+    Separator {
+	Transform {
+	    translation	-0.0259204 0.101953 0.0299947
+	    rotation	0.990932 -0.0278716 -0.131441  1.62687
+	    scaleFactor	1.19683 1.34153 1.1681
+	    scaleOrientation	0 0 1  0
+	    center	0 0 0
+	}
+	Separator {
+	    Group {
+		# Nose
+		Label {
+		    label	"solid"
+		}
+		Material {
+		    ambientColor	1 0.130346 0.0396551
+		    diffuseColor	1 0.130346 0.0396551
+		    specularColor	0 0 0
+		    emissiveColor	0 0 0
+		    shininess	0
+		    transparency	0
+		}
+		Complexity {
+		    value	0.08
+		}
+	    }
+	    Cone {
+		bottomRadius	0.00704744
+		height	0.04368
+	    }
+	}
+    }
+}

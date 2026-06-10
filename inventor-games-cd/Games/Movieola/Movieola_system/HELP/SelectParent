@@ -1,0 +1,6 @@
+Edit->Select Parent
+
+"Select Parent" is used to select the parent of an object , in the
+hierarchically linked scene. Object hierarchies are typically created
+using "Group" or "Branch".
+

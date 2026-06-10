@@ -1,0 +1,157 @@
+#Inventor V2.0 ascii
+
+Annotation {
+    OrthographicCamera {
+	position	0 0 2
+	height		2
+	nearDistance	1
+	farDistance	3
+    }
+    LightModel {
+	model BASE_COLOR
+    }
+
+    DEF PanelMainSwitch Switch {
+	whichChild -3
+
+	# Default material
+	Material {
+	    diffuseColor .8 .8 .8
+	    transparency .5
+	}
+
+	# Text info
+	Separator {
+	    renderCaching OFF
+	    Font {
+		name	Helvetica-Bold
+		size	16
+	    }
+
+	    # Level indicator
+	    Separator {
+		renderCaching OFF
+		Translation { translation -.95 .85 0 }
+		DEF PanelLevelText Text2 { string "xxx" }
+	    }
+
+	    # Score indicator
+	    Separator {
+		renderCaching OFF
+		Translation { translation .9 .85 0 }
+		DEF PanelScoreText Text2 { string "xxxxx" }
+	    }
+
+	    # Elapsed time indicator 
+	    Separator {
+		renderCaching OFF
+		Translation { translation .9 .80 0 }
+		DEF PanelTimeText Text2 { string "xx:xx" }
+	    }
+	}
+
+	# Meters
+	Separator {
+	    renderCaching OFF
+
+	    # Energy meter gets added here
+	    DEF PanelEnergySep Separator {
+		renderCaching OFF
+		Translation {
+		    translation -.50 -.79 0
+		}
+	    }
+
+	    # Speed meter gets added here
+	    DEF PanelSpeedSep Separator {
+		renderCaching OFF
+		Translation {
+		    translation -.50 -.87 0
+		}
+	    }
+
+	    # Distance meter gets added here
+	    DEF PanelDistanceSep Separator {
+		renderCaching OFF
+		Translation {
+		    translation .50 -.79 0
+		}
+	    }
+
+	    # Centering meter gets added here
+	    DEF PanelCenterSep Separator {
+		renderCaching OFF
+		Translation {
+		    translation .50 -.87 0
+		}
+	    }
+	}
+
+	# Switch to show crash effect
+	DEF PanelCrashSwitch Switch {
+	    Separator {
+		DrawStyle { style LINES }
+		BaseColor { rgb 1 0 0 }
+		Cube { width 1.5 height 1.5 depth .1 }
+	    }
+	}
+
+	# Switch to show ring effect
+	DEF PanelRingSwitch Switch {
+	    Separator {
+		BaseColor { rgb 1 1 1 }
+		Coordinate3 {
+		    point [
+			   .000  .250 0,  .000  .750 0,
+			   .177  .177 0,  .530  .530 0,
+			   .250  .000 0,  .750  .000 0,
+			   .177 -.177 0,  .530 -.530 0,
+			   .000 -.250 0,  .000 -.750 0,
+			   -.177 -.177 0, -.530 -.530 0,
+			   -.250  .000 0, -.750  .000 0,
+			   -.177  .177 0, -.530  .530 0,
+			   ]
+		}
+		DEF LS LineSet {
+		    numVertices [2, 2, 2, 2, 2, 2, 2, 2]
+		}
+	    }
+	}
+
+	# Switch to show explosion effect
+	DEF PanelExplodeSwitch Switch {
+	    Separator {
+		Material {
+		    diffuseColor 1 1 1
+		    transparency .8
+		}
+		Coordinate3 { point [-2 -2 0, 2 -2 0, 2 2 0, -2 2 0] }
+		FaceSet {}
+	    }
+	}
+    }
+
+    DEF PanelEndLevelSwitch Switch {
+	BaseColor { rgb 1 1 .5 }
+	Font {
+	    name	Times-Roman
+	    size	.075
+	}
+	DEF PanelEndLevelText Text3 {
+	    justification CENTER
+	    spacing 2
+	}
+    }
+
+    DEF PanelEndSwitch Switch {
+	BaseColor { rgb 1 1 .5 }
+	Font {
+	    name	Times-Roman
+	    size	.075
+	}
+	DEF PanelEndText Text3 {
+	    justification CENTER
+	    spacing 2
+	}
+    }
+}

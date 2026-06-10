@@ -1,0 +1,35 @@
+#Inventor V1.0 ascii
+
+Separator {
+    Label {
+	label "dragPointDragger"
+    }
+    Label {
+	label "dragPointDraggerActive"
+    }
+    Complexity { value 0.3 }
+    Scale { scaleFactor 1.73 1.73 1.73 }
+    Sphere { radius 1.0 }
+
+    # Rays of light emanating from sphere
+
+    PickStyle { style UNPICKABLE }
+
+    Coordinate3 { point [   1.0608  1.0608 0, 1.326  1.326 0,
+			   -1.0608 -1.0608 0,-1.326 -1.326 0, 
+			   -1.0608  1.0608 0,-1.326  1.326 0,
+			    1.0608 -1.0608 0, 1.326 -1.326 0,
+
+                           0  1.0608  1.0608, 0  1.326  1.326,
+			   0 -1.0608 -1.0608, 0 -1.326 -1.326, 
+			   0 -1.0608  1.0608, 0 -1.326  1.326,
+			   0  1.0608 -1.0608, 0  1.326 -1.326,
+
+                            1.0608 0  1.0608, 1.326 0  1.326,
+			   -1.0608 0 -1.0608,-1.326 0 -1.326, 
+			   -1.0608 0  1.0608,-1.326 0  1.326,
+			    1.0608 0 -1.0608, 1.326 0 -1.326 ] }
+    LineSet { numVertices [ 2, 2, 2, 2, 
+			    2, 2, 2, 2, 
+			    2, 2, 2, 2 ] }
+}

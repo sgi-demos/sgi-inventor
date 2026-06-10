@@ -1,0 +1,6 @@
+Edit->Deselect All
+
+"Deselect All" is used to deselect all currently selected objects.
+This is equivalent to clicking on empty space in the viewer window(s).
+You may use this when there is very little empty space in the scene.
+

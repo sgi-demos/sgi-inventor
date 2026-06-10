@@ -1,0 +1,190 @@
+#Inventor V2.0 ascii
+
+Separator {
+    RotorMotor {
+	origin	-2.27695 2.00849 -4.07756
+	on	FALSE
+	onOffButton		ToggleButton {
+	    isOn	FALSE
+	}
+
+	axle		DEF +0 Axle {
+	    origin	-2.27695 2.00849 -4.07756
+	    zRotation	0
+	    pinActivationDist	-1
+	    canFollowRot	FALSE
+	    leadingAxle	NULL
+	}
+
+	speedStick		RotateDiscDragger {
+	    rotation	0 0 1  1
+	}
+
+    }
+    Wheel {
+	origin	-2.27695 2.00849 1.21183
+	radius	1
+	zRotation	12.6189
+	offsetRotation	-2.90937
+	originAxle		Axle {
+	    origin	-2.27695 2.00849 1.21183
+	    zRotation	12.6189
+	    leadingAxle		    USE +0
+
+	}
+
+	inertAxle		DEF +1 Axle {
+	    pinActivationDist	-1
+	    leadingAxle	NULL
+	}
+
+	rotatorRing		RotateDiscDragger {
+	    rotation	0 0 -1  2.90937
+	}
+
+	sizingRing		Scale2UniformDragger {
+	}
+
+    }
+    Wheel {
+	origin	-2.27695 2.00849 -2.32342
+	radius	1
+	zRotation	12.6189
+	offsetRotation	-0.160449
+	originAxle		Axle {
+	    origin	-2.27695 2.00849 -2.32342
+	    zRotation	12.6189
+	    leadingAxle		    USE +0
+
+	}
+
+	inertAxle		DEF +2 Axle {
+	    pinActivationDist	-1
+	    leadingAxle	NULL
+	}
+
+	rotatorRing		RotateDiscDragger {
+	    rotation	0 0 -1  0.160449
+	}
+
+	sizingRing		Scale2UniformDragger {
+	}
+
+    }
+    Bell {
+	origin	-3.23669 1.7276 1.38084
+	endPoint	3 1 1.38084
+	soundFileName	"sounds/bell.aiff"
+	overlapping	FALSE
+	arrow1		Arrow {
+	    origin	-3.23669 1.7276 1.38084
+	    dirPoint	3 1 1.38084
+	    length	4.05208
+	    originAxle		    Axle {
+		origin	-3.23669 1.7276 1.38084
+		zRotation	9.70953
+		leadingAxle			USE +1
+
+	    }
+
+	    dirPointAxle		    Axle {
+		origin	3 1 1.38084
+		leadingAxle	NULL
+	    }
+
+	    inertAxle		    Axle {
+		pinActivationDist	-1
+		leadingAxle	NULL
+	    }
+
+	    sizingDragger		    Translate1Dragger {
+		translation	4.05208 0 0
+	    }
+
+	}
+
+	arrow2		Arrow {
+	    origin	3 1 1.38084
+	    dirPoint	-3.23669 1.7276 1.38084
+	    length	0.873668
+	    originAxle		    Axle {
+		origin	3 1 1.38084
+		leadingAxle	NULL
+	    }
+
+	    dirPointAxle		    Axle {
+		origin	-3.23669 1.7276 1.38084
+		leadingAxle	NULL
+	    }
+
+	    inertAxle		    Axle {
+		pinActivationDist	-1
+		leadingAxle	NULL
+	    }
+
+	    sizingDragger		    Translate1Dragger {
+		translation	0.873668 0 0
+	    }
+
+	}
+
+    }
+    Bell {
+	origin	-1.28277 1.90075 -2.12414
+	endPoint	3 1 -2.12414
+	soundFileName	"sounds/bell.aiff"
+	overlapping	TRUE
+	arrow1		Arrow {
+	    origin	-1.28277 1.90075 -2.12414
+	    dirPoint	3 1 -2.12414
+	    length	4.0566
+	    originAxle		    Axle {
+		origin	-1.28277 1.90075 -2.12414
+		zRotation	12.4585
+		leadingAxle			USE +2
+
+	    }
+
+	    dirPointAxle		    Axle {
+		origin	3 1 -2.12414
+		leadingAxle	NULL
+	    }
+
+	    inertAxle		    Axle {
+		pinActivationDist	-1
+		leadingAxle	NULL
+	    }
+
+	    sizingDragger		    Translate1Dragger {
+		translation	4.0566 0 0
+	    }
+
+	}
+
+	arrow2		Arrow {
+	    origin	3 1 -2.12414
+	    dirPoint	-1.28277 1.90075 -2.12414
+	    length	1.74206
+	    originAxle		    Axle {
+		origin	3 1 -2.12414
+		leadingAxle	NULL
+	    }
+
+	    dirPointAxle		    Axle {
+		origin	-1.28277 1.90075 -2.12414
+		leadingAxle	NULL
+	    }
+
+	    inertAxle		    Axle {
+		pinActivationDist	-1
+		leadingAxle	NULL
+	    }
+
+	    sizingDragger		    Translate1Dragger {
+		translation	1.74206 0 0
+	    }
+
+	}
+
+    }
+}

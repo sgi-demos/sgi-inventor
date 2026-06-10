@@ -1,0 +1,12 @@
+Edit->Undo
+
+"Undo" is used to undo or step back in the work you are doing with the
+program. The menu tells you the last operation that you did, that can
+be undone. For example, if you moved an object , then use "Undo", the
+object moves back to where it used to be. The "Undo" menu item
+immediately changes to "Redo". This allows you to reverse the "Undo"
+action.
+
+Movieola provides only one level of Undo (only the most recent action
+can be undone). Multiple levels of Undo can be confusing sometimes.
+

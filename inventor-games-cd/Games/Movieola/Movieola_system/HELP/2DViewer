@@ -1,0 +1,9 @@
+Settings->2D Viewer
+
+This viewer gives you an "orthographic" camera, that does not show the
+perspective view, but a fixed plane view (top, left, front, etc).
+This viewer lets you translate the camera in the viewing plane, as
+well as roll (rotate along the camera forward direction) and dolly
+(move forward/backward).  The popup menu has options to turn grid
+on/off, set draw style and so on.  (Click on the "?" button on the
+viewer decoration for a Showcase description of a Plane viewer)

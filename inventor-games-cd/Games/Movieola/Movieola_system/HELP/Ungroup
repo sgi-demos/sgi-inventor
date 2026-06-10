@@ -1,0 +1,5 @@
+Edit->Ungroup
+
+"UnGroup" is used to break an existing group of objects. The "UnGroup"
+option will only work on groups created with "Group".
+

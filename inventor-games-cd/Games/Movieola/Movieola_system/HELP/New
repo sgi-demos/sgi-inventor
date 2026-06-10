@@ -1,0 +1,24 @@
+File->New
+
+(Same as File->Open)
+
+This is used to start a new Movieola project, or continue on an
+existing project. It brings up a file selector, using which you can
+either select an existing project folder, or type in a new name. If
+you are running Movieola for the first time, it creates a
+"Movieola_projects" folder in your home. It is recommended (but not
+mandatory) that you create all your Movieola projects inside this
+folder.
+
+Movieola tries to shield the user from the mysteries of UNIX by
+providing a separate folder for each project, into which all the work
+is saved. The project folder has a "scene" folder, which contains the
+main scene file, all object files that you create and texture .rgb
+files used by the objects. Then it has an "image" folder, which
+contains rendered and finished images. It also has a "NOTES" file to
+maintain a log on your project (see File->Notes).
+    
+NOTE: If you use file operations outside Movieola (Example: Workspace
+or UNIX shell), DO NOT remove or rename any folders under the project
+folder, even if they are empty. Also do not touch the main scene file.
+

@@ -1,0 +1,27 @@
+Sculptor->Slider Manips
+
+This tool allows the user to translate, scale and rotate the selected
+object using sliders or typed values. Slider Manips are more precise
+than Direct Manips.
+
+It has four components. Click on them to open the interfaces. Click on
+the "Style" button to change the style of the interface. Click on the
+component bar to close the interface. Each of the components allow
+manipulation in one of 3 axes: X, Y and Z. Note that X refers to the
+left-right direction, Y is the up-down direction, and Z is the
+front-back direction.
+
+"Translations": This allows you to specify the location of the object
+with respect to its parent (or the global scene).
+
+"Scales": This allows you to stretch the object along each of the 3
+directions (X, Y and Z).
+
+"Rotations": This allows you to rotate the object about any of the 3
+axes (X, Y and Z).
+
+"Scale Orientation": This allows you to "shear" (non-uniform
+stretching) the object along an axis (X, Y or Z).
+
+"Center": This allows you to specify the center of the object. Any
+scaling or rotation is done about this point.

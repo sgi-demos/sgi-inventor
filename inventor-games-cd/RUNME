@@ -1,0 +1,17 @@
+#!/bin/csh -f
+#Tag 66832
+
+if ( ! -x /usr/sbin/showcase) then 
+
+/usr/sbin/confirm -b "OK" \
+	-t "Showcase has not been installed on this machine." \
+	-t "Please install showcase.sw.showcase to run the game tour." \
+	-t " " \
+	-t "Alternatively, you can run each game directly from the Games" \
+	-t "directory." \
+	> /dev/null
+
+exit 1
+endif
+
+showcase -v ./.gameTour.sho

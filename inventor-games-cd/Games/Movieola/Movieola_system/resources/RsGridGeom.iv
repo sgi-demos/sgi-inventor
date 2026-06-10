@@ -1,0 +1,39 @@
+#Inventor V1.0 ascii
+#
+# Static 2D grid geometry for movieola
+
+Separator {
+	  
+	    Scale     { scaleFactor 1 1 1 }
+
+	    Separator {
+	    
+	       BaseColor { rgb .9 .4 .9 } # CAN CHANGE
+
+	       # Program creates the division geometry
+	    }
+
+	    Separator {
+
+	       BaseColor { rgb .4 .1 .4 } # CAN CHANGE
+
+	       # Program creates the subdivision geometry
+            }
+
+	    Separator {
+
+	       BaseColor { rgb 0. 0. 1. } # CAN CHANGE
+
+	       # Program creates zero-lines geometry
+	    }
+}
+
+
+
+
+
+
+
+
+
+

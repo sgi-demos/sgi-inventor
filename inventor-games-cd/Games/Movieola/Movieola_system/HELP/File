@@ -1,0 +1,17 @@
+FILE - Project Management Operations
+
+This is the first drop-down menu found in the main Movieola titlebar.
+
+To use this tool move the mouse cursor over the word "File" and press
+the left mouse button. This will prompt a drop down menu window with
+the following selections:
+
+	New	Alt+N
+	Open	Alt+O
+	Save	Alt+S
+	Save as...
+	Notes
+	Print	Alt+P
+	Make tape >
+	System...	Alt+Y
+	Exit	Alt+Q

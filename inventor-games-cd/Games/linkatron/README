@@ -1,0 +1,192 @@
+
+=========================================================================
+linkatron:  A program for building working 3D linkages -- interactively!
+            Written by Paul Isaacs
+=========================================================================
+
+When playing linkatron, there are 4 important guideline:
+
+    [1]  CREATE LINKS by clicking buttons in the button-strip 
+
+    [2]  RED and PURPLE things move when you click-drag them. Nothing else will.
+
+    [3]  CONNECT links by dragging axles into alignment. Once connected, 
+	 the dragged axle follows the other axle.  It's shape changes
+	 and a 'cotter pin' appears.
+
+    [4]  DISCONNECT an axle by dragging the cotter pin away from the axle.
+
+If you're anxious, just type:
+linkatron
+and explore. Select 'help' from the pulldown menu if you get confused.
+
+
+=========================================================================
+OR, you can read the stuff below. (All of this information is contained
+in the linkatron help cards).
+=========================================================================
+
+General:
+--------
+Linkatron begins with nothing but an empty table top.  As you add new links by 
+clicking buttons in the 'creation button strip,' they appear on the table top.
+
+Each kind of link has some parts that are colored red. 
+You can click-drag these to change the length of a strut,
+rotation of a wheel, or even the speed of a motor.
+Even the table top has adjustable parts.
+
+Once you connect two links together, they will continue to stay connected
+even as you move the other pieces in your mechanism.  If you add a motor and
+push its 'on' button, the mechanism will run by itself!
+
+
+To Run Linkatron:
+-----------------
+linkatron [-hq] [ filename(s) ]
+
+	-h          = print the usage message
+	-q          = quiet mode (Disable audio effects)
+	filename(s) = Inventor file or files to read into the scene.
+		      If no filename is specified, you begin with an 
+		      empty scene.
+
+Creating Links:
+---------------
+There is a strip of buttons above the main area of the screen.
+Each button creates a different kind of link.
+Click on one and a new link appears on the table top in the main area.
+
+
+About Axles:
+------------
+All types of links contain at least on axle.
+Drag an axle to change an endpoint or other point of a link.
+Axles have 3 parts:  a shaft, legs, and a cotter pin.
+Which parts are displayed, and what color they are, can tell you a lot:
+Only RED axles can be draggeed.
+Only axles with LEGS can be made to follow.
+ANY AXLE may act as a 'leader' for other axles to follow.
+
+                    DRAGGABLE(RED)   CAN FOLLOW(LEGS)   CAN LEAD (ALL) 
+RED  SHAFT & LEGS    X               X                  X 
+RED  SHAFT ONLY      X                                  X 
+BLUE SHAFT ONLY                                         X 
+
+
+Connecting/Disconnecting:
+-------------------------
+Connect links by dragging axles into alignment. Once connected, 
+the dragged axle follows the other axle.  It's shaft and legs disappear.
+and a 'cotter pin' appears.
+Disconnect an axle by dragging the cotter pin away from the axle. The 
+shaft and legs return.
+
+About the Types of Links:
+-------------------------
+Each type of link has different axles and/or moving parts.
+
+"Single Strut" ------ A simple strut with an axle at each end.
+	             -ORIGIN AXLE has legs and can be attached to other axles.
+                     -The ENDPOINT AXLE moves the opposite end.
+		      It has no legs and can't connect to other axles.
+		      Once dragged and let go, the endpoint will maintain the
+		      same position relative to the origin.
+
+"Double Strut" ------ Two struts connected end to end.  These two struts 
+		      always remain connected.  
+		     -Each end has an axle that can be moved and/or connected.  
+		      When you move an end, the two sub-struts will hinge 
+		      accordingly.
+		     -The middle point may be dragged to change the lengths
+		      of the two struts.  
+		     -Note that the whole thing turns
+		      red as an 'error condition' if you pull the ends too
+		      far apart and the struts have to stretch.  When the
+		      doubleStrut is happy again, the color returns to normal.
+
+"Wheel" ------------  A wheel you can turn. Good for driving the motion of a
+	              mechanism. 
+	             -An ORIGIN AXLE moves the center of the wheel.
+		     -Red SIZING SPOKES change the size of the wheel when 
+		      dragged inward/outward.
+		     -A BLUE EDGE axle sits at the edge of the wheel and 
+		      serves as an attachment point.
+		      You can't connect it to anything else, but other axles 
+		      may connect to it.
+                     -A RED ring surrounds the edge of the wheel. Drag it to
+		      rotate the EDGE axle around the wheel's center.
+
+"Arrow" ------------- A strut that has an origin and a given length, but it 
+	              always points toward a second axle, located at the 
+		      'target point'.
+	             -ORIGIN AXLE may be dragged and connected.
+		     -TARGET POINT axle may be dragged and connected.
+		     -A red LENGTH SLIDER changes the length of the arrow.
+		     -A BLUE END axle sits at the end opposite the origin.
+		      You can connect other axles to this point.
+
+"Piston" ------------ This has two pieces that slide in and out from each other
+		      as the ends are moved.
+		     -Two AXLES (one at each end) may be moved and connected
+		      to other axles.
+		     -Two red LENGTH SLIDERS change the lengths of each of the
+		      two pieces.
+		     -Two BLUE ATTACHMENT AXLES allow other axles to attach
+		      to the other ends of the sub-pieces.
+
+"Bell" -------------- Like a piston, except that one of the two pieces is 
+		      bell shaped. When the two pieces get close, the bell
+		      sound is played.
+                     -A RED SLIDER controls the size and therefore the pitch
+		      of the bell.
+
+"Motor" ------------- Turning on the motor causes its shaft to rotate.
+		      Attach a wheel axle to this axle, and the wheel will 
+		      rotate as well.
+                     -A RED BUTTON turns the motor on/off.
+		     -A RED SPEED STICK changes the speed and direction of the
+		      motor.
+
+The TableTop:
+-------------
+This is a flat surface with a grid on it.  
+Drag the red corners to change the size. 
+Drag the purple edge to raise and lower the table.
+
+Active Plane -- Moving the Current Piece Forward or Backward:
+-------------------------------------------------------------
+The 'Current Piece' is whichever link you touched last.
+There is an 'active plane' sticking up out of the table; it always shows where 
+the current piece is. Move the plane and the current piece forward and
+back by dragging this button.  Make the plane taller by
+dragging its top edge.
+
+Deleting & Undeleting links:
+-------------------------
+You can delete a link by selecting 'DELETE' from the EDIT pulldown or 
+pressing <Alt> d.
+You can undelete a link by selecting 'UNDELETE' from the EDIT pulldown or 
+pressing <Alt> u.
+Note that linkatron remembers all the links you've deleted, so you can 
+perform multiple level undo.
+
+About linkatron's files:
+------------------------
+Any contraption you create with linkatron can be saved to file and read 
+back in.  Note, however, that linkatron uses non-standard types of nodes
+and engines, so you can't read your mechanism into other Inventor 
+applications.
+The FILE pulldown menu contains entries for the standard
+NEW, OPEN, SAVE, and SAVE AS functions.
+
+Sample linkages:
+----------------
+The samples directory contains a few pre-made mechanisms. Take a look at them
+by selected OPEN from the pulldown FILE menu.
+   
+
+Custominzing the Look of the Pieces:
+------------------------------------
+The file linkagesResourceFile.iv defines the default geometry for each
+kind of link.  You can change this file to create different looking links.

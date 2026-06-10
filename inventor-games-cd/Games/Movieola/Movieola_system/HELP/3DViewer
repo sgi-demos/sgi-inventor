@@ -1,0 +1,7 @@
+Settings->3D Viewer
+
+The viewer gives you a perspective view of the 3D scene. This viewer
+uses a virtual trackball to rotate the view. You can also translate
+and dolly.  The popup menu has options to turn grid on/off, set draw
+style and so on.  (Click on the "?" button on the viewer decoration
+for a Showcase description of Examiner viewer)

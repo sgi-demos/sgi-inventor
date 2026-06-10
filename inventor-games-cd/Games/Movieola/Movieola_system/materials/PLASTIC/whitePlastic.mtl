@@ -1,0 +1,9 @@
+#Inventor V1.0 ascii
+
+DEF whitePlastic Material {
+    ambientColor 	0.0 0.0 0.0
+    diffuseColor 	0.55 0.55 0.55
+    specularColor 	0.70 0.70 0.70
+    shininess 		.25
+    #ALPHA 1.0
+}

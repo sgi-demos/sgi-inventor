@@ -1,0 +1,67 @@
+Sculptor->Face Builder
+
+Face Builder is used to create individual polygons, add polygons to
+existing objects, and to create connections between different objects.
+It provides ultimate low-level control to the expert user.
+
+If Face Builder is invoked on an existing selected object, and if that
+object is a Potter or Spline object, the object is first polygonized.
+Face Builder has two modes - "Edit Old", and "Create New". In the
+"Create New" mode, you can create new polygons using the mouse in the
+main viewing window(s). In the "Edit Old" mode, you can move the
+polygon vertices.
+
+ "Object Name": As with other Movieola tools, the object name appears
+in the top left corner. The user can give a meaningful name by
+selecting the default name (by dragging the left mouse pressed) and
+deleting it, and typing in a new name.
+
+"Sides": You can set the number of sides for the new polygons (faces)
+that you are going to create.
+
+"Create New": This mode allows you to create new faces or add new
+faces to existing ones. Create new vertices by clicking on the left
+mouse button. You get a rubber band figure that becomes a face as soon
+as you finish entering all vertices (3 for a triangle). Enter the
+vertices clockwise for the face to be oriented outside. You can use
+the vertex of another connecting face by moving the cursor over the
+vertex until a green box appears, and clicking on the left mouse
+button. That vertex is now shared by the old face(s), and the new face
+that you are creating. While building a face, you can press "d" to
+remove the most recent point entered.
+
+"Edit Old": This mode allows you to move the vertices around once you
+have created faces. To move a vertex, move the cursor over it until a
+green box appears, then press down on the left mouse button. You get a
+yellow highlight. Move the vertex while keeping the mouse button
+pressed. You can also move a group of vertices by first dragging a
+rectangular box around the vertices using the middle mouse button.
+This brings up a "manipulator" around the box. You can now move the
+box by keeping the left mouse button pressed. You can also scale the
+box by pressing on the corner and side "handles" of the box
+manipulator.
+
+"Flip Face": Selecting a face by clicking the left mouse button on it,
+and choosing "Flip Face" causes the face to go inside out. If no face
+is selected, the last face created will be flipped. Normally the
+"outside" of the face is defined by the side in which the vertices are
+in clockwise order. "Flip face" can be used to reverse the order of
+vertices of a face, and hence make the "inside" of the face "outside".
+You can also press "f" while within the viewer window.
+
+"Delete Face": Selecting a face by clicking the left mouse button on
+it, and choosing "Delete Face" causes the face to be deleted from the
+object.  If no face is selected, the last face created will be
+deleted. You can press "d" or "Backspace" or "Delete" while in the
+viewer window.
+
+"Split Face": Selecting a face by clicking the left mouse button on
+it, and choosing "Split Face" causes the face to be split into
+triangles around the center of the face.  If no face is selected, the
+last face created will be split. "Split Faces" is a good way of
+increasing the detail of portions of the object. The newly created
+center vertex can now be moved for finer adjustment.
+
+As you can see, Face Builder is a low-level, but extremely flexible
+and powerful tool.
+

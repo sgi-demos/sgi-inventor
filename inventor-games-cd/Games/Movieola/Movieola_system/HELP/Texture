@@ -1,0 +1,283 @@
+Costume-> Texture
+
+Texture.... is the next selection found in the "Costume" menu.
+ 
+The Texture editor is one of the more dramatic of MOVIEOLA tools. This
+is because it can take a simple rectangular block and turn it into a
+stone or brick wall with one button click.
+
+The Texture editor like the Color editor should be invoked with an
+object selected.
+
+The Texture editor is divided into five basic sections:
+
+In the upper left quarter of the editor is the translation, rotation
+and scaling section. In the upper right-hand side is the texture
+palette browser. In the bottom left quarter are the mapping controls,
+and on the lower right side is the mapping preview window. This window
+is used to quickly "preview" the texture mapping of the object before
+it gets updated in the main scene. The "Image Information" window is
+in the middle of the texture editor.
+
+
+Texture Editor Menu Options
+
+	Menu:
+ 		Palette :
+			New
+			Load
+			Remove
+		               	[project palette]
+			[palette001]
+			      ="=
+		  Image:
+			Transfer->
+			Load
+			View
+			Paint
+			Remove		Texture Editor Controls :
+
+	Translate X: (Slider)
+	Translate Y: (Slider)	Texture Palette Browser
+	     Rotate : (Slider)
+	    Scale X : (Slider)
+	    Scale Y : (Slider)
+
+                   Image Information Window
+		                   	Mapping Preview
+			Window
+	Automatic : (Toggle)
+	Update: : (Push button)
+	Component : (Button Selector)
+	Model Type : (Button Selector)
+	Wrap Type : (Button Selector)
+	     Layer : (Slider)
+
+	Show Texture in Main View:	 Push button
+	Dismiss : Push button
+
+Palette Menu
+
+The Palette menu provides controls that affect texture palettes in
+Movieola. A texture palette is simply a folder or a directory on your
+system that holds texture RGB images. They present a nice way of
+separating your texture images based on context. For example, if you
+have a series of images of Michelangelo's paintings and another series
+of images of Picasso's paintings, you may wish to create separate
+palettes for each of them called "Michelangelo" and "Picasso". This
+will create separate folders of the same name in your texture
+directory. The texture directory, by default, points to the directory
+shipped with the Movieola_system. You may then use WorkSpace or the
+shell to move all Michelangelo images to the Miichelangelo folder. Or
+you may use the utilities provided in the "Image" drop down menu
+(explained later) to transfer images to the newly created
+"Michelangelo" folder.
+
+New will bring up the New Palette Menu and lets you create a new
+palette into which texture bitmaps can be loaded and stored. Each
+palette may contain up to 41 different bitmaps of any size. You need
+to enter a name for the palette (or use the default name provided) nad
+press "Ok" in the New Palette Menu. This will cause Movieola to create
+an empty palette with that name. You may them move your texture bitmap
+images to this palette using the options in the "Image" menu
+(explained later).
+
+Load will bring up a file selector that will let you create and load a
+remote folder containing texture bitmaps in to a texture palette
+folder in your texture directory. The file selector can then be used
+to select a folder or directory anywhere on your system and read the
+contents of that folder in to a newly created palette. The "Load" menu
+provides a text field to set the name of this palette folder.
+
+The Load Palette Menu provides 3 options for loading palettes:
+
+(1) Symbolic link: (default) To avoid duplicating a complete folder
+which can take up a lot of disk space, Movieola creates a symbolic
+link to that folder. This creates a permanent palette which will show
+up in all Movieola sessions thereafter. Since Movieola creates a
+symbolic link with this option, deleting files from the original
+folder through WorkSpace or from the shell will cause images to be
+deleted from this palette folder as well.
+
+(2) Copy entire palette: This option will cause the entire contents of
+the folder to be copied to the texture palette area. This way, even if
+images from the original folder are deleted, the newly created palette
+folder will retain copies of the texture bitmap images. The down side
+to this option is the disk space required to make copies of images.
+
+(3) Use for this session only: This option creates a "virtual"
+palette. Movieola remembers the names and paths of the images only
+during the current session. If you exit and restart Movieola, this
+palette information will be lost. This option is useful if you just
+want to browse through the contents o a remote folder.
+
+Remove will remove the current palette folder. This will remove the
+complete contents of the folder including every single texture bitmap
+in that folder.
+
+[project palette] is a folder that is specific to the project you are
+working on. It contains all textures that have been mapped to objects
+in the current project. As far as possible, textures should never be
+removed from this palette. This palette is mainly for viewing and
+transferring images to and from this folder is not recommended.
+
+You can go from one palette to another by selecting the palette name
+radio button under the palette menu. This will take a few minutes as
+Movieola tries to load all texture bitmaps in that palette folder.
+
+Image Menu
+
+The "Load" option in this drop down menu is the only item that can be
+selected when no image has been selected from the texture palette
+browser. All other menu items only work when you have an image
+selected from the texture palette browser.
+
+Transfer: The "Transfer" menu is used to transfer images between
+different palettes. When you have an image selected from the texture
+palette browser, you can transfer the image using this menu option
+onto another palette. This will move the image from the current
+palette onto the specified palette.
+
+Load: The "Load" option brings up a file selector that lets you load a
+texture bitmap RGB from any location in your system. You can browse
+through directories on your system to locate the image file you want
+and when you click on "Ok" in the file selector with an image file
+selected, Movieola will load the image onto the current palette. You
+will notice your texture palette browser redrawing as it tries to add
+another image icon to its list.
+
+View: The "View" options lets you view the selected texture bitmap. No
+editing of the image can be done while "viewing" the texture bitmap.
+
+Paint: The "Paint" option brings up the currently selected paint
+program and lets you paint/edit the texture bitmap selected. Please
+see the "Limelight" section for more information on selecting a paint
+program of your choice "on the fly". The default paint program in
+Movieola is "Creative License" from Time Arts. Any Movieola texture
+may be loaded into this paint package and modified to suit the user's
+needs. Any saving done in this environment affects the base bitmap and
+can be used immediately in Movieola. Entirely new maps or combination
+of existing maps may also be created.. This same tool can also be
+accessed under the "Limelight" menu. (Please see "Limelight" section).
+If you have purchased the Time Arts Creative License 24-bit Paint
+program bundle from Radiance Software, please refer to the
+accompanying documentation for more information on the paint program.
+
+Remove: The "Remove" option removes the currently selected bitmap
+texture from the current palette.
+
+Note: For loading images onto a palette or transferring images to and
+from palettes, you need to have file write permission in that project
+folder.
+
+
+Texture Palette Browser
+
+The texture palette browser is the window on the upper right quarter
+of your texture editor. The browser contains icons for all the texture
+bitmaps in the current palette. An image icon has a shrunk view of the
+image itself and if you move your mouse on top of an icon, you will
+find information on the image printed in the "Image Information"
+window.
+
+Image Information Window:
+
+This window in the center of the texture editor stores the following
+information on the currently selected image:
+	Image file name
+	Size of the image ( x-resolution and y-resolution)
+	Number of channels (components) in the image.
+
+Texture Editor Controls
+
+The texture editor was designed to make object texture mapping as
+intuitive as possible. When reading this section, bear in mind that it
+is intended that the editor give the user immediate feedback to all
+control inputs. To do this, two view windows are provided. The top
+window (Texture Palette Browser) displays the images contained in the
+current texture palette. The second window (Mapping Preview Window)
+just below displays the selected object to be mapped.  As tools are
+used, the mapping process is displayed in the lower window with the
+map shown as it will appear on the actual object in the Movieola
+environment.
+
+Translate X: (Slider) is used to move the image in the X axis of the
+surface of the object relative to its orientation. In most cases, you
+will see right-left movement of the image on the object when the
+Translate X control is used.
+
+Translate Y: (Slider) is used to move the image in the Y axis of the
+surface of the object relative to its orientation. In most cases, you
+will see up-down movement of the image on the object when the
+Translate Y control is used.
+
+Rotate : (Slider) is used to rotate the image relative to its original
+position and orientation in the original texture.  In most cases, you
+will see an angular movement of the image on the object when the
+Rotate control is used.
+
+Scale X : (Slider) controls the X scale of the map on the surface of
+the object. This tool works in conjuction with the "Wrap Type"
+control. The effects of changing the X scale are quite different
+depending on the "Wrap " being used. (see Wrap Type below). Generally
+you will see the image map get larger or smaller in a horizontal
+direction when the Scale X option is used.
+
+ Scale Y : (Slider) controls the Y scale of the map on the surface of
+the object. This tool works in conjunction with the "Wrap Type"
+control. The effects of changing the Y scale are quite different
+depending on the "Wrap " being used. (see Wrap Type below). Generally
+you will see the image map get larger or smaller in a vertical
+direction when Scale Y option is used.
+
+
+Update: The texture editor works in one of two ways. In manual mode,
+you must left-mouse-click on the "Update" button to see the texture
+map selection get updated in the main view.  If you have the
+"Automatic" option turned on, you don't need to click on the "Update"
+button everytime you want to update the main scene. Every single
+texture editor action updates the preview window and the main scene if
+the "Automatic" option is on. Having this option on can make things
+slow as updating in the main scene can be fairly expensive.
+
+When you update the main view, you will notice that the object in the
+main view still does not appear texture mapped. This is because the
+"Show Texture in Main View" option is turned off by default. With this
+option turned off, texture mapping effects only show in images
+produced using Movieola's photo-realistic rendering module. This makes
+movement and manipulation of objects inside Movieola much faster and
+more interactive. When you turn on the "Show Textire in Main View"
+option, you will see texture mapping effects in the main view in
+Movieola. This will slow things down on most systems where real-time
+texture mapping is not possible. But with this option on, you can move
+and rotate textured objects in the main view as fast as the hardware
+will allow you.
+
+Component : This control is used to set the component of the texture
+map. "Intensity" component when set specifies that after the object is
+shaded, the shaded color is combined with the texture color to obtain
+the final color for the object. The "Transparency" component when set
+specifies that the transparent value of the object be replaced by this
+value. You may also set "Both" components. "Bump" mapping affects the
+gradient of the object. This option is not available in this release.
+
+Model Type : This control is used to set the texture model to be used.
+The "Modulate" option multiplies the shaded color with the texture
+color to obtain the final color for the object. The "Decal" option
+replaces the shaded color of the object with the texture color.
+
+Wrap Type : This control is used to either "Clamp" the texture or
+allow it to "Repeat". In "Clamp" mode, the texture image is only
+mapped once to the object no matter what alterations are made using
+the editor. In "Repeat" mode, the image is mapped to the object as
+many times as it takes to cover the object with an equal number of
+duplicate maps. As the scale tools are used, the horizontal and
+vertical proportions of the original bitmap will change to fit the
+control constraints.
+
+ Layer : This control is used to add one texture on top of another.
+This option is not available in this release.
+
+
+Dismiss : This option dismisses the texture editor.
+

@@ -1,0 +1,15 @@
+Limelight->Render:
+
+This has the same functionality as the "Render" button in the Render
+Options editor -- it starts up the rendering operation. It has also
+been provided in the Limelight menu to quickly access this feature.
+Typically, you setup the rendering parameters to the desired values in
+the Render Options editor and then use the Render button afterwards.
+
+When you click on "Render", you will notice your cursor change to a
+"stop watch" cursor and the hand on the stop watch will start to move
+to indicate that Movieola is setting up data for the rendering
+process. When the hand on the stop watch completes one full circle, it
+means that Movieola has finished setting up the data and rendering is
+about to start.
+

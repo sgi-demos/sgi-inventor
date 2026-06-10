@@ -1,0 +1,39 @@
+#Inventor V1.0 ascii
+
+CustomNode {
+    className	[ "BaseKit",
+		      "RssSplineSetKit" ]
+    fields	[ "",
+		      "isJoinEnds 0 " ]
+    customData	[ "partName/childNum pairs [ ctrlCoordinate3 0 coordinate3 1 splineList 2 ]",
+		      "" ]
+    DEF _0 Coordinate3 {
+	point	[ 
+
+	 0   1  0,
+         1   1  0,
+	 1  -1  0,
+         0  -1  0,
+]
+    }
+    DEF _1 Coordinate3 {
+    }
+    Group {
+	CustomNode {
+	    className	[ "BaseKit",
+			      "RssSplineKit",
+			      "RssSplineBezKit",
+			      "RssSplineCatRomKit" ]
+	    fields	[ "",
+			      "startCtrlPts 0 numCtrlPts 4 startTessPts 0 numTessSteps 3 ",
+			      "order 2 ",
+			      "" ]
+	    customData	[ "partName/childNum pairs [ ctrlCoordinate3 0 coordinate3 1 ]",
+			      "",
+			      "",
+			      "" ]
+	    USE _0
+	    USE _1
+	}
+    }
+}

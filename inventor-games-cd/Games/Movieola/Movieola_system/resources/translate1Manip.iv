@@ -1,0 +1,96 @@
+#Inventor V1.0 ascii
+
+#from: File { name "pieces/xAxis.iv" }
+# A thick line along the x axis
+DEF X_AXIS
+Separator {
+
+    Coordinate3 { point [ -1 0 0, 1 0 0 ] }
+    LineSet {}
+
+}
+
+#from: File { name "pieces/wireBox.iv" }
+DEF WIRE_BOX
+Separator {
+    DrawStyle {
+	style LINES
+	lineWidth 1
+    }
+    Cube { width 2.2 height 2.2 depth 2.2 }
+}
+
+
+DEF LEFT_ARROWHEAD
+#from: File { name "pieces/leftArrowhead.iv" }
+# A left-pointing arrowhead, used for translations.
+Group {
+    RotationXYZ { axis Z angle 1.57079 }
+    Cone { height 0.1 bottomRadius 0.05 }
+}
+
+DEF RIGHT_ARROWHEAD
+#from: File { name "pieces/rightArrowhead.iv" }
+# A right-pointing arrowhead, used for translations.
+Group {
+    RotationXYZ { axis Z angle -1.57079 }
+    Cone { height 0.1 bottomRadius 0.05 }
+}
+
+DEF INVISIBLE_BOX
+#from: File { name "pieces/invisibleBox.iv" }
+# An invisible cube
+Separator {
+    DrawStyle { style INVISIBLE }
+    Cube { width 2.2 height 2.2 depth 2.2 }
+}
+
+DEF ARROW
+Separator {
+    # An arrow.
+    Separator {
+
+	Scale { scaleFactor 1.1 1.1 1.1 }
+
+	#stick
+	USE X_AXIS
+
+	#left arrowhead
+	Separator {
+	    Translation { translation -1.05 0 0 }
+	    USE LEFT_ARROWHEAD
+	}
+
+	#right arrowhead
+	Separator {
+	    Translation { translation 1.05 0 0 }
+	    USE RIGHT_ARROWHEAD
+	}
+    }
+}
+
+Separator {
+    Label {
+	label "translate1Translater"
+    }
+    USE ARROW
+    USE INVISIBLE_BOX
+}
+
+Separator {
+    Label {
+	label "translate1TranslaterActive"
+    }
+    USE ARROW
+    USE WIRE_BOX
+}
+
+# These parts don't get used in the default case
+Separator {
+    Label {
+	label "translate1DirectionFeedback"
+    }
+    Label {
+	label "translate1DirectionFeedbackActive"
+    }
+}

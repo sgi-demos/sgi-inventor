@@ -1,0 +1,6 @@
+Edit->Paste
+
+"Paste" adds the contents of the 3D clipboard onto the main scene. The
+contents may be the result of a "Cut" or "Copy" within Movieola, or by
+an external program like SceneViewer or Showcase.
+

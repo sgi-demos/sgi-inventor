@@ -1,0 +1,9 @@
+#Inventor V1.0 ascii
+
+DEF blueRubber Material {
+    ambientColor 	0.0 0.0 0.05
+    diffuseColor 	0.4 0.4 0.5
+    specularColor 	0.04 0.04 0.7
+    shininess 		.078125
+    #ALPHA 0.0
+}

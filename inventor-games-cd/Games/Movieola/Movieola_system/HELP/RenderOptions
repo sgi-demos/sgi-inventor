@@ -1,0 +1,223 @@
+Limelight->Render Options Setup
+
+The Render Options Setup menu is the next selection in the Limelight
+menu. When selected, this will bring up the Render Options editor. The
+Render Options Editor has the following options and controls:
+
+	Render To Window
+	Render To File	(radio button)
+
+	Width (Slider)
+	Height (Slider)
+
+	Render Subwindow (Toggle)
+	Test Render (Push button)
+	Process Sheet... (Push button)
+	Select Program... (Push button)
+
+	Render Image Controls
+
+	Image file (Text field)
+	Set Image folder (Push button)
+	Render Image format selector (List selector)
+	
+	Render Image File path window
+
+	Render Attributes
+	Samples (Slider)
+	Jitter (Toggle)
+	Render Shadows (Toggle)
+	Filter (Box/ Gaussian)
+	Maximum Ray depth (Slider)
+	Cutoff (Slider)
+	
+	Contrast Sliders
+	Red (Slider)
+	Green (Slider)
+	Blue (Slider)
+
+	Render	Dismiss
+
+Render To Window: When this option is selected, photo-realistic
+rendering will be done to a window. This is typically done for small
+scenes that don't take more than half an hour or so to render. For
+larger scenes, the "Render to File" option is recommended. Iconifying
+a window or a screen saver kicking in can disrupt the rendering
+process in this mode.
+
+Render to File: Renders to the specified file. When rendering is
+complete, you will see a message box informing you that rendering is
+complete and a window with the complete rendered image will appear.
+You will also find the final rendered image of the specified name,
+format and resolution in the image folder. This option is recommended
+scenes that take more than half an hour to render and will not be
+disrupted by screen savers or any other process.
+
+Width: This sets the width of the rendering scene.
+
+Height: This sets the height of the rendering scene.
+
+Render Subwindow: When this toggle is selected, you can use a drag box
+in the main scene to set the rendering window. Only objects in this
+subwindow will be rendered. This feature is not available in this
+release.
+
+Test Render: This does a quick preview of the entire rendering to a
+much smaller sized window. This is typically done before the actual
+rendering to make sure the scene appears the way you want it to. This
+is a much more inexpensive operation than the actual rendering
+operation and should take no more than 5 minutes for even complicated
+scenes.
+
+Process Sheet: When this push button is selected, you will get the
+Render Process Sheet editor. This editor contains a list of all
+rendering processes that are currently underway. Please see the
+section on "Render Process Sheet" for more documentation on the Render
+Process Sheet editor.
+
+Select Render Process: This brings up the Render Process editor that
+can be used to set the render process of choice in Movieola.
+
+Image file: (Text field) is used to set the name of the rendered
+image. Please use a name that has not been used in another rendering
+process.
+
+Set Image Folder: This push button brings up a file selector which can
+be used to set the folder to which you want the rendered image to be
+created. By default, if an image folder is not set, images are created
+in the "images" folder in your current project directory.
+
+Render Image format: is used to select the format of the rendered
+images. Different formats like bw (black and white), CompuServe GIF,
+SGI RGB, pict etc. are supported in Movieola. The default format is
+SGI RGB.
+
+Render Image File path window This window records the complete path of
+the render image file. When you set the image folder using the Image
+Folder file selector, you will notice the text in this window updating
+to reflect the new image path.
+
+
+Anti-aliasing in Ray tracers
+
+Given a screen of a fixed size, creating an image in the rendering
+module is accomplished by sampling each pixel one or more times in
+order to determine what can be seen "through" that pixel by the
+camera. If a pixel is not sampled at the proper rate, aliasing will
+result. Aliasing usually appears as "jaggies" or "stair steps" in the
+image. In order to reduce these and other artifacts, most raytracers
+provide an adaptive jittered antialiasing scheme that attempts to
+detect where increased sampling rates are needed. In jittered
+sampling, the location at which a sample is taken is perturbed by a
+random amount. This perturbation reduces aliasing but may add noise to
+the image.
+
+The adaptive sampling scheme begins by sampling each pixel on the
+current scanline once. For each pixel on the scanline, the contrast
+between it and its four immediate neighbors is computed. If this
+contrast is greater than the user-specified maximum in any color
+channel, the pixel and its neighbors are all supersampled by firing an
+additional (<number of samples> x <number of samples> - 1) rays
+through those pixels that have not already been supersampled. This
+process is repeated for the current scanline until a pass is made
+without any pixel being supersampled.
+
+Samples: This slider sets the number of samples to be used in
+rendering. If the sample value is set to n, the photo-realistic
+rendering module uses nxn samples while performing jittered sampling.
+More the number of samples, the longer will be the rendering time but
+better will be the anti-aliasing effects in the ray-traced image. The
+default number of samples in Movieola is 3 and the maximum value that
+can be set is 5.
+
+Jitter: This turns on/off jittering in rendering. The jitter option on
+can produce some good anti-aliasing effects in the ray-traced image.
+But it may also add a little bit of noise to the image.
+
+Render Shadows: With this option on, shadows created by light sources
+are rendered. When this option is turned off, rendering is faster, but
+no shadows are produced.
+
+Filter: This is used to select the render filter type in the rendering
+process. Two different filter options -- Box and Gaussian filters are
+available.
+
+The Ray tree in a ray tracer
+
+When ray tracing a scene, reflected or transmitted rays may strike
+other reflective or transparent objects. Further reflected or
+transmitted rays will be spawned, and so on. Taken together, sucha
+family of rays us termed the ray tree. Care must be taken to control
+the depth of this tree. If it is allowed to grow too deeply, one may
+spend a great deal of time computing rays that contribute little to
+the final rendered picture; if it is not allowed to grow far enough,
+this premature tree pruning may be evident in the final rendered
+image.
+
+Maximum Ray depth: This controls the depth of the ray in the ray
+tracing operation. This option informs the ray-tracer to not spawn
+rays deeper than those at the given level. Larger ray depths produces
+more accurate renderings, but can also take up a longer time.
+
+Cutoff: Sets the rendering cutoff (threshold) in the rendering
+process. This informs the ray-tracer to not spawn rays whose
+contribution to the final color of the eye ray is less than the set
+threshold/cutoff value for each color channel.
+
+Color Contrast:
+
+These sliders set the maximum allowed contrast between four color
+samples when adaptive supersampling is used. The contrast test is
+applied to each color channel separately.
+
+Red: Sets the red contrast on the rendered image.
+
+Green: Sets the green contrast in the rendered image.
+
+Blue: Sets the blue contrast in the rendered image.
+
+Render (Push button): starts the actual rendering process based on the
+settings you have chosen. When you click on "Render", you will notice
+your cursor change to a "stop watch" cursor and the hand on the stop
+watch will start to move to indicate that Movieola is setting up data
+for the rendering process. When the hand on the stop watch completes
+one full circle, it means that Movieola has finished setting up the
+data and rendering is about to start.
+
+Dismiss: This button causes the Render Options editor to be dismissed.
+
+Render Process Sheet
+
+Process Sheet: When this push button is selected, you will get the
+"Render Process Sheet" editor. This editor contains a list of all
+rendering processes that are currently underway.
+
+Each process in the list is listed by its system process ID (PID),
+amount of time it has been running, the name of the user who started
+the process and finally the name of the actual rendering process. If
+you select a process from the list, you will notice the "Terminate"
+button become sensitive. If that particular rendering process is
+happenning to a file, you will also notice the "Show Status" button
+become sensitive.
+
+"Show Status": This button for a process rendering to a file will
+attempt to bring up the image created that far and gives a good
+indication of how much of the rendering is complete. You will notice
+that raytracers (like Rayshade) take a longer time in areas that have
+objects and textures than in areas that have no objects. What this
+means is that that the "Show Status" image will not grow in size and
+picture linearly. It will grow rapidly in areas that have fewer
+objects and slower on areas that have more objects.
+
+"Terminate": This button when selected will terminate the selected
+rendering process before it is completed. This option can be useful if
+you don't find the image shaping up the way you wanted. You may then
+want to terminate the process and go into Movieola and change
+parameters of objects and the scene and re-render the scene.
+
+"Update List": This button when selected will update the process list.
+You will notice the process time growing as you would expect. Process
+that have since completed will no longer be listed in the process
+sheet.
+
+"Dismiss": This will dismiss the Render Process Sheet editor.

@@ -1,0 +1,156 @@
+#Inventor V1.0 ascii
+
+#from: File { name "pieces/scaleKnob.iv" }
+DEF SCALE_KNOB
+Cube { height 0.1 width 0.1 depth 0.1 }
+
+#from: File { name "pieces/scale2Knob.iv" }
+DEF SCALE_2_KNOB
+Separator {
+    Translation { translation 0.025 0.025 0 } 
+    Cube { height 0.05 width 0.05 depth 0.05 }
+    Translation { translation 0.0 -0.05 0 } 
+    Cube { height 0.05 width 0.05 depth 0.05 }
+    Translation { translation -0.05 0 0 } 
+    Cube { height 0.05 width 0.05 depth 0.05 }
+}
+
+
+#from: File { name "pieces/xAxis.iv" }
+# A thick line along the x axis
+DEF X_AXIS
+Separator {
+
+    Coordinate3 { point [ -1 0 0, 1 0 0 ] }
+    LineSet {}
+
+}
+
+#from: File { name "pieces/yAxis.iv" }
+# A thick line along the y axis
+DEF Y_AXIS
+Separator {
+
+    Coordinate3 { point [ 0 -1 0, 0 1 0 ] }
+    LineSet {}
+
+}
+
+#from: File { name "pieces/zAxis.iv" }
+# A thick line along the z axis
+DEF Z_AXIS
+Separator {
+
+    Coordinate3 { point [ 0 0 -1, 0 0 1 ] }
+    LineSet {}
+
+}
+
+#from: File { name "pieces/xFeedbackAxis.iv" }
+DEF X_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ -1.25 0 0, 1.25 0 0 ] }
+    LineSet {}
+}
+
+
+#from: File { name "pieces/yFeedbackAxis.iv" }
+DEF Y_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ 0 -1.25 0, 0 1.25 0 ] }
+    LineSet {}
+}
+
+
+#from: File { name "pieces/zFeedbackAxis.iv" }
+DEF Z_FEEDBACK_AXIS
+Separator {
+    Coordinate3 { point [ 0 0 -1.25, 0 0 1.25 ] }
+    LineSet {}
+}
+
+#from: File { name "pieces/wireBox.iv" }
+DEF WIRE_BOX
+Separator {
+    DrawStyle {
+	style LINES
+	lineWidth 1
+    }
+    Cube { width 2.2 height 2.2 depth 2.2 }
+}
+
+DEF SCALING_KNOBS
+Separator {
+
+    # lower right scale knob
+    Separator {
+	Translation { translation 1.1 -1.1 0 }
+	USE SCALE_2_KNOB
+    }
+
+    # lower left scale knob
+    Separator {
+	Translation { translation -1.1 -1.1 0 }
+	RotationXYZ { axis Z angle -1.57079 }
+	USE SCALE_2_KNOB
+    }
+
+    # upper left scale knob
+    Separator {
+	Translation { translation -1.1 1.1 0 }
+	RotationXYZ { axis Z angle 3.14159 }
+	USE SCALE_2_KNOB
+    }
+
+    # upper right scale knob
+    Separator {
+	Translation { translation 1.1 1.1 0 }
+	RotationXYZ { axis Z angle 1.57079 }
+	USE SCALE_2_KNOB
+    }
+
+}
+
+Separator {
+    Label {
+	label "scale2Scaler"
+    }
+    USE SCALING_KNOBS
+}
+
+Separator {
+    Label {
+	label "scale2ScalerActive"
+    }
+    USE WIRE_BOX
+    USE SCALING_KNOBS
+}
+
+Separator {
+    Label {
+	label "scale2CenterFeedback"
+    }
+    Label {
+	label "scale2CenterFeedbackActive"
+    }
+    # A skinny set of axes.
+
+    #x-axis
+    USE X_FEEDBACK_AXIS
+
+    #y-axis
+    USE Y_FEEDBACK_AXIS
+
+    #z-axis
+    USE Z_FEEDBACK_AXIS
+}
+
+# By default, we make no use of this part
+Separator {
+    Label {
+	label "scale2NormalFeedback"
+    }
+    Label {
+	label "scale2NormalFeedbackActive"
+    }
+}

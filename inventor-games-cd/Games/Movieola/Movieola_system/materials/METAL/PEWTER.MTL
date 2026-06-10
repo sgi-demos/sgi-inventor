@@ -1,0 +1,8 @@
+#Inventor V1.0 ascii
+
+DEF pewter Material {
+    ambientColor	0.105882 0.058824 0.113725
+    diffuseColor	0.427451 0.470588 0.541176
+    specularColor	0.333333 0.333333 0.521569
+    shininess		.076923078
+}

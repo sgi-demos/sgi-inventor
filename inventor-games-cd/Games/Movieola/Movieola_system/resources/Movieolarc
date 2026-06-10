@@ -1,0 +1,112 @@
+!!
+!! Movieola resource file. Specific to each user
+!!
+
+!! PROJECT
+
+! Name of project 
+*Project.name:			 	NULL
+
+! Directory where all new projects will be created
+*Project.projectDirectory:              $HOME/Movieola_projects
+
+! Auto-save
+*Project.autoSaveRegularInterval:       0
+*Project.autoSaveAfterToolDismiss:      True
+
+! Print, tape
+*Project.printerName:                   lp
+*Project.tapeDeviceName:                /dev/tape
+
+
+!! INFO WINDOW
+*Info.isOn:                             True
+*Info.historySize:                      10
+*Info.historyFile:                      NULL
+
+!! ICON MENU
+*IconMenu.view:                         Icons
+
+
+!! VIEWERS
+
+! Number of initial viewers to bring up. First will be main viewer.
+! 2nd, 3rd and 4th will be FRONT, TOP, RIGHT resp. Rest will be FRONT
+*Viewer.number:                         1
+
+! These are from Inventor
+*Viewer.decoration:                     True
+*Viewer.zoomMin:                        1.0
+*Viewer.zoomMax:                        179.0
+*Viewer.autoClipping:                   True
+
+
+!! GRID
+
+! Is grid (and its parts) on?             
+*Grid.isOn:                             True
+*Grid.isOnFront:			False
+*Grid.isOnGround:			True
+*Grid.isOnSide:				False
+*Grid.isOnAxes:				False
+*Grid.isOnSubdivisions:			False
+
+*Grid.snapToGrid:                       False
+
+! Number of main divisions (has to be an even number)
+*Grid.numDivisions:                     24
+! Number of subdivisions between two divisions
+*Grid.numSubDivisions:                  10
+! Number of snap subdivisions between two subdivisions
+*Grid.numSnapSubDivisions:              1
+! Size of axis in subdivisions
+*Grid.axisNumSubDivisions:              2
+! Size of a subdivision in world coordinates
+*Grid.sizeSubDivisions:                 0.2
+
+
+!! 2D TEXT
+*Text2d.autoUpdate:                     False
+*Text2d.fontSize:                       16.0
+*Text2d.lineSpacing:                    1
+*Text2d.justify:                        Left
+*Text2d.font:                           Times-Roman
+
+
+!! 3D TEXT
+*Text3d.autoUpdate:                     False
+*Text3d.fontSize:                       1
+*Text3d.lineSpacing:                    1
+*Text3d.justify:                        Left
+*Text3d.font:                           Times-Roman
+
+!! POTTER
+*Potter.autoUpdate:                     True
+*Potter.editTemplate:                   Profile
+*Potter.splineSteps:                    3
+*Potter.curveType:                      Spline
+
+!! FACEBUILDER
+*FaceBuilder.sides:                     3
+
+!! MOLD
+
+!! ASSEMBLE
+*Assemble.speed:                        50
+
+!! DIRECT MANIPS
+*DirectManips.manip:                    DragPoint
+*DirectManips.replace:                  True
+
+!! COLOR
+*Color.default:                         0.8 0.8 0.8
+
+
+!! CUE CARDS
+*CueCards.onContext:                   False
+
+
+
+
+
+

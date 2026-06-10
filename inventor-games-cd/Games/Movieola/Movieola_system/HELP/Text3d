@@ -1,0 +1,44 @@
+Sculptor->Text->3D Text
+
+"3DText" is a tool to create "flying logos" and captions. This tool
+will create standard font styles in true 3D objects which may then be
+used like any other object. This includes applying material and
+textures. In addition, bevelled or embossed 3DText is only a matter of
+using a simple spline editor.
+
+Selecting "3DText" will display the 3D Text Editor. This editor
+contains several combined options and tools. A default object name (or
+name of an existing selected object) is displayed on the top left
+corner. This name can be changed.  Below this is Input Text with a
+toggle which selects for manual input or Dynamic Update. If you use
+the defaults, you will use the keyboard to enter the desired text,
+when you have finished with the various settings which effect the 3D
+text object you would click on "Accept" at which time the text
+appearing in the "Input Text" window will appear in the center of the
+main scene. If you click on the Dynamic Update toggle button, then you
+will see the 3D Text object appear in the sceneas you enter each text
+choice from the Keyboard.
+
+Below the Input Text window you will find the Font selector. This is a
+standard list, to use it simply double click on any font displayed and
+the text will use that font.
+
+On the right side of the "3D Text Editor" you will find the "Profile
+Editor". This tool is used to change the profile contours (bevelling)
+of the 3D Text.. To use this tool start by moving the mouse cursor
+over the blue point marker at the left side of the profile spline.
+When the control point is selected a small green bonding box will
+appear around the blue control point. Now press the left mouse button
+and hold it, this will change the display to a yellow drag
+manipulator. Still holding the left mouse button down, drag the mouse
+up or down. You will see the profile of the 3D text object change.
+Move the cursor over the line till it turns green, and click the left
+mouse button to create a new intermediate point on the profile. Press
+"D" or "Backspace" or "Delete" to remove the point.
+
+Below this is the Edit Parts button. This option controls the
+attributes of each of the three parts of the 3D text object., ie.
+Front, Sides and Back. Selecting this option will display the controls
+to turn one or more of these parts on or off, and to edit the
+materials. (See Costume->Materials).
+

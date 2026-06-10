@@ -1,0 +1,247 @@
+#Inventor V2.0 ascii
+
+Separator {
+
+    # We are going to animate the camera position using conventional
+    # transformations
+    TransformSeparator {
+
+	# The camera gets rotated to face one of the tunnel doors.
+	# "input1" of the interpolation engine is set from within the
+	# program to the correct ending rotation. The OneShot is
+	# triggered from within the program.
+	Rotation {
+	    rotation = DEF ChamberRotate InterpolateRotation {
+		input0	0 0 -1 0
+		alpha = DEF ChamberCalc Calculator {
+		    a 0 = DEF ChamberOneShot OneShot {
+			duration 9.5
+			flags	(HOLD_FINAL | RETRIGGERABLE)
+		    }.ramp
+		    expression [
+			"ta = 10 * a",
+			"tb = (ta<2) ? 0 : ((ta>5) ? 1 : (ta-2) / 3)",
+			"tc = (ta<6) ? 0 : ((ta>9) ? 1 : (ta-6) / 3)",
+			"oa = (tb<.5) ? (2*tb*tb) : (1 - 2*(1 - tb)*(1 - tb))",
+			"ob = (tc<.5) ? (2*tc*tc) : (1 - 2*(1 - tc)*(1 - tc))",
+			]
+		}.oa
+	    }.output
+	}
+
+	# The camera then gets translated to the tunnel door
+	Translation {
+	    translation = InterpolateVec3f {
+		input0	0 0 0
+		input1	0 0 -.87
+		alpha = USE ChamberCalc.ob
+	    }.output
+	}
+
+	PerspectiveCamera {
+	    position		0 0 0
+	    nearDistance	.05
+	    farDistance		3
+	}
+
+	DirectionalLight {}
+    }
+
+    DEF ChamberSwitch Switch {
+
+	# Disables depth buffering for chamber spheres
+	DEF ChamberCallback1 Callback {}
+
+	Separator {
+	    Material {
+		ambientColor	.1 .1 .1
+		diffuseColor	[.7 .7 .5, .5 .5 .4]
+		specularColor	.5 .4 .3
+		shininess	0.6
+	    }
+	    MaterialBinding { value PER_VERTEX }
+
+	    # This is an inside-out sphere
+	    File { name ChamberSphere.iv }
+	}
+
+	# Lines inside sphere
+	Separator {
+	    Rotation { rotation .1 .2 .3 .4 }		# Random
+	    LightModel { model BASE_COLOR }
+	    DrawStyle { style LINES lineWidth 3 }
+	    BaseColor { rgb .1 .2 .3 }
+	    Sphere { radius .99 }
+	}
+
+	# Enables depth buffering for rest of chamber
+	DEF ChamberCallback2 Callback {}
+    }
+
+    # Chamber doors
+    DEF ChamberDoorSwitch Switch {
+	whichChild 0
+
+	# Instances of doors go here
+	DEF ChamberDoors Separator {}
+
+	# Door that opens
+	Separator {
+
+	    # Rotation of correct door gets inserted here
+	    DEF ChamberOpeningDoorRotGroup Group {}
+
+	    # Motion to open first piece of door
+	    Separator {
+		Translation {
+		    translation = InterpolateVec3f {
+			input0	0 0 0
+			input1	0 .035 0
+			alpha = DEF ChamberDoorCalc Calculator {
+			    a 0 = DEF ChamberDoorOneShot OneShot {
+				duration 2
+				flags (HOLD_FINAL | RETRIGGERABLE)
+			    }.ramp
+			    expression "oa = a * a"
+			}.oa
+		    }.output
+		}
+		ClipPlane {
+		    plane 0 1 0 0
+		}
+
+		# The real door (with text) gets added here
+		DEF ChamberOpeningDoorSep Separator {}
+	    }
+
+	    # Motion to open second piece of door
+	    Separator {
+		Translation {
+		    translation = InterpolateVec3f {
+			input0	0 0 0
+			input1	0 -.035 0
+			alpha = USE ChamberDoorCalc.oa
+		    }.output
+		}
+		ClipPlane {
+		    plane 0 -1 0 0
+		}
+		USE ChamberOpeningDoorSep
+	    }
+	}
+    }
+
+    # These define some pieces used to construct doors
+    Switch {
+	# Closed version of the door
+	DEF ChamberDoorClosed Separator {
+	    # This sizes and positions one door for the chamber.
+	    # Other instances are rotated from this position
+	    DEF ChamberDoorXform Transform {
+		scaleFactor .05 .05 .01
+		translation 0 0 -.94
+	    }
+	    Coordinate3 {
+		point  [
+			# Front outside ring (0 - 7)
+			0.000  1.000  1.000,
+			0.707  0.707  1.000,
+			1.000  0.000  1.000,
+			0.707 -0.707  1.000,
+			0.000 -1.000  1.000,
+			-0.707 -0.707  1.000,
+			-1.000  0.000  1.000,
+			-0.707  0.707  1.000,
+
+			# Back outside ring (8 - 15)
+			0.000  1.050 -1.000,
+			0.742  0.742 -1.000,
+			1.050  0.000 -1.000,
+			0.742 -0.742 -1.000,
+			0.000 -1.050 -1.000,
+			-0.742 -0.742 -1.000,
+			-1.050  0.007 -1.000,
+			-0.742  0.742 -1.000,
+
+			# Front inside ring (16 - 23)
+			0.000  0.900  1.000,
+			0.636  0.636  1.000,
+			0.900  0.000  1.000,
+			0.636 -0.636  1.000,
+			0.000 -0.900  1.000,
+			-0.636 -0.636  1.000,
+			-0.900  0.000  1.000,
+			-0.636  0.636  1.000,
+
+			# Back inside ring (24 - 31)
+			0.000  0.800 -1.000,
+			0.565  0.565 -1.000,
+			0.800  0.000 -1.000,
+			0.565 -0.565 -1.000,
+			0.000 -0.800 -1.000,
+			-0.565 -0.565 -1.000,
+			-0.800  0.000 -1.000,
+			-0.565  0.565 -1.000,
+			]
+	    }
+
+	    ShapeHints {
+		vertexOrdering	COUNTERCLOCKWISE
+		shapeType	SOLID
+	    }
+
+	    # Base piece
+	    Separator {
+		BaseColor { rgb .2 .2 .6 }
+		IndexedTriangleStripSet {
+		    coordIndex [8, 15, 9, 14, 10, 13, 11, 12]
+		}
+	    }
+
+	    # Raised ring
+	    Separator {
+		BaseColor { rgb .5 .5 .2 }
+		IndexedTriangleStripSet {
+		    coordIndex [
+				# Front ring
+				0, 16, 1, 17, 2, 18, 3, 19, 4, 20,
+				5, 21, 6, 22, 7, 23, 0, 16, -1,
+
+				# Inside ring
+				16, 24, 17, 25, 18, 26, 19, 27, 20, 28,
+				21, 29, 22, 30, 23, 31, 16, 24, -1,
+
+				# Outside ring
+				8, 0, 9, 1, 10, 2, 11, 3, 12, 4,
+				13, 5, 14, 6, 15, 7, 8, 0,
+				]
+		}
+	    }
+	}
+
+	# Text on door
+	DEF ChamberDoorTextSep Separator {
+	    Font {
+		name Helvetica-Bold
+		size .8
+	    }
+	    USE ChamberDoorXform
+	    Translation { translation 0 -.3 0 }
+	    BaseColor { rgb [.5 .5 .2, .17 .08 .68] }
+	    MaterialBinding { value PER_PART }
+	    Complexity { value .8 }
+	    ProfileCoordinate2 {
+		point [0 0, .25 .05, 1.25 .05, 1.5 0]
+	    }
+	    LinearProfile {
+		index [0, 1, 2, 3]
+	    }
+
+	    DEF ChamberDoorText Text3 {
+		justification CENTER
+		parts FRONT
+		string "?"
+	    }
+	}
+    }	
+}

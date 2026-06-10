@@ -1,0 +1,14 @@
+Sculptor->Primitives
+
+This allows the user to insert basic objects (such as cones or
+cylinders) into the scene. Double-clicking on the required item on the
+list creates an object in the center of the scene. The user may use
+this object unaltered, or resize it (see Direct/Slider manips) or
+modify the geometry further using the Potter or Face Builder tool. The
+object created is given a default name automatically, and displayed at
+the top of the tool. The user can change this by deleting the name,
+and typing in a new name.
+
+A whole range of interesting basic shapes in supplied with Movieola ,
+which can be used by the user as a starting shape for more complex
+modeling.

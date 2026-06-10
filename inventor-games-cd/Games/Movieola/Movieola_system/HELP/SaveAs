@@ -1,0 +1,9 @@
+File->Save As
+
+"Save as" is used to save an existing project loaded into Movieola
+using a different file name. Generally this option is used at a point
+in a project where the user wishes to save the project at some point
+and try something different but may not want to permanently alter the
+existing project.  "Save As" makes a complete copy of the existing
+project onto a new folder.
+

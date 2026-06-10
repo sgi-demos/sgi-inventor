@@ -1,0 +1,277 @@
+#! /bin/sh
+
+##########################################################################
+# 
+# Copyright (c) 1993 by Radiance Software
+#
+# All rights reserved. This listing of source code is proprietary and
+# confidential to Radiance Software. It may not be copied or made 
+# available in any form (electronic or hard copy) to any person not
+# authorized by Radiance Software.
+# Unpublished - Rights reserved under all copyright laws
+#
+# Radiance Software, 1726 Francisco Street, Berkeley, CA 94703
+#
+##########################################################################
+
+###########################################################################
+#
+# This script performs some UNIX file directory operations for
+# Movieola project management. Called from within Movieola. 
+#
+# UNIX gurus, you may also use this script from outside Movieola. But dont
+# change it, unlike you like disasters!
+#
+#
+# Usage:
+#
+# MvlaProjectOp -<option> [arguments]
+#
+# Options (and corresponding arguments) are:
+#
+# -test   <dir>              : test whether dir is a valid Movieola project
+# -create <dir>              : create a new Movieola project
+# -open   <dir>              : open an existing Movieola project
+# -openOrCreate <dir>        : open a Movieola project. Create if necessary
+# -close  <dir>              : make a project dir inactive
+# -move   <oldDir> <newDir>  : move project
+# -copy   <oldDir> <newDir>  : copy project
+# -remove <dir>              : remove project
+# -notes  <dir>              : Edit notes on the project
+#
+# Return status codes are:
+#
+#  0: OK
+#  1: Wrong arguments for script
+#  2: not readable
+#  3: not writeable
+#  4: not a directory
+#  5: not a valid Movieola project directory
+#  6: write failed
+#  7: removal failed
+#  8: project already exists. Cannot create
+#  9: project already active (used by another program)
+#
+###########################################################################
+
+
+{
+
+# Constants
+
+THIS_PROG=MvlaProjectOp
+
+ACTIVE_FILE=MOVIEOLA_ACTIVE
+INACTIVE_FILE=MOVIEOLA
+FILE_CONTENTS="Version 1.0"
+
+MVLA_EXT=mvla
+
+EDITOR=jot
+
+
+# Process arguments
+
+case $1 in
+     -*) OPTION=$1; shift; DIR=$1;;
+      *) $THIS_PROG -error; echo 1; exit 1;;
+esac
+
+
+# For most options, first arg directory must be a readable Mvla directory
+
+case $OPTION in
+    -test) ;;
+
+    -create) ;;
+
+    -openOrCreate) ;;
+
+    *)
+       $THIS_PROG -test $DIR;
+       CODE=$?;
+       if [ "$CODE" != "0" ]; then
+          echo $CODE; exit $CODE;
+       fi;
+       ;;
+esac
+
+
+case $OPTION in
+
+    -test) 
+       if [ ! -r $DIR ]; then
+          CODE=2;
+       elif [ ! -w $DIR ]; then
+          CODE=3;
+       elif [ ! -d $DIR ]; then
+          CODE=4;
+       else
+          CODE=5;
+          DIREXT=`echo $DIR | sed -n "/.*\.\(.*\)/s//\1/p"`;
+	  if [ "$DIREXT" = "$MVLA_EXT" ]; then
+	     if [ -r $DIR/$ACTIVE_FILE ]; then
+                 CODE=0;
+             fi;
+	     if [ -r $DIR/$INACTIVE_FILE ]; then
+	         CODE=0;
+             fi;
+	  fi;
+       fi;
+
+       echo $CODE; exit $CODE;
+       ;;
+
+
+    -move)
+
+       NEWDIR=$2;
+
+       $THIS_PROG -test $NEWDIR;
+       CODE=$?;
+       if [ "$CODE" != "2" ]; then
+          echo 6; exit 6;
+       fi;
+
+       mv $DIR $NEWDIR;
+       if [ "$?" != "0" ]; then
+          echo 6; exit 6;
+       fi;
+
+       echo 0; exit 0;
+       ;;
+
+
+    -copy)
+
+       NEWDIR=$2;
+
+       cp -r $DIR $NEWDIR;
+       if [ "$?" != "0" ]; then
+          echo 6; exit 6;
+       fi;
+
+       echo 0; exit 0;
+       ;;
+
+
+    -remove)
+
+       if [ ! -r $DIR/$INACTIVE_FILE ]; then
+          echo 9; exit 9;
+       fi;
+
+       cd $DIR/..;
+       rm -r `basename $DIR`;
+       if [ "$?" != "0" ]; then
+          echo 7; exit 7;
+       fi;
+
+       echo 0; exit 0;
+       ;;
+
+
+    -create)
+
+       $THIS_PROG -test $DIR;
+       CODE=$?;
+       if [ "$CODE" != "2" ]; then
+          echo 8; exit 8;
+       fi;
+
+       mkdir $DIR;
+       if [ "$?" != "0" ]; then
+          echo 6; exit 6;
+       fi;
+
+       echo $FILE_CONTENTS > $DIR/$ACTIVE_FILE;
+       mkdir $DIR/scene;
+       mkdir $DIR/image;
+       mkdir $DIR/tmp;
+       USERNAME=`grep $USER /etc/passwd | 
+                 awk -F: '{print $5;}'  | awk -F, '{print $1; }'`
+       {
+       echo "-----------------------------------------------------------------"
+       echo "PROJECT   : "
+       echo "CREATED BY: $USERNAME"
+       echo "CREATED ON: `date`"
+       echo "-----------------------------------------------------------------"
+       echo 
+       echo
+       } > $DIR/NOTES       
+       
+       echo 0; exit 0;
+       ;;
+
+
+   -open)
+   
+       if [ ! -r $DIR/$INACTIVE_FILE ]; then
+          echo 9; exit 9;
+       fi;
+  
+       rm -f $DIR/$INACTIVE_FILE;
+       echo $FILE_CONTENTS > $DIR/$ACTIVE_FILE;
+       echo 0; exit 0;
+       ;;
+
+
+   -openOrCreate)
+
+       $THIS_PROG -test $DIR;
+       CODE=$?;
+
+       if [ "$CODE" = "0" ]; then
+          $THIS_PROG -open $DIR;
+	  echo $?; exit $?;
+
+       elif [ "$CODE" = "2" ]; then
+          $THIS_PROG -create $DIR;
+	  echo $?; exit $?;
+       fi;
+
+       echo $CODE; exit $CODE;
+       ;;
+
+
+
+  -close)
+
+       rm -f $DIR/$ACTIVE_FILE;
+       echo $FILE_CONTENTS > $DIR/$INACTIVE_FILE;
+       echo 0; exit 0;
+       ;;
+
+       
+   -notes)
+
+       $EDITOR $DIR/NOTES;
+       echo 0; exit 0;
+       ;;       
+       
+
+   -error)
+
+       echo "Usage: $THIS_PROG -<option> [arguments]";
+       echo 1; exit 1;
+       ;;
+
+
+       *)
+
+       $THIS_PROG -error;
+       echo 1; exit 1;
+       ;;
+
+esac
+        
+
+}
+
+
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+#Inventor V1.0 ascii
+
+DEF blackRubber Material {
+    ambientColor 	0.02 0.02 0.02
+    diffuseColor 	0.01 0.01 0.01
+    specularColor 	0.4 0.4 0.4
+    shininess 		.078125
+    #ALPHA 0.0
+}

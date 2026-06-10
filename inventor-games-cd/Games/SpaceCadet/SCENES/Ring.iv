@@ -1,0 +1,109 @@
+#Inventor V2.0 ascii
+
+Separator {
+
+    # This is shared among all rings
+    DEF RingProps Group {
+	Coordinate3 {
+	    point [
+		   0 -1 0,
+		   -0.382683 -0.92388 0,
+		   -0.707107 -0.707107 0,
+		   -0.923879 -0.382684 0,
+		   -1 0 0,
+		   -0.92388 0.382684 0,
+		   -0.707107 0.707107 0,
+		   -0.382683 0.92388 0,
+		   0 1 0,
+		   0.382683 0.92388 0,
+		   0.707107 0.707107 0,
+		   0.92388 0.382684 0,
+		   1 0 0,
+		   0.92388 -0.382683 0,
+		   0.707107 -0.707107 0,
+		   0.382683 -0.92388 0,
+		   0 -1 0,
+		   ]
+	}
+
+	LightModel { model BASE_COLOR }
+	DrawStyle  { lineWidth 2 }
+    }
+
+    # A copy of this graph is made per ring instance
+    DEF RingSep Separator {
+	renderCaching OFF
+
+	# This gets set based on the type of ring
+	DEF RingColor BaseColor {}
+
+	# This is set to position the ring
+	DEF RingXform Transform {}
+
+	# This is the ring outline
+	Separator {
+	    renderCaching ON
+	    LineSet {}
+	}
+
+	# This switches between inactive (0), activated (1), and spent (2)
+	DEF RingSwitch Switch {
+
+	    whichChild 0
+
+	    # Inactive - activation button is shown
+	    Separator {
+		renderCaching ON
+		DEF RingButtonXform Transform {}
+		Coordinate3 {
+		    point [
+			   -.14 .14 0.01,	# 0
+			   -.09 .09 0.01,	# 1
+			   .14 .14 0.01, 	# 2
+			   .09 .09 0.01, 	# 3
+			   .14 -.14 0.01,	# 4
+			   .09 -.09 0.01,	# 5
+			   -.14 -.14 0.01,	# 6
+			   -.09 -.09 0.01,	# 7
+
+			   -.05 .05 0.01,	# 8
+			   .05 .05 0.01,	# 9
+			   .05 -.05 0.01,	# 10
+			   -.05 -.05 0.01,	# 11
+			   ]
+		}
+		IndexedTriangleStripSet {
+		    coordIndex [0, 1, 2, 3, 4, 5, 6, 7, 0, 1, -1,
+				9, 8, 10, 11]
+		}
+	    }
+
+	    # Activated - button goes away, disk becomes translucent,
+	    # text appears
+	    Separator {
+		# Leave render caching auto, which will give the 3D
+		# text a chance to build its own caches
+		Separator {
+		    Material {
+			diffuseColor ~
+			transparency .7
+		    }
+		    FaceSet { startIndex 1 }
+		}
+		Separator {
+		    Translation { translation 0 -.2 .01 }
+		    Font { name Helvetica size .7 }
+		    Material {
+			diffuseColor ~
+			transparency .4
+		    }
+		    # This text depends on the type of ring
+		    DEF RingText Text3 { justification CENTER string ? }
+		}
+	    }
+
+	    # Spent - no button, no disk
+	    Label {}
+	}
+    }
+}

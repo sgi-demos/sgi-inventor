@@ -1,0 +1,9 @@
+Settings->Grid Settings
+
+This selection brings up the Grid Settings editor. This editor has
+more options on the grid that is displayed in the main Movieola
+window. Parameters like grid divisions, subdivisions, axis size and
+snap divisions/subdivisions may be set in this editor. You can also
+turn on/off the "Snap to Grid" option in Movieola. When this option is
+on, Movieola objects snap to line sub-divisions in the grid when they
+are moved

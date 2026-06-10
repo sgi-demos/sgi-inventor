@@ -1,0 +1,11 @@
+File->Print
+
+This is used to print a hard copy of the Movieola scene. "Painters Action"
+is used to create the PostScript file used for printing. The PostScript
+file created is sent to the default printer (pointed to by the PRINTER
+environment variable in your shell).
+
+To send to another printer (say "myPrinter"), before you startup Movieola,
+please set the following environment variable on your console.
+
+setenv PRINTER  myPrinter
