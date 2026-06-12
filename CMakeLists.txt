@@ -33,6 +33,9 @@ endif()
 
 find_package(BISON REQUIRED)
 if (EMSCRIPTEN)
+    # Ports headers (SDL2, FreeType) must be visible at compile time too,
+    # not just link time, or ft2build.h / SDL.h are not found.
+    add_compile_options(-sUSE_SDL=2 -sUSE_FREETYPE=1)
     # JPEG/GL/Freetype come from Emscripten ports (-sUSE_LIBJPEG etc.);
     # provide empty imported targets so target_link_libraries resolves.
     add_library(JPEG::JPEG INTERFACE IMPORTED)

@@ -1,0 +1,66 @@
+--- /usr/share/emscripten/src/library_glemu.js.orig	2026-06-12 00:36:04.590369035 +0000
++++ /usr/share/emscripten/src/library_glemu.js	2026-06-12 00:36:04.630138746 +0000
+@@ -3818,7 +3818,7 @@
+         // multiply position with current modelviewmatrix
+         GLImmediate.matrixLib.mat4.multiplyVec4(GLImmediate.matrix[0], GLEmulation.lightPosition[lightId]);
+       } else {
+-        throw 'glLightfv: TODO: ' + pname;
++        warnOnce('glLightfv: TODO: 0x' + pname.toString(16));
+       }
+     }
+   },
+@@ -3827,7 +3827,7 @@
+     if (pname == 0x0B52) { // GL_LIGHT_MODEL_TWO_SIDE
+       GLEmulation.lightModelTwoSide = (param != 0) ? true : false;
+     } else {
+-      throw 'glLightModelf: TODO: ' + pname;
++      warnOnce('glLightModelf: TODO: 0x' + pname.toString(16));
+     }
+   },
+ 
+@@ -3838,7 +3838,7 @@
+       GLEmulation.lightModelAmbient[2] = {{{ makeGetValue('param', '8', 'float') }}};
+       GLEmulation.lightModelAmbient[3] = {{{ makeGetValue('param', '12', 'float') }}};
+     } else {
+-      throw 'glLightModelfv: TODO: ' + pname;
++      warnOnce('glLightModelfv: TODO: 0x' + pname.toString(16));
+     }
+   },
+ 
+@@ -3862,11 +3862,35 @@
+       GLEmulation.materialSpecular[3] = {{{ makeGetValue('param', '12', 'float') }}};
+     } else if (pname == 0x1601) { // GL_SHININESS
+       GLEmulation.materialShininess[0] = {{{ makeGetValue('param', '0', 'float') }}};
++    } else if (pname == 0x1600) { // GL_EMISSION
++      GLEmulation.materialEmission[0] = {{{ makeGetValue('param', '0', 'float') }}};
++      GLEmulation.materialEmission[1] = {{{ makeGetValue('param', '4', 'float') }}};
++      GLEmulation.materialEmission[2] = {{{ makeGetValue('param', '8', 'float') }}};
++      GLEmulation.materialEmission[3] = {{{ makeGetValue('param', '12', 'float') }}};
++    } else if (pname == 0x1602) { // GL_AMBIENT_AND_DIFFUSE
++      for (var i = 0; i < 4; i++) {
++        var v = {{{ makeGetValue('param', 'i*4', 'float') }}};
++        GLEmulation.materialAmbient[i] = v;
++        GLEmulation.materialDiffuse[i] = v;
++      }
+     } else {
+-      throw 'glMaterialfv: TODO: ' + pname;
++      warnOnce('glMaterialfv: TODO: 0x' + pname.toString(16));
+     }
+   },
+ 
++  glMaterialf: function(face, pname, param) {
++    if (pname == 0x1601) { // GL_SHININESS
++      GLEmulation.materialShininess[0] = param;
++    } else {
++      warnOnce('glMaterialf: TODO: 0x' + pname.toString(16));
++    }
++  },
++
++  glLightModeli: 'glLightModelf',
++  glLighti: function(light, pname, param) {
++    warnOnce('glLighti: TODO');
++  },
++
+   glTexGeni: function() { throw 'glTexGeni: TODO' },
+   glTexGenfv: function() { throw 'glTexGenfv: TODO' },
+   glTexEnvi: function() { warnOnce('glTexEnvi: TODO') },

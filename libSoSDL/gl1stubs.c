@@ -3,7 +3,10 @@
  * All are no-ops: the Inventor SDL port disables render caching
  * (display lists) at runtime and does not exercise color-index mode,
  * the accumulation buffer, stipples, raster text, or the attrib stack
- * in the browser build. Revisit per-function if a demo needs one.
+ * in the browser build. Revisit per-function if a demo needs one. 
+ * (glMaterialf and glLightModeli are intentionally NOT stubbed here:
+ * they are implemented in the patched library_glemu.js - see
+ * tools/emscripten-patches/.)
  */
 
 void glAccum(unsigned op, float value) {}
@@ -16,11 +19,9 @@ void glDeleteLists(unsigned l, int range) {}
 void glEndList(void) {}
 void glIndexi(int c) {}
 void glIndexiv(const int *c) {}
-void glLightModeli(unsigned pname, int param) {}
 void glLightf(unsigned light, unsigned pname, float param) {}
 void glLineStipple(int factor, unsigned short pattern) {}
 void glListBase(unsigned base) {}
-void glMaterialf(unsigned face, unsigned pname, float param) {}
 void glNewList(unsigned l, unsigned mode) {}
 void glPolygonStipple(const unsigned char *mask) {}
 void glPopAttrib(void) {}
