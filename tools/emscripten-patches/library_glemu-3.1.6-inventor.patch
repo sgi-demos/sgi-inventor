@@ -1,5 +1,5 @@
 --- library_glemu.js.orig	2026-06-12 03:25:11.085313202 +0000
-+++ library_glemu.js	2026-06-12 04:06:20.333786503 +0000
++++ library_glemu.js	2026-06-12 04:32:21.656859546 +0000
 @@ -321,6 +321,15 @@
            {{{ makeSetValue('p', '0', 'result === true ? 1 : 0', 'i8') }}};
            return;
@@ -144,7 +144,7 @@
    },
  
    glVertex2fv__deps: ['glVertex2f'],
-@@ -3224,16 +3319,259 @@
+@@ -3224,16 +3319,284 @@
    glVertex4i: 'glVertex4f',
  
    glTexCoord2i: function(u, v) {
@@ -192,7 +192,16 @@
 +        'void main(){ v_uv=a_uv; gl_Position=vec4(a_ndc,0.0,1.0); }');
 +      GLctx.compileShader(vs);
 +      var fs = GLctx.createShader(GLctx.FRAGMENT_SHADER);
-+      GLctx.shaderSource(fs,
++      // #textdebug in the URL swaps in a diagnostic shader: R=uniform
++      // path, G=sampled alpha, B=UV interpolation. One glance separates
++      // texture-binding failures from attribute failures.
++      var dbg = (typeof location !== 'undefined' &&
++                 location.hash.indexOf('textdebug') >= 0);
++      GLctx.shaderSource(fs, dbg ?
++        'precision mediump float; varying vec2 v_uv;' +
++        'uniform sampler2D u_tex; uniform vec4 u_color;' +
++        'void main(){ gl_FragColor = vec4(u_color.r * 0.5,' +
++        '  texture2D(u_tex, v_uv).a, v_uv.x, 1.0); }' :
 +        'precision mediump float; varying vec2 v_uv;' +
 +        'uniform sampler2D u_tex; uniform vec4 u_color;' +
 +        'void main(){ if (texture2D(u_tex, v_uv).a < 0.5) discard;' +
@@ -203,6 +212,10 @@
 +      GLctx.bindAttribLocation(p, 0, 'a_ndc');
 +      GLctx.bindAttribLocation(p, 1, 'a_uv');
 +      GLctx.linkProgram(p);
++      if (!GLctx.getProgramParameter(p, GLctx.LINK_STATUS)) {
++        err('[GLBitmapEmu] glyph program link failed: ' +
++            GLctx.getProgramInfoLog(p));
++      }
 +      GLBitmapEmu.prog = p;
 +      GLBitmapEmu.colorLoc = GLctx.getUniformLocation(p, 'u_color');
 +      GLBitmapEmu.samplerLoc = GLctx.getUniformLocation(p, 'u_tex');
@@ -266,6 +279,11 @@
 +      if (prevFlip) GLctx.pixelStorei(0x9240, prevFlip);
 +      if (prevPremul) GLctx.pixelStorei(0x9241, prevPremul);
 +      GLctx.bindTexture(GLctx.TEXTURE_2D, prevTex);
++      if (!GLBitmapEmu.loggedUpload) {
++        GLBitmapEmu.loggedUpload = 1;
++        out('[GLBitmapEmu] first glyph upload ' + rec.w + 'x' + rec.h +
++            ' glError=0x' + GLctx.getError().toString(16));
++      }
 +      rec.tex = tex;
 +    },
 +
@@ -310,6 +328,13 @@
 +        if (cullWas) GLctx.disable(GLctx.CULL_FACE);
 +        GLctx.drawArrays(GLctx.TRIANGLE_STRIP, 0, 4);
 +
++        if (!GLBitmapEmu.loggedDraw) {
++          GLBitmapEmu.loggedDraw = 1;
++          out('[GLBitmapEmu] first glyph draw glError=0x' +
++              GLctx.getError().toString(16) +
++              ' tex=' + (rec.tex ? 'ok' : 'NULL') +
++              ' prog=' + (GLBitmapEmu.prog ? 'ok' : 'NULL'));
++        }
 +        // Restore.
 +        if (depthWas) GLctx.enable(GLctx.DEPTH_TEST);
 +        if (cullWas) GLctx.enable(GLctx.CULL_FACE);
@@ -410,7 +435,7 @@
    glTexCoord2fv: function(v) {
      _glTexCoord2i({{{ makeGetValue('v', '0', 'float') }}}, {{{ makeGetValue('v', '4', 'float') }}});
    },
-@@ -3246,24 +3584,22 @@
+@@ -3246,24 +3609,22 @@
      b = Math.max(Math.min(b, 1), 0);
      a = Math.max(Math.min(a, 1), 0);
  
@@ -448,7 +473,7 @@
    },
  
    glColor4d: 'glColor4f',
-@@ -3416,16 +3752,13 @@
+@@ -3416,16 +3777,13 @@
    },
  
    glNormal3f: function(x, y, z) {
@@ -472,7 +497,7 @@
    },
  
    glNormal3fv__deps: ['glNormal3f'],
-@@ -3818,7 +4151,7 @@
+@@ -3818,7 +4176,7 @@
          // multiply position with current modelviewmatrix
          GLImmediate.matrixLib.mat4.multiplyVec4(GLImmediate.matrix[0], GLEmulation.lightPosition[lightId]);
        } else {
@@ -481,7 +506,7 @@
        }
      }
    },
-@@ -3827,7 +4160,7 @@
+@@ -3827,7 +4185,7 @@
      if (pname == 0x0B52) { // GL_LIGHT_MODEL_TWO_SIDE
        GLEmulation.lightModelTwoSide = (param != 0) ? true : false;
      } else {
@@ -490,7 +515,7 @@
      }
    },
  
-@@ -3838,7 +4171,7 @@
+@@ -3838,7 +4196,7 @@
        GLEmulation.lightModelAmbient[2] = {{{ makeGetValue('param', '8', 'float') }}};
        GLEmulation.lightModelAmbient[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else {
@@ -499,7 +524,7 @@
      }
    },
  
-@@ -3862,11 +4195,35 @@
+@@ -3862,11 +4220,35 @@
        GLEmulation.materialSpecular[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else if (pname == 0x1601) { // GL_SHININESS
        GLEmulation.materialShininess[0] = {{{ makeGetValue('param', '0', 'float') }}};
@@ -514,20 +539,20 @@
 +        GLEmulation.materialAmbient[i] = v;
 +        GLEmulation.materialDiffuse[i] = v;
 +      }
-     } else {
--      throw 'glMaterialfv: TODO: ' + pname;
-+      warnOnce('glMaterialfv: TODO: 0x' + pname.toString(16));
-     }
-   },
- 
-+  glMaterialf: function(face, pname, param) {
-+    if (pname == 0x1601) { // GL_SHININESS
-+      GLEmulation.materialShininess[0] = param;
 +    } else {
-+      warnOnce('glMaterialf: TODO: 0x' + pname.toString(16));
++      warnOnce('glMaterialfv: TODO: 0x' + pname.toString(16));
 +    }
 +  },
 +
++  glMaterialf: function(face, pname, param) {
++    if (pname == 0x1601) { // GL_SHININESS
++      GLEmulation.materialShininess[0] = param;
+     } else {
+-      throw 'glMaterialfv: TODO: ' + pname;
++      warnOnce('glMaterialf: TODO: 0x' + pname.toString(16));
+     }
+   },
+ 
 +  glLightModeli: 'glLightModelf',
 +  glLighti: function(light, pname, param) {
 +    warnOnce('glLighti: TODO');
