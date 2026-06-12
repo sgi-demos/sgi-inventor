@@ -213,6 +213,34 @@ unicode charmap (native FreeType 2.13 is fine), so the bundled fonts are
 TrueType (DejaVu Serif standing in for Utopia; see
 `apps/sdldemos/slotcar/data/fonts/README.txt`).
 
+**Failure 7 — every glyph rendered as the .notdef tofu box (iconv
+endianness, not GL at all).** After the bitmap-text emulation worked,
+browser text showed identical boxes for every character. A long
+instrumented hunt (GPU texture readback, full draw-state dumps,
+per-quad logs — all clean) ended at libFL's TRACE output: characters
+arrived byte-swapped (0x5300 for 'S'). Root cause: SGI's
+SoText2/SoText3 swap iconv output to big-endian for libFL with
+`DGL_HTON_SHORT` — necessary on glibc, whose `"UCS-2"` emits
+little-endian — but **musl's `"UCS-2"` is big-endian**, so under
+Emscripten the swap corrupted correct data. Apple's libiconv is also
+BE, hence the original `#ifndef __APPLE__`. *Fix: request `"UCS-2BE"`
+explicitly and delete the swap; every libc honors the explicit name.*
+The diagnostic ladder that found it (r3–r6) is worth keeping in mind:
+console version banners, GL-error probes, FBO texture readback,
+framebuffer readback after one draw, and finally enabling the original
+1990s TRACE logging — which is what actually named the bug.
+
+**Failure 8 — SoText3 tessellation crashed (GLU ABI mismatch).** With
+real characters finally flowing, SoText3 fed glyph outlines to glues'
+libtess and crashed in `CheckForIntersect`. glues' GLES port had
+converted libtess to GLfloat, but Inventor compiles against the
+standard sysroot `GL/glu.h` where `gluTessVertex` takes `GLdouble*` —
+double[3] written, float[3] read: garbage coordinates, and float
+precision is below what the sweep algorithm needs anyway. *Fix:
+revert libtess to SGI's original GLdouble types (vendored in
+`tools/glues-patches/`); tess math is CPU-side and GLES never sees
+it.*
+
 The general lesson: **GL1 state queries that WebGL rejects fail soft** —
 INVALID_ENUM plus an untouched (zero) result — and fixed-function code makes
 load-bearing decisions on those zeros. Every glGet* the scene graph performs
@@ -267,6 +295,7 @@ verification is always a real browser.
 | M6a | SGI slotcar (1994) ported and racing natively: overlay-plane emulation in SoSDLRenderArea, viewport-restore responsibility, Sky raw-GL lighting fix, bundled Utopia fonts, 1994-C++ modernization |
 | M6b | Real LongOcean.iv recovered; GL_POLYGON→TRIANGLE_FAN glemu fix (failure 5); slotcar wasm build passing the harness |
 | M6c | Bitmap-text emulation (failure 6): SoText2 glyphs render in the browser; TrueType fonts bundled (FreeType 2.6 Type1 gap) |
+| M6d | The tofu-box saga: UCS-2 endianness fix in SoText2/SoText3 (glibc vs musl iconv, failure 7) and double-precision glues libtess (GLU ABI mismatch, failure 8). Full text pipeline working in wasm |
 
 ## 11. Process notes (how not to lose work)
 

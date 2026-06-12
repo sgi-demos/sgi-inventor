@@ -13,3 +13,7 @@ target_link_libraries(FLiv PRIVATE Freetype::Freetype)
 target_link_libraries(FLiv PRIVATE OpenGL::GL)
 
 target_include_directories(FLiv PUBLIC .)
+if (EMSCRIPTEN)
+    # Compile TRACE in for the wasm build; runtime-gated by FL_DEBUG.
+    target_compile_definitions(FLiv PRIVATE DEBUG=1)
+endif()

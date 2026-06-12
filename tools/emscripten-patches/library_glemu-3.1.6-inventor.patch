@@ -1,5 +1,5 @@
 --- library_glemu.js.orig	2026-06-12 03:25:11.085313202 +0000
-+++ library_glemu.js	2026-06-12 13:27:50.428684041 +0000
++++ library_glemu.js	2026-06-12 14:13:51.010380358 +0000
 @@ -321,6 +321,15 @@
            {{{ makeSetValue('p', '0', 'result === true ? 1 : 0', 'i8') }}};
            return;
@@ -144,7 +144,7 @@
    },
  
    glVertex2fv__deps: ['glVertex2f'],
-@@ -3224,16 +3319,380 @@
+@@ -3224,16 +3319,343 @@
    glVertex4i: 'glVertex4f',
  
    glTexCoord2i: function(u, v) {
@@ -335,21 +335,6 @@
 +        var vp = GLctx.getParameter(GLctx.VIEWPORT);
 +        var x0 = r.x - rec.xo, y0 = r.y - rec.yo;
 +        var x1 = x0 + rec.w, y1 = y0 + rec.h;
-+        GLBitmapEmu.quadCount = (GLBitmapEmu.quadCount || 0) + 1;
-+        if (GLBitmapEmu.quadCount <= 40) {
-+          out('[GLBitmapEmu] q' + GLBitmapEmu.quadCount +
-+              ' ' + rec.w + 'x' + rec.h +
-+              ' @(' + x0.toFixed(0) + ',' + y0.toFixed(0) + ')-(' +
-+              x1.toFixed(0) + ',' + y1.toFixed(0) + ')' +
-+              ' vp=' + vp[2] + 'x' + vp[3] +
-+              ' rgba=[' + r.color.map(function(c){return c.toFixed(1);}).join(',') + ']');
-+        }
-+        if (GLBitmapEmu.quadCount === 1) {
-+          GLBitmapEmu.firstRect = [Math.max(0,Math.floor(x0)),
-+                                   Math.max(0,Math.floor(y0)),
-+                                   Math.ceil(rec.w), Math.ceil(rec.h),
-+                                   r.color.slice()];
-+        }
 +        function ndcx(px) { return (px - vp[0]) / vp[2] * 2 - 1; }
 +        function ndcy(py) { return (py - vp[1]) / vp[3] * 2 - 1; }
 +        var v = new Float32Array([
@@ -408,28 +393,6 @@
 +            out('[GLBitmapEmu] fb |' + line + '|');
 +          }
 +          } catch (e) { out('[GLBitmapEmu] draw diag failed: ' + e); }
-+        }
-+        if (GLBitmapEmu.quadCount === 2 && GLBitmapEmu.firstRect &&
-+            !GLBitmapEmu.recheck) {
-+          GLBitmapEmu.recheck = 1;
-+          try {
-+            var fr = GLBitmapEmu.firstRect;
-+            var px2 = new Uint8Array(fr[2] * fr[3] * 4);
-+            GLctx.readPixels(fr[0], fr[1], fr[2], fr[3], GLctx.RGBA,
-+                             GLctx.UNSIGNED_BYTE, px2);
-+            var c2 = fr[4];
-+            out('[GLBitmapEmu] glyph1 rect re-read after glyph2:');
-+            for (var j2 = fr[3] - 1; j2 >= 0; j2--) {
-+              var l2 = '';
-+              for (var i2 = 0; i2 < fr[2]; i2++) {
-+                var o2 = (j2 * fr[2] + i2) * 4;
-+                l2 += (Math.abs(px2[o2] - c2[0]*255) < 40 &&
-+                       Math.abs(px2[o2+1] - c2[1]*255) < 40 &&
-+                       Math.abs(px2[o2+2] - c2[2]*255) < 40) ? '#' : '.';
-+              }
-+              out('[GLBitmapEmu] fb2 |' + l2 + '|');
-+            }
-+          } catch (e) { out('[GLBitmapEmu] recheck failed: ' + e); }
 +        }
 +        // Restore.
 +        if (depthWas) GLctx.enable(GLctx.DEPTH_TEST);
@@ -531,7 +494,7 @@
    glTexCoord2fv: function(v) {
      _glTexCoord2i({{{ makeGetValue('v', '0', 'float') }}}, {{{ makeGetValue('v', '4', 'float') }}});
    },
-@@ -3246,24 +3705,22 @@
+@@ -3246,24 +3668,22 @@
      b = Math.max(Math.min(b, 1), 0);
      a = Math.max(Math.min(a, 1), 0);
  
@@ -569,7 +532,7 @@
    },
  
    glColor4d: 'glColor4f',
-@@ -3416,16 +3873,13 @@
+@@ -3416,16 +3836,13 @@
    },
  
    glNormal3f: function(x, y, z) {
@@ -593,7 +556,7 @@
    },
  
    glNormal3fv__deps: ['glNormal3f'],
-@@ -3818,7 +4272,7 @@
+@@ -3818,7 +4235,7 @@
          // multiply position with current modelviewmatrix
          GLImmediate.matrixLib.mat4.multiplyVec4(GLImmediate.matrix[0], GLEmulation.lightPosition[lightId]);
        } else {
@@ -602,7 +565,7 @@
        }
      }
    },
-@@ -3827,7 +4281,7 @@
+@@ -3827,7 +4244,7 @@
      if (pname == 0x0B52) { // GL_LIGHT_MODEL_TWO_SIDE
        GLEmulation.lightModelTwoSide = (param != 0) ? true : false;
      } else {
@@ -611,7 +574,7 @@
      }
    },
  
-@@ -3838,7 +4292,7 @@
+@@ -3838,7 +4255,7 @@
        GLEmulation.lightModelAmbient[2] = {{{ makeGetValue('param', '8', 'float') }}};
        GLEmulation.lightModelAmbient[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else {
@@ -620,7 +583,7 @@
      }
    },
  
-@@ -3862,11 +4316,35 @@
+@@ -3862,11 +4279,35 @@
        GLEmulation.materialSpecular[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else if (pname == 0x1601) { // GL_SHININESS
        GLEmulation.materialShininess[0] = {{{ makeGetValue('param', '0', 'float') }}};

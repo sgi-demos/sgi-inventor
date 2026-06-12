@@ -755,7 +755,7 @@ SoBitmapFontCache::convertToUCS(uint32_t nodeid,
  
     //make sure conversion code already set:
     if (conversionCode == NULL){
-	conversionCode = iconv_open("UCS-2", "UTF-8");	
+	conversionCode = iconv_open("UCS-2BE", "UTF-8");	
     }
     
     if ( conversionCode == (iconv_t)-1 ){
@@ -794,13 +794,11 @@ SoBitmapFontCache::convertToUCS(uint32_t nodeid,
     
 	UCSNumChars[i] = (void*)((2*strings[i].getLength()+2 - outbytes)>>1);
 
-#ifndef __APPLE__
-        int j;
-        for (j = 0; j < getNumUCSChars(i); j++) {
-            char* c = (char*)UCSStrings[i]+j*2;
-            DGL_HTON_SHORT(SHORT(c), SHORT(c));
-        }
-#endif
+// Byte order note (sdl-port): FL reads UCS-2 as big-endian byte
+        // pairs. We now request UCS-2BE from iconv explicitly, so the
+        // old glibc-era DGL_HTON_SHORT fix-up loop (which corrupted the
+        // already-big-endian output of musl/emscripten iconv into
+        // notdef glyphs) is gone.
     }
  
     return TRUE;
