@@ -1,0 +1,277 @@
+include $(IVDEPTH)/make/system
+include $(IVDEPTH)/make/commondefs
+
+IVCOMMONRULES = $(IVDEPTH)/make/ivcommonrules
+
+
+
+#
+# Settings for systems without single-precision math functions.
+#
+
+MATHDEFS = -D_DOUBLE_MATH_ONLY
+
+
+
+#
+# Settings for IRIX systems.
+#
+
+ifeq ($(usingIrix), 1)
+
+# Define this to have menus appear in the popup planes instead of the normal
+# planes. You lose menu colors, but don't have to redraw the scene just to see
+# a menu.
+LCXXDEFS += -DMENUS_IN_POPUP
+
+LD = $(TOOLROOT)/usr/bin/CC
+LLDDSOOPTS += -Wl,-full_transitive_link
+LLDOPTS += -Wl,-full_transitive_link
+LD_QUICKSTART_INFO =
+
+MATHLIB = -lm
+DLLIB = -ldl
+
+endif
+
+
+
+#
+# Assume FreeBSD options are the same as those for Linux.
+#
+
+ifeq ($(usingFreeBSD), 1)
+usingLinux = 1
+endif
+
+
+
+#
+# Override variables in commondefs when building on Linux systems.
+#
+
+ifeq ($(usingLinux), 1)
+
+FREETYPE = 1
+INTERNALGLW = 1
+
+CC  = /usr/bin/gcc
+C++ = /usr/bin/g++
+LD  = /usr/bin/g++
+
+INSTALL = /usr/bin/install
+LN_S = ln -sf
+
+# MKDEPOPT = -MD
+
+# The linker flag '-z defs' enforces symbol resolution at build time,
+# with the goal of catching any missing library reference [Policy 10.2].
+#
+
+GLDDSOOPTS = -shared -Wl,--whole-archive -Wl,-z,defs
+ifneq ($(DSONAME),)
+GLDDSOOPTS += -Wl,-soname=$(DSONAME) 
+endif
+POST_LDDSOOPTS = -Wl,--no-whole-archive
+
+endif
+
+
+
+#
+# Additional settings for Linux systems and GNU compilers.
+#
+
+ifeq ($(usingLinux), 1)
+
+FREETYPE = 1
+
+MATHLIB = -lm
+DLLIB = -ldl
+
+LINUXOPTS = -fPIC
+LINUXOPTS += -D__STDC_FORMAT_MACROS
+LCXXOPTS += $(LINUXOPTS) -std=c++03
+LCOPTS += $(LINUXOPTS)
+
+X11DIR = /usr/X11R6
+X11INCDIR = $(X11DIR)/include
+X11LIBDIR = $(X11DIR)/lib
+
+LCXXINCS += -I$(X11INCDIR)
+LCINCS += -I$(X11INCDIR)
+
+LDDSOOPTS += -L$(X11LIBDIR)
+LDOPTS += -L$(X11LIBDIR)
+
+endif
+
+
+
+#
+# Settings for Apple Darwin (Mac OS X) systems.
+#
+
+ifeq ($(usingDarwin), 1)
+
+FREETYPE = 1
+INTERNALGLW = 1
+
+CC  = /usr/bin/cc
+C++ = /usr/bin/c++
+LD  = /usr/bin/libtool
+
+ARFLAGS = vrs
+INSTALL = /usr/bin/install
+LN_S = ln -sf
+
+LCXXDEFS += $(MATHDEFS)
+LCDEFS += $(MATHDEFS)
+
+DARWINOPTS = -dynamic -fno-common
+LCXXOPTS += $(DARWINOPTS) -std=c++03
+LCOPTS += $(DARWINOPTS)
+
+X11DIR = /opt/X11
+MATHLIB =
+DLLIB =
+
+X11INCDIR = $(X11DIR)/include
+X11LIBDIR = $(X11DIR)/lib
+
+LCXXINCS += -I$(X11INCDIR)
+LCINCS += -I$(X11INCDIR) -I/usr/local/include/freetype2
+
+LDDSOOPTS += -dynamic -all_load -L$(X11LIBDIR)
+LDOPTS += -multiply_defined suppress -undefined error -L$(X11LIBDIR)
+CXXDSOOPTS += -bundle -flat_namespace -undefined error -L$(X11LIBDIR)
+GLDDSOOPTS += -undefined error
+
+LOCALRULES = $(IVDEPTH)/make/localrules.apple
+
+endif
+
+
+
+#
+# Determine optimization from LIBTYPE.
+#
+
+OPTIMIZER = -O -DNDEBUG
+ifneq (, $(findstring debug, $(LIBTYPE)))
+OPTIMIZER = -g
+endif
+
+
+
+#
+# Inventor library include directories.
+#
+
+IVLIBHDRDIRS = \
+	-I. \
+	-I$(IVDEPTH)/lib/database/include \
+	-I$(IVDEPTH)/lib/interaction/include \
+	-I$(IVDEPTH)/lib/nodekits/include \
+	-I$(IVDEPTH)/libSoXt/include
+
+LCXXINCS += $(IVLIBHDRDIRS)
+LCINCS += $(IVLIBHDRDIRS)
+
+
+
+#
+# Font library directories.
+#
+
+FLDIR = $(IVDEPTH)/libFL
+FLLIB = -lFLiv
+ifdef FREETYPE
+FLLIB += -lfreetype
+endif
+
+
+
+#
+# Tools for generating Inventor man pages.
+#
+
+IVPPPDIR = $(IVDEPTH)/tools/ppp
+IVPPP = $(IVPPPDIR)/ppp
+IVMANDIR = $(shell dirname $(IVDEPTH))/doc/man/ivman
+IVMAN = $(IVMANDIR)/ivman
+MAKEMANDIRS = $(IVMANDIR)/makeManDirs
+
+
+
+#
+# Inventor install directories.
+#
+
+IVPREFIX = /usr
+_BINDIR = $(IVPREFIX)/bin
+_LIBDIR = $(IVPREFIX)/lib
+_HDRTOP = $(IVPREFIX)/include/Inventor
+_MAN1DIR = $(IVPREFIX)/share/man/man1
+_MAN3DIR = $(IVPREFIX)/share/man/man3
+_FONTPATH = $(IVPREFIX)/share/inventor/fonts
+_HELPDIR = $(IVPREFIX)/share/inventor/help
+_DATADIR = $(IVPREFIX)/share/inventor/data/models
+_MATERIALSDIR = $(IVPREFIX)/share/inventor/data/materials
+_TEXTURESDIR = $(IVPREFIX)/share/inventor/data/textures
+_DEMOBINDIR = $(IVPREFIX)/libexec/inventor
+_DEMODATADIR = $(IVPREFIX)/share/inventor/data/demos
+ifeq ($(usingDarwin), 1)
+_PDFVIEWER = open
+else
+_PDFVIEWER = xdg-open
+endif
+
+IVBINDIR = $(IVROOT)$(_BINDIR)
+IVLIBDIR = $(IVROOT)$(_LIBDIR)
+IVDLIBDIR = $(IVLIBDIR)/InventorDebug
+IVHDRTOP = $(IVROOT)$(_HDRTOP)
+IVHDRDIR = $(IVHDRTOP)/$(HDRSUBDIR)
+IVMAN1DIR = $(IVROOT)$(_MAN1DIR)
+IVMAN3DIR = $(IVROOT)$(_MAN3DIR)
+IVHELPDIR = $(IVROOT)$(_HELPDIR)
+IVDATADIR = $(IVROOT)$(_DATADIR)
+IVMATERIALSDIR = $(IVROOT)$(_MATERIALSDIR)
+IVTEXTURESDIR = $(IVROOT)$(_TEXTURESDIR)
+IVDEMOBINDIR = $(IVROOT)$(_DEMOBINDIR)
+IVDEMODATADIR = $(IVROOT)$(_DEMODATADIR)
+
+# Set "local" C++ defines to specify pathnames.
+#
+LCXXDEFS = -DIVBINDIR=\"$(_BINDIR)\" \
+	-DIVLIBDIR=\"$(_LIBDIR)\" \
+	-DIVHDRTOP=\"$(_HDRTOP)\" \
+	-DIVFONTPATH=\"$(_FONTPATH)\" \
+	-DIVHELPDIR=\"$(_HELPDIR)\" \
+	-DIVDATADIR=\"$(_DATADIR)\" \
+	-DIVMATERIALSDIR=\"$(_MATERIALSDIR)\" \
+	-DIVTEXTURESDIR=\"$(_TEXTURESDIR)\" \
+	-DIVDEMOBINDIR=\"$(_DEMOBINDIR)\" \
+	-DIVDEMODATADIR=\"$(_DEMODATADIR)\" \
+	-DPDFVIEWER=\"$(_PDFVIEWER)\"
+
+#
+# Locate installed Inventor libraries when linking applications.
+#
+
+ifneq (, $(findstring debug, $(LIBTYPE)))
+LLDDSOOPTS += -L$(IVDLIBDIR)
+LLDOPTS += -L$(IVDLIBDIR)
+CXXDSOOPTS += -L$(IVDLIBDIR)
+else
+LLDDSOOPTS += -L$(IVLIBDIR)
+LLDOPTS += -L$(IVLIBDIR)
+CXXDSOOPTS += -L$(IVLIBDIR)
+endif
+
+#
+# Link against libraries not yet installed
+#
+
+LDDSOOPTS += -L$(IVDEPTH)/lib -L$(IVDEPTH)/libSoXt
+LDOPTS += -L$(IVDEPTH)/lib -L$(IVDEPTH)/libSoXt

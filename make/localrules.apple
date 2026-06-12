@@ -1,0 +1,21 @@
+# Alternate rules for building shared objects
+# on Apple Darwin (Mac OS X) systems.
+
+ifeq ($(usingDarwin), 1)
+
+MOTIFDIR = /usr/local
+MOTIFINCDIR = $(MOTIFDIR)/include
+MOTIFLIBDIR = $(MOTIFDIR)/lib
+
+LCINCS   += -I$(MOTIFINCDIR)
+LCXXINCS += -I$(MOTIFINCDIR)
+LLDLIBS  += -L$(MOTIFLIBDIR) -lXm -lXt -lXi -lX11 -lGLU -lGL $(DLLIB)
+
+BUNDLE := $(DSO:.so=.bundle)
+DSO :=
+
+$(BUNDLE): $(OBJECTS)
+	$(CXX) $(CXXDSOOPTS) $(OBJECTS) $(LDLIBS) -o $@
+	mv $@ $(@:.bundle=.so)
+
+endif
