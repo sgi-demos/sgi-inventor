@@ -197,6 +197,22 @@ identically as a triangle fan over the same vertices. *Patch: map mode 9
 to GL_TRIANGLE_FAN in flush().* (Found in seconds by the Node harness —
 the throw surfaced with a full stack instead of a black canvas.)
 
+**Failure 6 — SoText2 invisible (no raster ops).**
+SoText2 draws glyphs with `glRasterPos3f` + `glBitmap` wrapped in
+bitmap-only display lists replayed via `glCallLists(GL_2_BYTES, ...)` —
+none of which exists in WebGL (they were no-op C stubs, so text silently
+vanished). *Patch: a bitmap-text emulation (`$GLBitmapEmu`): the raster
+position is transformed through the emulated modelview/projection to
+window coordinates; each 1-bpp glyph (4-byte-aligned rows, MSB-first,
+bottom-up — libFL's format) becomes an ALPHA texture drawn as a
+screen-space quad with a dedicated discard-shader; `glGenLists` /
+`glNewList` / `glCallList(s)` / `glListBase` are implemented for
+bitmap-recording lists.* Companion fix outside the emulation: the
+Emscripten FreeType 2.6.0 port maps almost no glyphs through a Type1
+unicode charmap (native FreeType 2.13 is fine), so the bundled fonts are
+TrueType (DejaVu Serif standing in for Utopia; see
+`apps/sdldemos/slotcar/data/fonts/README.txt`).
+
 The general lesson: **GL1 state queries that WebGL rejects fail soft** —
 INVALID_ENUM plus an untouched (zero) result — and fixed-function code makes
 load-bearing decisions on those zeros. Every glGet* the scene graph performs
@@ -226,6 +242,11 @@ Mechanics worth knowing (all learned the hard way):
   nothing.
 - The mock GL must pass `instanceof WebGLRenderingContext` (Emscripten's
   Safari workaround checks it).
+- The mock must define the enum constants as context properties
+  (`GLctx.VIEWPORT` etc.) and answer the state queries the emulation
+  performs (VIEWPORT, ARRAY_BUFFER_BINDING, ACTIVE_TEXTURE,
+  TEXTURE_BINDING_2D, UNPACK_ALIGNMENT, getVertexAttrib) — the
+  bitmap-text emulation saves/restores real GL state around glyph quads.
 
 The harness validates state and uniform flow, not pixels — final visual
 verification is always a real browser.
@@ -245,6 +266,7 @@ verification is always a real browser.
 | M5d | Immediate-mode batch semantics recovered from archived M5 build — geometry correct. **Maze fully working in browser.** |
 | M6a | SGI slotcar (1994) ported and racing natively: overlay-plane emulation in SoSDLRenderArea, viewport-restore responsibility, Sky raw-GL lighting fix, bundled Utopia fonts, 1994-C++ modernization |
 | M6b | Real LongOcean.iv recovered; GL_POLYGON→TRIANGLE_FAN glemu fix (failure 5); slotcar wasm build passing the harness |
+| M6c | Bitmap-text emulation (failure 6): SoText2 glyphs render in the browser; TrueType fonts bundled (FreeType 2.6 Type1 gap) |
 
 ## 11. Process notes (how not to lose work)
 

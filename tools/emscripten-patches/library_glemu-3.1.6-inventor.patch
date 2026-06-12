@@ -1,5 +1,5 @@
 --- library_glemu.js.orig	2026-06-12 03:25:11.085313202 +0000
-+++ library_glemu.js	2026-06-12 03:34:43.262767403 +0000
++++ library_glemu.js	2026-06-12 03:46:58.015685765 +0000
 @@ -321,6 +321,15 @@
            {{{ makeSetValue('p', '0', 'result === true ? 1 : 0', 'i8') }}};
            return;
@@ -144,7 +144,7 @@
    },
  
    glVertex2fv__deps: ['glVertex2f'],
-@@ -3224,12 +3319,11 @@
+@@ -3224,16 +3319,247 @@
    glVertex4i: 'glVertex4f',
  
    glTexCoord2i: function(u, v) {
@@ -162,7 +162,243 @@
    },
    glTexCoord2f: 'glTexCoord2i',
  
-@@ -3246,24 +3340,22 @@
+   glTexCoord2fv__deps: ['glTexCoord2i'],
++  // ------------------------------------------------------------------
++  // SGI-Inventor port: bitmap text emulation (glemu failure 6).
++  // SoText2 renders glyphs with glRasterPos3f + glBitmap, wrapped in
++  // bitmap-only display lists replayed via glCallList(s). None of that
++  // exists in WebGL; emulate: transform the raster position through the
++  // emulated modelview/projection to window coordinates, turn each
++  // 1-bpp glyph into an ALPHA texture, and draw it as a screen-space
++  // quad with a dedicated minimal shader. Bitmap rows are 4-byte
++  // aligned, MSB-first, bottom-up (matches Inventor's libFL output and
++  // the GL default unpack state).
++  $GLBitmapEmu__deps: ['$GLEmulation', '$GLImmediate'],
++  $GLBitmapEmu: {
++    raster: { x: 0, y: 0, valid: false, color: [1, 1, 1, 1] },
++    lists: {},          // list id -> array of glyph records
++    listBase: 0,
++    recording: 0,       // list id being compiled, or 0
++    nextListId: 1,
++    prog: null,
++    buf: null,
++    posLoc: 0, texLoc: 0, colorLoc: null, samplerLoc: null,
++
++    ensureProgram: function() {
++      if (GLBitmapEmu.prog) return;
++      var vs = GLctx.createShader(GLctx.VERTEX_SHADER);
++      GLctx.shaderSource(vs,
++        'attribute vec2 a_ndc; attribute vec2 a_uv; varying vec2 v_uv;' +
++        'void main(){ v_uv=a_uv; gl_Position=vec4(a_ndc,0.0,1.0); }');
++      GLctx.compileShader(vs);
++      var fs = GLctx.createShader(GLctx.FRAGMENT_SHADER);
++      GLctx.shaderSource(fs,
++        'precision mediump float; varying vec2 v_uv;' +
++        'uniform sampler2D u_tex; uniform vec4 u_color;' +
++        'void main(){ if (texture2D(u_tex, v_uv).a < 0.5) discard;' +
++        '  gl_FragColor = u_color; }');
++      GLctx.compileShader(fs);
++      var p = GLctx.createProgram();
++      GLctx.attachShader(p, vs); GLctx.attachShader(p, fs);
++      GLctx.bindAttribLocation(p, 0, 'a_ndc');
++      GLctx.bindAttribLocation(p, 1, 'a_uv');
++      GLctx.linkProgram(p);
++      GLBitmapEmu.prog = p;
++      GLBitmapEmu.colorLoc = GLctx.getUniformLocation(p, 'u_color');
++      GLBitmapEmu.samplerLoc = GLctx.getUniformLocation(p, 'u_tex');
++      GLBitmapEmu.buf = GLctx.createBuffer();
++    },
++
++    // Multiply the emulated MV+P with (x,y,z,1) -> window coords.
++    setRasterPos: function(x, y, z) {
++      function mul(m, v) {
++        return [
++          m[0]*v[0]+m[4]*v[1]+m[8]*v[2]+m[12]*v[3],
++          m[1]*v[0]+m[5]*v[1]+m[9]*v[2]+m[13]*v[3],
++          m[2]*v[0]+m[6]*v[1]+m[10]*v[2]+m[14]*v[3],
++          m[3]*v[0]+m[7]*v[1]+m[11]*v[2]+m[15]*v[3]];
++      }
++      var eye = mul(GLImmediate.matrix[0], [x, y, z, 1]);
++      var clip = mul(GLImmediate.matrix[1], eye);
++      var r = GLBitmapEmu.raster;
++      if (clip[3] <= 0) { r.valid = false; return; }
++      var nx = clip[0]/clip[3], ny = clip[1]/clip[3], nz = clip[2]/clip[3];
++      r.valid = nx >= -1 && nx <= 1 && ny >= -1 && ny <= 1 &&
++                nz >= -1 && nz <= 1;
++      var vp = GLctx.getParameter(GLctx.VIEWPORT);
++      r.x = vp[0] + (nx * 0.5 + 0.5) * vp[2];
++      r.y = vp[1] + (ny * 0.5 + 0.5) * vp[3];
++      r.color = [GLImmediate.clientColor[0], GLImmediate.clientColor[1],
++                 GLImmediate.clientColor[2], GLImmediate.clientColor[3]];
++    },
++
++    makeTexture: function(rec) {
++      var rowBytes = ((rec.w + 31) >> 5) << 2;
++      var data = new Uint8Array(rec.w * rec.h);
++      for (var j = 0; j < rec.h; j++) {        // rows stored bottom-up
++        for (var i = 0; i < rec.w; i++) {
++          var byte = rec.bits[j * rowBytes + (i >> 3)];
++          if (byte & (0x80 >> (i & 7))) data[j * rec.w + i] = 255;
++        }
++      }
++      var tex = GLctx.createTexture();
++      var prevTex = GLctx.getParameter(GLctx.TEXTURE_BINDING_2D);
++      var prevAlign = GLctx.getParameter(GLctx.UNPACK_ALIGNMENT);
++      GLctx.bindTexture(GLctx.TEXTURE_2D, tex);
++      GLctx.pixelStorei(GLctx.UNPACK_ALIGNMENT, 1);
++      GLctx.texImage2D(GLctx.TEXTURE_2D, 0, GLctx.ALPHA, rec.w, rec.h, 0,
++                       GLctx.ALPHA, GLctx.UNSIGNED_BYTE, data);
++      GLctx.texParameteri(GLctx.TEXTURE_2D, GLctx.TEXTURE_MIN_FILTER, GLctx.NEAREST);
++      GLctx.texParameteri(GLctx.TEXTURE_2D, GLctx.TEXTURE_MAG_FILTER, GLctx.NEAREST);
++      GLctx.texParameteri(GLctx.TEXTURE_2D, GLctx.TEXTURE_WRAP_S, GLctx.CLAMP_TO_EDGE);
++      GLctx.texParameteri(GLctx.TEXTURE_2D, GLctx.TEXTURE_WRAP_T, GLctx.CLAMP_TO_EDGE);
++      GLctx.pixelStorei(GLctx.UNPACK_ALIGNMENT, prevAlign);
++      GLctx.bindTexture(GLctx.TEXTURE_2D, prevTex);
++      rec.tex = tex;
++    },
++
++    drawBitmap: function(rec) {
++      var r = GLBitmapEmu.raster;
++      if (!r.valid) return;
++      if (rec.w > 0 && rec.h > 0) {
++        GLBitmapEmu.ensureProgram();
++        if (!rec.tex) GLBitmapEmu.makeTexture(rec);
++
++        // Save the state we are about to clobber.
++        var prevProg = GLctx.getParameter(GLctx.CURRENT_PROGRAM);
++        var prevBuf = GLctx.getParameter(GLctx.ARRAY_BUFFER_BINDING);
++        var prevActive = GLctx.getParameter(GLctx.ACTIVE_TEXTURE);
++        GLctx.activeTexture(GLctx.TEXTURE0);
++        var prevTex = GLctx.getParameter(GLctx.TEXTURE_BINDING_2D);
++        var depthWas = GLctx.isEnabled(GLctx.DEPTH_TEST);
++        var cullWas = GLctx.isEnabled(GLctx.CULL_FACE);
++        var en0 = GLctx.getVertexAttrib(0, GLctx.VERTEX_ATTRIB_ARRAY_ENABLED);
++        var en1 = GLctx.getVertexAttrib(1, GLctx.VERTEX_ATTRIB_ARRAY_ENABLED);
++
++        var vp = GLctx.getParameter(GLctx.VIEWPORT);
++        var x0 = r.x - rec.xo, y0 = r.y - rec.yo;
++        var x1 = x0 + rec.w, y1 = y0 + rec.h;
++        function ndcx(px) { return (px - vp[0]) / vp[2] * 2 - 1; }
++        function ndcy(py) { return (py - vp[1]) / vp[3] * 2 - 1; }
++        var v = new Float32Array([
++          ndcx(x0), ndcy(y0), 0, 0,  ndcx(x1), ndcy(y0), 1, 0,
++          ndcx(x0), ndcy(y1), 0, 1,  ndcx(x1), ndcy(y1), 1, 1]);
++
++        GLctx.useProgram(GLBitmapEmu.prog);
++        GLctx.bindBuffer(GLctx.ARRAY_BUFFER, GLBitmapEmu.buf);
++        GLctx.bufferData(GLctx.ARRAY_BUFFER, v, GLctx.STREAM_DRAW);
++        GLctx.enableVertexAttribArray(0);
++        GLctx.enableVertexAttribArray(1);
++        GLctx.vertexAttribPointer(0, 2, GLctx.FLOAT, false, 16, 0);
++        GLctx.vertexAttribPointer(1, 2, GLctx.FLOAT, false, 16, 8);
++        GLctx.bindTexture(GLctx.TEXTURE_2D, rec.tex);
++        GLctx.uniform1i(GLBitmapEmu.samplerLoc, 0);
++        GLctx.uniform4fv(GLBitmapEmu.colorLoc, r.color);
++        if (depthWas) GLctx.disable(GLctx.DEPTH_TEST);
++        if (cullWas) GLctx.disable(GLctx.CULL_FACE);
++        GLctx.drawArrays(GLctx.TRIANGLE_STRIP, 0, 4);
++
++        // Restore.
++        if (depthWas) GLctx.enable(GLctx.DEPTH_TEST);
++        if (cullWas) GLctx.enable(GLctx.CULL_FACE);
++        if (!en0) GLctx.disableVertexAttribArray(0);
++        if (!en1) GLctx.disableVertexAttribArray(1);
++        GLctx.bindTexture(GLctx.TEXTURE_2D, prevTex);
++        GLctx.activeTexture(prevActive);
++        GLctx.bindBuffer(GLctx.ARRAY_BUFFER, prevBuf);
++        GLctx.useProgram(prevProg);
++        GLImmediate.currentRenderer = null; // attrib state changed
++      }
++      r.x += rec.xm;
++      r.y += rec.ym;
++    },
++
++    callList: function(id) {
++      var ops = GLBitmapEmu.lists[id];
++      if (!ops) return;
++      for (var i = 0; i < ops.length; i++) GLBitmapEmu.drawBitmap(ops[i]);
++    },
++  },
++
++  glRasterPos3f__deps: ['$GLBitmapEmu'],
++  glRasterPos3f: function(x, y, z) {
++    GLBitmapEmu.setRasterPos(x, y, z);
++  },
++  glRasterPos3fv__deps: ['glRasterPos3f'],
++  glRasterPos3fv: function(p) {
++    _glRasterPos3f({{{ makeGetValue('p', '0', 'float') }}},
++                   {{{ makeGetValue('p', '4', 'float') }}},
++                   {{{ makeGetValue('p', '8', 'float') }}});
++  },
++  glRasterPos2f__deps: ['glRasterPos3f'],
++  glRasterPos2f: function(x, y) { _glRasterPos3f(x, y, 0); },
++
++  glBitmap__deps: ['$GLBitmapEmu'],
++  glBitmap: function(w, h, xo, yo, xm, ym, ptr) {
++    var rec = { w: w, h: h, xo: xo, yo: yo, xm: xm, ym: ym,
++                bits: null, tex: null };
++    if (w > 0 && h > 0 && ptr) {
++      var rowBytes = ((w + 31) >> 5) << 2;
++      // Copy: the heap can move (ALLOW_MEMORY_GROWTH) and lists outlive
++      // the caller's buffer.
++      rec.bits = new Uint8Array(HEAPU8.subarray(ptr, ptr + rowBytes * h));
++    }
++    if (GLBitmapEmu.recording) {
++      GLBitmapEmu.lists[GLBitmapEmu.recording].push(rec);
++    } else {
++      GLBitmapEmu.drawBitmap(rec);
++    }
++  },
++
++  glGenLists__deps: ['$GLBitmapEmu'],
++  glGenLists: function(n) {
++    var base = GLBitmapEmu.nextListId;
++    GLBitmapEmu.nextListId += n;
++    return base;
++  },
++  glDeleteLists__deps: ['$GLBitmapEmu'],
++  glDeleteLists: function(base, range) {
++    for (var i = 0; i < range; i++) delete GLBitmapEmu.lists[base + i];
++  },
++  glNewList__deps: ['$GLBitmapEmu'],
++  glNewList: function(id, mode) {
++    // Only bitmap-recording lists are emulated (SoText2 glyph lists).
++    GLBitmapEmu.recording = id;
++    GLBitmapEmu.lists[id] = [];
++  },
++  glEndList__deps: ['$GLBitmapEmu'],
++  glEndList: function() {
++    GLBitmapEmu.recording = 0;
++  },
++  glListBase__deps: ['$GLBitmapEmu'],
++  glListBase: function(base) {
++    GLBitmapEmu.listBase = base;
++  },
++  glCallList__deps: ['$GLBitmapEmu'],
++  glCallList: function(id) {
++    GLBitmapEmu.callList(id);
++  },
++  glCallLists__deps: ['$GLBitmapEmu'],
++  glCallLists: function(n, type, ptr) {
++    for (var i = 0; i < n; i++) {
++      var id;
++      switch (type) {
++        case 0x1400: case 0x1401:                       // BYTE/UBYTE
++          id = HEAPU8[ptr + i]; break;
++        case 0x1407:                                    // GL_2_BYTES
++          id = (HEAPU8[ptr + i*2] << 8) | HEAPU8[ptr + i*2 + 1]; break;
++        default:
++          warnOnce('glCallLists: unsupported type 0x' + type.toString(16));
++          return;
++      }
++      GLBitmapEmu.callList(GLBitmapEmu.listBase + id);
++    }
++  },
++
+   glTexCoord2fv: function(v) {
+     _glTexCoord2i({{{ makeGetValue('v', '0', 'float') }}}, {{{ makeGetValue('v', '4', 'float') }}});
+   },
+@@ -3246,24 +3572,22 @@
      b = Math.max(Math.min(b, 1), 0);
      a = Math.max(Math.min(a, 1), 0);
  
@@ -200,7 +436,7 @@
    },
  
    glColor4d: 'glColor4f',
-@@ -3416,16 +3508,13 @@
+@@ -3416,16 +3740,13 @@
    },
  
    glNormal3f: function(x, y, z) {
@@ -224,7 +460,7 @@
    },
  
    glNormal3fv__deps: ['glNormal3f'],
-@@ -3818,7 +3907,7 @@
+@@ -3818,7 +4139,7 @@
          // multiply position with current modelviewmatrix
          GLImmediate.matrixLib.mat4.multiplyVec4(GLImmediate.matrix[0], GLEmulation.lightPosition[lightId]);
        } else {
@@ -233,7 +469,7 @@
        }
      }
    },
-@@ -3827,7 +3916,7 @@
+@@ -3827,7 +4148,7 @@
      if (pname == 0x0B52) { // GL_LIGHT_MODEL_TWO_SIDE
        GLEmulation.lightModelTwoSide = (param != 0) ? true : false;
      } else {
@@ -242,7 +478,7 @@
      }
    },
  
-@@ -3838,7 +3927,7 @@
+@@ -3838,7 +4159,7 @@
        GLEmulation.lightModelAmbient[2] = {{{ makeGetValue('param', '8', 'float') }}};
        GLEmulation.lightModelAmbient[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else {
@@ -251,7 +487,7 @@
      }
    },
  
-@@ -3862,11 +3951,35 @@
+@@ -3862,11 +4183,35 @@
        GLEmulation.materialSpecular[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else if (pname == 0x1601) { // GL_SHININESS
        GLEmulation.materialShininess[0] = {{{ makeGetValue('param', '0', 'float') }}};

@@ -41,7 +41,12 @@ const GLC = { DEPTH_BUFFER_BIT:0x100, STENCIL_BUFFER_BIT:0x400, COLOR_BUFFER_BIT
  COLOR_ATTACHMENT0:0x8CE0, DEPTH_ATTACHMENT:0x8D00, DEPTH_COMPONENT16:0x81A5,
  UNPACK_FLIP_Y_WEBGL:0x9240, UNPACK_PREMULTIPLY_ALPHA_WEBGL:0x9241, UNPACK_ALIGNMENT:0xCF5, PACK_ALIGNMENT:0xD05,
  NO_ERROR:0, NONE:0, LEQUAL:0x203, LESS:0x201, CCW:0x901, CW:0x900,
- MAX_TEXTURE_IMAGE_UNITS:0x8872, CURRENT_PROGRAM:0x8B8D, VERSION:0x1F02, RENDERER:0x1F01, VENDOR:0x1F00, MAX_VERTEX_ATTRIBS:0x8869 };
+ MAX_TEXTURE_IMAGE_UNITS:0x8872, CURRENT_PROGRAM:0x8B8D, VERSION:0x1F02, RENDERER:0x1F01, VENDOR:0x1F00, MAX_VERTEX_ATTRIBS:0x8869,
+ VIEWPORT:0x0BA2, ARRAY_BUFFER_BINDING:0x8894, ACTIVE_TEXTURE:0x84E0,
+ TEXTURE_BINDING_2D:0x8069, VERTEX_ATTRIB_ARRAY_ENABLED:0x8622,
+ STREAM_DRAW:0x88E0, ALPHA:0x1906, NEAREST:0x2600,
+ TEXTURE_MIN_FILTER:0x2801, TEXTURE_MAG_FILTER:0x2800,
+ TEXTURE_WRAP_S:0x2802, TEXTURE_WRAP_T:0x2803, CLAMP_TO_EDGE:0x812F };
 let fakeConstNext = 0x20000; const fakeConsts = new Map();
 
 let idCounter = 1;
@@ -60,6 +65,12 @@ const mockTarget = {
         return 4096;                       // legitimate WebGL1 MAX_* queries
       case 0xD32: return 6;                // not WebGL enums, but harmless
       case 0x8B8D: return null;            // CURRENT_PROGRAM: none bound
+      // Legitimate WebGL1 state queries used by the bitmap-text emulation:
+      case 0x0BA2: return new Int32Array([0, 0, 650, 400]);  // VIEWPORT
+      case 0x8894: return null;            // ARRAY_BUFFER_BINDING
+      case 0x84E0: return 0x84C0;          // ACTIVE_TEXTURE (TEXTURE0)
+      case 0x8069: return null;            // TEXTURE_BINDING_2D
+      case 0x0CF5: return 4;               // UNPACK_ALIGNMENT
       default:
         // mimic real WebGL: unknown enum -> warning + null (INVALID_ENUM)
         log.warns.push('mockGL INVALID_ENUM getParameter 0x' + p.toString(16));
@@ -68,6 +79,7 @@ const mockTarget = {
         return null;
     }
   },
+  getVertexAttrib(i, pname) { return pname === 0x8622 ? false : null; }, // ARRAY_ENABLED
   getSupportedExtensions() { return []; },
   getExtension() { return null; },
   getContextAttributes() { return { alpha:true, depth:true, stencil:true, antialias:true }; },
@@ -153,7 +165,7 @@ globalThis.TAP = (name, args) => {
 };
 
 // ---- load patched scratch copy of maze.js ----
-const scratch = path.join(__dirname, 'scratch', 'maze.patched.js');
+const scratch = path.join(__dirname, 'scratch', process.env.HARNESS_APP || 'maze.patched.js');
 require(scratch);
 
 // ---- run ~2.5s of frames, then report ----
@@ -161,6 +173,9 @@ setTimeout(() => {
   const mats = log.uniform4fv.filter(([n]) => n === 'u_materialDiffuse');
   const uniq = [...new Set(mats.map(([,v]) => JSON.stringify(v)))];
   console.log('=== RESULT ===');
+  console.log('callListInner2:', globalThis.__cli|0, 'missing:', globalThis.__miss|0, 'drawBitmap2:', globalThis.__db2|0, 'invalid2:', globalThis.__inv2|0);
+  console.log('newList:',globalThis.__nl|0,'callLists:', globalThis.__cls|0, 'callList:', globalThis.__cl|0, 'callListInner:', globalThis.__cli|0, 'missingList:', globalThis.__miss|0);
+  console.log('rasterPos:', globalThis.__rp|0, 'bitmaps:', globalThis.__bm|0, 'drawBitmap:', globalThis.__db|0, 'invalidRaster:', globalThis.__inv|0);
   console.log('rAF ticks:', globalThis.rafCount, ' draw calls:', log.draws);
   console.log('u_materialDiffuse uploads:', mats.length);
   console.log('distinct diffuse values:', uniq.join('  '));
