@@ -1,5 +1,5 @@
---- library_glemu.js.orig	2026-06-12 00:36:04.590369035 +0000
-+++ library_glemu.js	2026-06-12 01:50:53.694035584 +0000
+--- library_glemu.js.orig	2026-06-12 03:25:11.085313202 +0000
++++ library_glemu.js	2026-06-12 03:34:43.262767403 +0000
 @@ -321,6 +321,15 @@
            {{{ makeSetValue('p', '0', 'result === true ? 1 : 0', 'i8') }}};
            return;
@@ -31,7 +31,19 @@
            case 0x0BA0: { // GL_MATRIX_MODE
              {{{ makeSetValue('params', '0', 'GLImmediate.currentMatrix + 0x1700', 'i32') }}};
              return;
-@@ -3143,6 +3160,17 @@
+@@ -3081,6 +3098,11 @@
+           ptr = 0;
+           emulatedElementArrayBuffer = true;
+         }
++      } else if (GLImmediate.mode == 9) { // GL_POLYGON
++        // SGI-Inventor port: a (convex) GL_POLYGON renders identically
++        // as a triangle fan over the same vertices. Inventor's convex
++        // SoFaceSet path uses glBegin(GL_POLYGON) per face.
++        GLImmediate.mode = GLctx.TRIANGLE_FAN;
+       } else if (GLImmediate.mode > 6) { // above GL_TRIANGLE_FAN are the non-GL ES modes
+         if (GLImmediate.mode != 7) throw 'unsupported immediate mode ' + GLImmediate.mode; // GL_QUADS
+         // GLImmediate.firstVertex is the first vertex we want. Quad indexes are in the pattern
+@@ -3143,6 +3165,17 @@
      }
      GLImmediate.rendererComponentPointer = 0;
      GLImmediate.vertexData = GLImmediate.tempData;
@@ -49,7 +61,7 @@
    },
  
    glEnd: function() {
-@@ -3172,6 +3200,26 @@
+@@ -3172,6 +3205,26 @@
      assert(GLImmediate.vertexCounter << 2 < GL.MAX_TEMP_BUFFER_SIZE);
  #endif
      GLImmediate.addRendererComponent(GLImmediate.VERTEX, 4, GLctx.FLOAT);
@@ -76,7 +88,7 @@
    },
  
    glVertex3f: function(x, y, z) {
-@@ -3186,6 +3234,27 @@
+@@ -3186,6 +3239,27 @@
      assert(GLImmediate.vertexCounter << 2 < GL.MAX_TEMP_BUFFER_SIZE);
  #endif
      GLImmediate.addRendererComponent(GLImmediate.VERTEX, 4, GLctx.FLOAT);
@@ -104,7 +116,7 @@
    },
  
    glVertex4f: function(x, y, z, w) {
-@@ -3200,6 +3269,27 @@
+@@ -3200,6 +3274,27 @@
      assert(GLImmediate.vertexCounter << 2 < GL.MAX_TEMP_BUFFER_SIZE);
  #endif
      GLImmediate.addRendererComponent(GLImmediate.VERTEX, 4, GLctx.FLOAT);
@@ -132,7 +144,7 @@
    },
  
    glVertex2fv__deps: ['glVertex2f'],
-@@ -3224,12 +3314,11 @@
+@@ -3224,12 +3319,11 @@
    glVertex4i: 'glVertex4f',
  
    glTexCoord2i: function(u, v) {
@@ -150,7 +162,7 @@
    },
    glTexCoord2f: 'glTexCoord2i',
  
-@@ -3246,24 +3335,22 @@
+@@ -3246,24 +3340,22 @@
      b = Math.max(Math.min(b, 1), 0);
      a = Math.max(Math.min(a, 1), 0);
  
@@ -188,7 +200,7 @@
    },
  
    glColor4d: 'glColor4f',
-@@ -3416,16 +3503,13 @@
+@@ -3416,16 +3508,13 @@
    },
  
    glNormal3f: function(x, y, z) {
@@ -212,7 +224,7 @@
    },
  
    glNormal3fv__deps: ['glNormal3f'],
-@@ -3818,7 +3902,7 @@
+@@ -3818,7 +3907,7 @@
          // multiply position with current modelviewmatrix
          GLImmediate.matrixLib.mat4.multiplyVec4(GLImmediate.matrix[0], GLEmulation.lightPosition[lightId]);
        } else {
@@ -221,7 +233,7 @@
        }
      }
    },
-@@ -3827,7 +3911,7 @@
+@@ -3827,7 +3916,7 @@
      if (pname == 0x0B52) { // GL_LIGHT_MODEL_TWO_SIDE
        GLEmulation.lightModelTwoSide = (param != 0) ? true : false;
      } else {
@@ -230,7 +242,7 @@
      }
    },
  
-@@ -3838,7 +3922,7 @@
+@@ -3838,7 +3927,7 @@
        GLEmulation.lightModelAmbient[2] = {{{ makeGetValue('param', '8', 'float') }}};
        GLEmulation.lightModelAmbient[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else {
@@ -239,7 +251,7 @@
      }
    },
  
-@@ -3862,11 +3946,35 @@
+@@ -3862,11 +3951,35 @@
        GLEmulation.materialSpecular[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else if (pname == 0x1601) { // GL_SHININESS
        GLEmulation.materialShininess[0] = {{{ makeGetValue('param', '0', 'float') }}};

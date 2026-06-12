@@ -190,6 +190,13 @@ emits a full record — position, plus a normal slot reserved for the whole
 batch whenever lighting is enabled (`batchNeedNormal`), plus color/texcoord
 per batch flags.*
 
+**Failure 5 — GL_POLYGON throws (slotcar, M6).**
+Inventor's convex SoFaceSet path issues `glBegin(GL_POLYGON)`; stock glemu
+throws "unsupported immediate mode 9". A convex polygon renders
+identically as a triangle fan over the same vertices. *Patch: map mode 9
+to GL_TRIANGLE_FAN in flush().* (Found in seconds by the Node harness —
+the throw surfaced with a full stack instead of a black canvas.)
+
 The general lesson: **GL1 state queries that WebGL rejects fail soft** —
 INVALID_ENUM plus an untouched (zero) result — and fixed-function code makes
 load-bearing decisions on those zeros. Every glGet* the scene graph performs
@@ -236,6 +243,8 @@ verification is always a real browser.
 | M5b | EMISSION-throw fix; vendored glemu patch; Node harness |
 | M5c | GL_RGBA_MODE / GL_MAX_LIGHTS — color and lighting correct |
 | M5d | Immediate-mode batch semantics recovered from archived M5 build — geometry correct. **Maze fully working in browser.** |
+| M6a | SGI slotcar (1994) ported and racing natively: overlay-plane emulation in SoSDLRenderArea, viewport-restore responsibility, Sky raw-GL lighting fix, bundled Utopia fonts, 1994-C++ modernization |
+| M6b | Real LongOcean.iv recovered; GL_POLYGON→TRIANGLE_FAN glemu fix (failure 5); slotcar wasm build passing the harness |
 
 ## 11. Process notes (how not to lose work)
 
@@ -259,8 +268,9 @@ are now policy:
 
 ## 12. Roadmap
 
-- **M6**: slotcars-class demo in the browser; texture-heavy and
-  NURBS-exercising content (glues is already linked for this).
+- **M6 follow-ups**: slotcar browser verification on real hardware;
+  network play over WebRTC/WebSocket relay (the Xt socket hook is the
+  only missing piece); SDL_mixer audio for the AIFF engine sounds.
 - Two-sided lighting quality check (glLightModeli is wired but the FFP
   shader's treatment is approximate).
 - Performance: the emulation re-creates renderer state per flush in places;
