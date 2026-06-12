@@ -1,5 +1,5 @@
 --- library_glemu.js.orig	2026-06-12 03:25:11.085313202 +0000
-+++ library_glemu.js	2026-06-12 04:32:21.656859546 +0000
++++ library_glemu.js	2026-06-12 04:47:05.303952156 +0000
 @@ -321,6 +321,15 @@
            {{{ makeSetValue('p', '0', 'result === true ? 1 : 0', 'i8') }}};
            return;
@@ -144,7 +144,7 @@
    },
  
    glVertex2fv__deps: ['glVertex2f'],
-@@ -3224,16 +3319,284 @@
+@@ -3224,16 +3319,285 @@
    glVertex4i: 'glVertex4f',
  
    glTexCoord2i: function(u, v) {
@@ -186,6 +186,7 @@
 +
 +    ensureProgram: function() {
 +      if (GLBitmapEmu.prog) return;
++      out('[sgi-demos] glemu bitmap-text r3 (RGBA glyphs + diagnostics)');
 +      var vs = GLctx.createShader(GLctx.VERTEX_SHADER);
 +      GLctx.shaderSource(vs,
 +        'attribute vec2 a_ndc; attribute vec2 a_uv; varying vec2 v_uv;' +
@@ -435,7 +436,7 @@
    glTexCoord2fv: function(v) {
      _glTexCoord2i({{{ makeGetValue('v', '0', 'float') }}}, {{{ makeGetValue('v', '4', 'float') }}});
    },
-@@ -3246,24 +3609,22 @@
+@@ -3246,24 +3610,22 @@
      b = Math.max(Math.min(b, 1), 0);
      a = Math.max(Math.min(a, 1), 0);
  
@@ -473,7 +474,7 @@
    },
  
    glColor4d: 'glColor4f',
-@@ -3416,16 +3777,13 @@
+@@ -3416,16 +3778,13 @@
    },
  
    glNormal3f: function(x, y, z) {
@@ -497,7 +498,7 @@
    },
  
    glNormal3fv__deps: ['glNormal3f'],
-@@ -3818,7 +4176,7 @@
+@@ -3818,7 +4177,7 @@
          // multiply position with current modelviewmatrix
          GLImmediate.matrixLib.mat4.multiplyVec4(GLImmediate.matrix[0], GLEmulation.lightPosition[lightId]);
        } else {
@@ -506,7 +507,7 @@
        }
      }
    },
-@@ -3827,7 +4185,7 @@
+@@ -3827,7 +4186,7 @@
      if (pname == 0x0B52) { // GL_LIGHT_MODEL_TWO_SIDE
        GLEmulation.lightModelTwoSide = (param != 0) ? true : false;
      } else {
@@ -515,7 +516,7 @@
      }
    },
  
-@@ -3838,7 +4196,7 @@
+@@ -3838,7 +4197,7 @@
        GLEmulation.lightModelAmbient[2] = {{{ makeGetValue('param', '8', 'float') }}};
        GLEmulation.lightModelAmbient[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else {
@@ -524,7 +525,7 @@
      }
    },
  
-@@ -3862,11 +4220,35 @@
+@@ -3862,11 +4221,35 @@
        GLEmulation.materialSpecular[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else if (pname == 0x1601) { // GL_SHININESS
        GLEmulation.materialShininess[0] = {{{ makeGetValue('param', '0', 'float') }}};
