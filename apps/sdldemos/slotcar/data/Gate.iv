@@ -1,0 +1,147 @@
+#Inventor V2.0 ascii
+
+# Start-Finish Gate
+
+Switch {
+    # Switch Gate sign based on GameMode
+    # (Startup|Practice|Get-Ready|Race|After-Race|Race-Over)
+    whichChild 3 = GlobalField { type SFInt32 GameMode 3 }.GameMode
+
+    # "Pre-game" startup
+    Label {}
+
+    # "Warm-up" - sign
+    Separator {
+	renderCulling ON
+	Complexity { value 0.0 }
+	Separator {
+	    # Sign text
+	    BaseColor { rgb 1.0 0.4 0.0 }
+	    Font { name Utopia-Italic size 8 }
+	    Translation { translation 0 25 0.6 }
+	    Text3 { string "SlotCars" justification CENTER }
+	    Font { name Utopia-Regular size 8 }
+	    BaseColor { rgb 0.0 1.0 0.1 }
+	    Translation { translation -52 0 0 }
+	    Text3 { string "Warm-up" justification LEFT }
+	    Translation { translation 104 0 0 }
+	    Text3 { string "Warm-up" justification RIGHT }
+	}
+	Separator {
+	    # Sign backboard
+	    Separator {
+		Translation { translation 0 27.5 0 }
+		BaseColor { rgb 0.0 0.0 0.0 }
+		DEF SBox Cube { width 108 depth 1 height 8 }
+		DrawStyle { style LINES lineWidth 2 }
+		BaseColor { rgb 0.6 0 1.0 }
+		USE SBox
+	    }
+	}
+    }
+
+    # "Starting race" - pre-race Sign
+    Separator {
+	renderCulling ON
+	Complexity { value 0.0 }
+	Separator {
+	    # Sign text
+	    BaseColor { rgb 1.0 0 0.0 }
+	    Font { name Utopia-Italic size 8 }
+	    Translation { translation 0 25 0.6 }
+	    Text3 { string "Get ready to race..." justification CENTER }
+	}
+	Separator {
+	    # Sign backboard
+	    Separator {
+		Translation { translation 0 27.5 0 }
+		BaseColor { rgb 0.0 0.0 0.0 }
+		USE SBox
+		DrawStyle { style LINES lineWidth 2 }
+		BaseColor { rgb 1 1 0 }
+		USE SBox
+	    }
+	}
+    }
+
+    # "Racing" - during the race sign
+    DEF RaceSign Separator {
+	renderCulling ON
+	Complexity { value 0.0 }
+
+	Separator {
+	    # Sign text
+	    BaseColor { rgb 1 0 0.1 }
+	    Font { name Utopia-Italic size 8 }
+	    Translation { translation 0 25 0.6 }
+	    Text3 { string "SlotCars" justification CENTER }
+	    Font { name Utopia-Regular size 8 }
+	    BaseColor { rgb 1.0 1.0 1.0 }
+	    Translation { translation -47 0 0 }
+	    Text3 { string "Finish" justification LEFT }
+	    Translation { translation 94 0 0 }
+	    Text3 { string "Finish" justification RIGHT }
+	}
+	Separator {
+	    # Sign backboard
+	    Separator {
+		renderCaching OFF
+		Translation { translation 0 27.5 0 }
+		BaseColor { rgb 0 0 0 }
+		USE SBox
+		DrawStyle { style LINES lineWidth 2 }
+		BaseColor { rgb 0 1 0 }
+		USE SBox
+	    }
+	}
+	DEF CheckeredFlag Separator {
+	    Coordinate3 {
+		point [ 0 0 0, 1 0 0, 2 0 0, 3 0 0, 4 0 0,
+			0 1 0, 1 1 0, 2 1 0, 3 1 0, 4 1 0,
+			0 2 0, 1 2 0, 2 2 0, 3 2 0, 4 2 0,
+			0 3 0, 1 3 0, 2 3 0, 3 3 0, 4 3 0,
+			0 4 0, 1 4 0, 2 4 0, 3 4 0, 4 4 0, 4 -4 0 ]
+	    }
+	    Complexity { value 0.5 }
+            
+	    # white checkerboard background square
+	    BaseColor { rgb 1 1 1 }
+	    Translation { translation -20 25.0 0.65 }
+	    Rotation { rotation 0 0 1 0.75 }
+	    IndexedFaceSet { coordIndex [ 0, 4, 24, 20 ] }
+
+	    # outline of flag
+	    Separator {
+		DrawStyle { style LINES lineWidth 2 }
+		BaseColor { rgb .5 .5 .5 }
+		IndexedLineSet { coordIndex [ 25, 24, 20, 0, 4 ] }
+	    }
+            
+	    # black checkers
+	    Translation { translation 0 0 0.01 }
+	    BaseColor { rgb 0 0 0 }
+	    DEF blackCheckers IndexedFaceSet { coordIndex [
+		    0, 1, 6, 5, -1,
+		    2, 3, 8, 7, -1,
+		    6, 7, 12, 11, -1,
+		    8, 9, 14, 13, -1,
+		    10, 11, 16, 15, -1,
+		    12, 13, 18, 17, -1,
+		    16, 17, 22, 21, -1,
+		    18, 19, 24, 23, -1, ]
+	    }
+	}
+
+	Separator {
+	    Scale { scaleFactor -1 1 1 }
+	    ShapeHints {}
+	    USE CheckeredFlag
+	}
+    }
+    
+    # After Race Sign
+    USE RaceSign
+
+    # Race Over Sign
+    USE RaceSign
+}

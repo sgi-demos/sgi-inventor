@@ -1,0 +1,208 @@
+#Inventor V2.0 ascii
+
+# Track pieces are automatically linked together by the reading
+# program.  Straight pieces just have a length (default 1.0).  Curved
+# pieces have a radius (default 1.0) and an angle, expressed as a
+# fraction of a full turn (so .25, the default, is a 90 degree turn).
+# Positive radii/angles are left-hand (counter-clockwise) turns,
+# negative radii/angles are right-hand turns; both radius and angle
+# must be negative to get reasonable results.
+
+Separator {
+    Environment { ambientIntensity 1.0 }
+
+    # Disable the z-buffer for the background scenery and the track
+    DEF Z_BUFFER_DISABLE Callback {}
+    Sky {
+        horizonColor .8 .7 .9
+        horizonHeight 2000
+    }
+
+    LightModel { model BASE_COLOR }     # Assume no lighting!
+
+    File { name "simpleMountains.iv" }
+    File { name "LongOcean.iv" }
+
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+
+    # Turn 1
+    Curve { angle -.25 radius -1 renderCulling ON }
+    Straight { length 1.94245 renderCulling ON }
+    Curve { angle -.125 radius -1 renderCulling ON }
+
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    DEF Z_BUFFER_ENABLE Callback {}
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    USE Z_BUFFER_DISABLE
+    Straight { renderCulling ON }
+    Straight { length 0.5 renderCulling ON }
+
+    # Turn 2
+    Curve { angle -.1 radius -1 renderCulling ON }
+
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { length 0.75 renderCulling ON }
+
+    # Turn 3
+    Curve { angle .27 radius 0.8 renderCulling ON }
+
+    Straight { renderCulling ON }
+    Curve { angle -.05 radius -7.5 renderCulling ON }
+    USE Z_BUFFER_ENABLE
+    Curve { angle -.05 radius -7.5 renderCulling ON }
+    Curve { angle -.05 radius -7.5 renderCulling ON }
+    USE Z_BUFFER_DISABLE
+    Straight { renderCulling ON }
+
+    # Turn 4
+    Curve { angle .25 radius 1 renderCulling ON }
+    Curve { angle .20 radius 1 renderCulling ON }
+    Straight { renderCulling ON }
+    Curve { angle -.20 radius -.75 renderCulling ON }
+
+    # Turn 5
+    Straight { renderCulling ON }
+    Curve { angle .35 radius .75 renderCulling ON }
+
+    Straight { renderCulling ON }
+    Straight { length 0.75 renderCulling ON }
+    
+    # Turn 6
+    Curve { angle .175 radius 1.5 renderCulling ON }
+
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    USE Z_BUFFER_ENABLE
+    Straight { renderCulling ON }
+    Straight { length 0.5 renderCulling ON }
+    USE Z_BUFFER_DISABLE
+
+    # Turn 7
+    Curve { angle -.10 radius -1.4 renderCulling ON }
+    Curve { angle -.10 radius -1.4 renderCulling ON }
+
+    Straight { renderCulling ON }
+
+    # Turn 8
+    Curve { angle .22 radius 1.0 renderCulling ON }
+
+    # Turn 9
+    Curve { angle -.20 radius -1.5 renderCulling ON }
+    Curve { angle -.15 radius -1.5 renderCulling ON }
+
+    # Turn 10
+    Curve { angle .10 radius 0.8 renderCulling ON }
+
+    Straight { renderCulling ON }
+
+    # Turn 11
+    Curve { angle -.10 radius -1.25 renderCulling ON }
+    Curve { angle -.05 radius -1.25 renderCulling ON }
+
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+
+    # Turn 12
+    Curve { angle -.10 radius -1.5 renderCulling ON }
+    Curve { angle -.075 radius -1.5 renderCulling ON }
+    USE Z_BUFFER_ENABLE
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    USE Z_BUFFER_DISABLE
+
+    # Turn 13
+    Curve { angle .10 radius 4.0 renderCulling ON }
+    Curve { angle .10 radius 4.0 renderCulling ON }
+    Curve { angle .10 radius 4.0 renderCulling ON }
+    Curve { angle .10 radius 4.0 renderCulling ON }
+
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Curve { angle .25 radius 0.8 renderCulling ON }
+
+    # Turn 14
+    Curve { angle -.24 radius -0.8 renderCulling ON }
+    
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+
+    # Turn 15
+    Curve { angle .26 radius 0.8 renderCulling ON }
+
+    Curve { angle -.125 radius -0.8 renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+
+    # Turn 16
+    Curve { angle .24 radius 0.7 renderCulling ON }
+        
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+
+    # Turn 17
+    Curve { angle -.14 radius -0.7 renderCulling ON }
+
+    Straight { renderCulling ON }
+    Straight { length .2051 renderCulling ON }
+
+    # Turn 18
+    Curve { angle -.10 radius -1.0 renderCulling ON }
+
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { length .6 renderCulling ON }
+
+    # Turn 19
+    Curve { angle .29 radius 0.7 renderCulling ON }
+
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+
+    # Turn 20
+    Curve { angle .15 radius 1.25 renderCulling ON }
+    Curve { angle .15 radius 1.25 renderCulling ON }
+
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { length .36089961 renderCulling ON }
+
+    USE Z_BUFFER_ENABLE
+    StartFinish { renderCulling ON }
+
+    #
+    # SCENERY
+    #
+
+}

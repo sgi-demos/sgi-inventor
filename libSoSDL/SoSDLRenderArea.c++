@@ -22,6 +22,10 @@ SoSDLRenderArea::SoSDLRenderArea(const char *title, int width, int height)
 {
     size.setValue(width, height);
     redrawNeeded = false;
+    autoRedraw = TRUE;
+    overlayMgr = NULL;
+    closeCB = NULL;
+    closeCBData = NULL;
 
     window = SDL_CreateWindow(title,
 	SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -66,6 +70,47 @@ SoSDLRenderArea::getWindowId() const
 }
 
 void
+SoSDLRenderArea::setOverlaySceneGraph(SoNode *root)
+{
+    if (!overlayMgr) {
+	overlayMgr = new SoSceneManager;
+	overlayMgr->setWindowSize(size);
+	overlayMgr->setRenderCallback(renderCB, this);
+	overlayMgr->activate();
+    }
+    overlayMgr->setSceneGraph(root);
+    scheduleRedraw();
+}
+
+SoNode *
+SoSDLRenderArea::getOverlaySceneGraph() const
+{
+    return overlayMgr ? overlayMgr->getSceneGraph() : NULL;
+}
+
+void
+SoSDLRenderArea::setAutoRedraw(SbBool flag)
+{
+    // With autoRedraw off, scene changes do not schedule redraws; the
+    // application drives rendering (slotcar uses this for its one-shot
+    // polygon-timing benchmark scene).
+    autoRedraw = flag;
+    if (sceneMgr) {
+	if (flag) sceneMgr->activate(); else sceneMgr->deactivate();
+    }
+    if (flag)
+	scheduleRedraw();
+}
+
+void
+SoSDLRenderArea::setWindowCloseCallback(
+    void (*cb)(void *, SoSDLRenderArea *), void *userData)
+{
+    closeCB = cb;
+    closeCBData = userData;
+}
+
+void
 SoSDLRenderArea::renderCB(void *userData, SoSceneManager *)
 {
     // The scene changed; render lazily on the next loop iteration.
@@ -101,8 +146,19 @@ SoSDLRenderArea::render()
 
     // Make the window/context available to nodes that need it (e.g.
     // SoLocateHighlight's front-buffer redraw).
+    // Scene callbacks may leave the GL viewport altered (e.g. slotcar's
+    // Inventor-logo callback sets an 80x80 viewport and relies on the
+    // windowing layer to restore it). Reset it for every pass.
+    glViewport(0, 0, size[0], size[1]);
     sceneMgr->getGLRenderAction()->setUpdateArea(SbVec2f(0, 0), SbVec2f(1, 1));
     sceneMgr->render();
+
+    // Overlay-plane emulation: render the overlay graph over the main
+    // scene with a fresh depth buffer but without clearing color.
+    if (overlayMgr) {
+	glViewport(0, 0, size[0], size[1]);
+	overlayMgr->render(FALSE, TRUE);	// clearWindow=no, clearZ=yes
+    }
 
     // Debug aid for headless testing: IV_DUMP_DIR=<dir> writes each
     // rendered frame (back buffer) as a PPM before it is swapped.
@@ -239,13 +295,17 @@ SoSDLRenderArea::processEvent(const SDL_Event *e)
 	  case SDL_WINDOWEVENT_SIZE_CHANGED:
 	    size.setValue(e->window.data1, e->window.data2);
 	    sceneMgr->setWindowSize(size);
+	    if (overlayMgr) overlayMgr->setWindowSize(size);
 	    scheduleRedraw();
 	    break;
 	  case SDL_WINDOWEVENT_EXPOSED:
 	    scheduleRedraw();
 	    break;
 	  case SDL_WINDOWEVENT_CLOSE:
-	    SoSDL::exitMainLoop();
+	    if (closeCB)
+		closeCB(closeCBData, this);
+	    else
+		SoSDL::exitMainLoop();
 	    break;
 	}
 	return;

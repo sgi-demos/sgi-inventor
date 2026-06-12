@@ -24,6 +24,27 @@ class SoSDLRenderArea {
 
     void		setBackgroundColor(const SbColor &c);
     SbVec2s		getSize() const { return size; }
+
+    // Overlay-plane emulation: the overlay scene graph is rendered as a
+    // second pass over the main scene (depth buffer cleared, color kept).
+    // SGI hardware drew this in separate overlay planes; the visual
+    // result here is equivalent for HUD-style content.
+    void		setOverlaySceneGraph(SoNode *root);
+    SoNode		*getOverlaySceneGraph() const;
+    // Overlay color maps applied to SoColorIndex content have no meaning
+    // in RGBA rendering; accepted and ignored for source compatibility.
+    void		setOverlayColorMap(int, int, const SbColor *) {}
+
+    // When autoRedraw is on (default), scene-graph changes schedule a
+    // redraw automatically (SoXtRenderArea semantics).
+    void		setAutoRedraw(SbBool flag);
+    SbBool		isAutoRedraw() const	{ return autoRedraw; }
+
+    // Called when the user closes the window (SDL_QUIT / window close).
+    // If unset, the main loop simply exits.
+    void		setWindowCloseCallback(
+				void (*cb)(void *userData, SoSDLRenderArea *),
+				void *userData = NULL);
     SDL_Window		*getWindow() const { return window; }
     SDL_GLContext	getContext() const { return context; }
     Uint32		getWindowId() const;
@@ -58,6 +79,10 @@ class SoSDLRenderArea {
     SDL_Window		*window;
     SDL_GLContext	context;
     bool		redrawNeeded;
+    SbBool		autoRedraw;
+    SoSceneManager	*overlayMgr;	// NULL until an overlay graph is set
+    void		(*closeCB)(void *, SoSDLRenderArea *);
+    void		*closeCBData;
 
     static void		renderCB(void *userData, SoSceneManager *mgr);
 };

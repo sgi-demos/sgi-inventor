@@ -1,0 +1,28 @@
+# NOTE (sdl-port): LongOcean.iv was missing from the recovered SLOTCAR
+# archive; this is a copy of ocean.iv as a stand-in so LongTrack loads.
+#Inventor V2.0 ascii
+
+Separator {
+    renderCulling ON
+    LightModel { model BASE_COLOR }
+    ShapeHints {
+	vertexOrdering	COUNTERCLOCKWISE
+	shapeType	SOLID
+	# faceType	CONVEX - Workaround for GL convex polygon bug...
+	faceType	UNKNOWN_FACE_TYPE
+    }
+    BaseColor { rgb 0 0 0.2 }
+
+    Coordinate3 { point [ 
+	-3000 0 0,   -2000 0 0, -1500 0 -800, -1000 0 -3000, -3000 0 -3000,
+	-3000 0 100, -1900 0 80, -1350 0 -900, -900 0 -3000, 
+	4000 0 -5000, 1500 0 -2800, 1000 0 -500, 1000 0 1000, 2000 0 2800, 4000 0 5000, 
+	4000 0 -5200, 1400 0 -2950,  900 0 -500,  900 0 1090, 1950 0 2900, 4000 0 5200, 
+
+			    ] }
+    FaceSet{ numVertices 5 }
+    FaceSet{ startIndex 9 numVertices 6 }
+    BaseColor { rgb 0.6 0.5 0.3 }
+    IndexedTriangleStripSet{ coordIndex [ 0, 5, 1, 6, 2, 7, 3, 8, ] }
+    IndexedTriangleStripSet{ coordIndex [9, 15, 10, 16, 11, 17, 12, 18, 13, 19, 14, 20]}
+}
