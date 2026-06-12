@@ -48,7 +48,12 @@ typedef unsigned short SbUCS2;
 
 #define RADIAN(deg)		((deg)/180.0*PI)
 
-#define KLUDGE_FACTOR		80.0
+/* Outline glyph scale divisor. The FreeType port shipped 80.0, which
+ * yields glyphs ~1.6x larger than the IRIX libfl convention the
+ * Inventor demos were authored against (slotcar's startup text is the
+ * reference layout: title and instructions fit the window). 126
+ * normalizes a serif capital to ~0.73 of the em, matching. */
+#define KLUDGE_FACTOR		126.0
 #define PIXEL_ROW_ALIGNMENT	4
 
 /* Bitmap precisions */
