@@ -1,5 +1,3 @@
-# NOTE (sdl-port): LongOcean.iv was missing from the recovered SLOTCAR
-# archive; this is a copy of ocean.iv as a stand-in so LongTrack loads.
 #Inventor V2.0 ascii
 
 Separator {
@@ -14,15 +12,13 @@ Separator {
     BaseColor { rgb 0 0 0.2 }
 
     Coordinate3 { point [ 
-	-3000 0 0,   -2000 0 0, -1500 0 -800, -1000 0 -3000, -3000 0 -3000,
-	-3000 0 100, -1900 0 80, -1350 0 -900, -900 0 -3000, 
-	4000 0 -5000, 1500 0 -2800, 1000 0 -500, 1000 0 1000, 2000 0 2800, 4000 0 5000, 
-	4000 0 -5200, 1400 0 -2950,  900 0 -500,  900 0 1090, 1950 0 2900, 4000 0 5200, 
+	5200 0 -5000, 2700 0 -2800, 2200 0 -500, 2200 0 1000, 3200 0 2800,
+        5200 0 5000, 
+	5200 0 -5200, 2600 0 -2950, 2100 0 -500, 2100 0 1090, 3150 0 2900,
+        5200 0 5200, 
 
 			    ] }
-    FaceSet{ numVertices 5 }
-    FaceSet{ startIndex 9 numVertices 6 }
+    FaceSet{ numVertices 6 }
     BaseColor { rgb 0.6 0.5 0.3 }
-    IndexedTriangleStripSet{ coordIndex [ 0, 5, 1, 6, 2, 7, 3, 8, ] }
-    IndexedTriangleStripSet{ coordIndex [9, 15, 10, 16, 11, 17, 12, 18, 13, 19, 14, 20]}
+    IndexedTriangleStripSet{ coordIndex [0, 6, 1, 7, 2, 8, 3, 9, 4, 10, 5, 11]}
 }

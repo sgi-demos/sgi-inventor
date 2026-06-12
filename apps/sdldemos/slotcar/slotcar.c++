@@ -314,7 +314,8 @@ waitForWindowCB(void *, SoAction *action)
 //    This is the mainline program for the slotcar game.
 //
 
-main( int argc, char *argv[] )
+static int
+slotcar_main( int argc, char *argv[] )
 
 //
 ////////////////////////////////////////////////////////////////////////
@@ -460,7 +461,28 @@ main( int argc, char *argv[] )
 
     SoXt::mainLoop();
 #endif
+    return 0;
 }
+
+#ifdef __EMSCRIPTEN__
+// emcc 3.1.6 + clang 15 disagree on the two-arg main symbol name
+// (__main_argc_argv), which silently strips the program; use a zero-arg
+// main (same workaround as maze). The browser supplies no arguments:
+// default to single player with three robot opponents.
+int
+main()
+{
+    static char *argv[] = {
+	(char *)"slotcar", (char *)"-s", (char *)"-r", (char *)"3", NULL };
+    return slotcar_main(4, argv);
+}
+#else
+int
+main( int argc, char *argv[] )
+{
+    return slotcar_main(argc, argv);
+}
+#endif
 
 ////////////////////////////////////////////////////////////////////////
 //
