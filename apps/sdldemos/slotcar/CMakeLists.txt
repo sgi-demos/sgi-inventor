@@ -3,12 +3,17 @@ set(SLOTCAR_SOURCES
     Network.c++ Packet.c++ RaceCar.c++ State.c++
     Track.c++ Curve.c++ Straight.c++ StartFinish.c++
     Sky.c++ RobotCar.c++ LODD.c++ Car.c++
-    SoundStub.c++)
+    SoundSDL.c++)
 
 add_executable(slotcar ${SLOTCAR_SOURCES})
-target_compile_definitions(slotcar PRIVATE SDL_PORT NO_AUDIO)
+target_compile_definitions(slotcar PRIVATE SDL_PORT)
 target_include_directories(slotcar PRIVATE ${CMAKE_SOURCE_DIR}/libSoSDL)
 target_link_libraries(slotcar PRIVATE SoSDL Inventor FLiv image JPEG::JPEG OpenGL::GLU)
+if (NOT EMSCRIPTEN)
+    find_package(SDL2 REQUIRED)
+    target_include_directories(slotcar PRIVATE ${SDL2_INCLUDE_DIRS})
+    target_link_libraries(slotcar PRIVATE ${SDL2_LIBRARIES})
+endif()
 
 if (EMSCRIPTEN)
     set_target_properties(slotcar PROPERTIES SUFFIX ".html")

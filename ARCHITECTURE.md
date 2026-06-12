@@ -296,6 +296,8 @@ verification is always a real browser.
 | M6b | Real LongOcean.iv recovered; GL_POLYGON→TRIANGLE_FAN glemu fix (failure 5); slotcar wasm build passing the harness |
 | M6c | Bitmap-text emulation (failure 6): SoText2 glyphs render in the browser; TrueType fonts bundled (FreeType 2.6 Type1 gap) |
 | M6d | The tofu-box saga: UCS-2 endianness fix in SoText2/SoText3 (glibc vs musl iconv, failure 7) and double-precision glues libtess (GLU ABI mismatch, failure 8). Full text pipeline working in wasm |
+| M6e/f | SoText3 repeated-character fix (geometry display lists vs the bitmap-only emulation); 1280x1024; outline glyph scale corrected (KLUDGE_FACTOR retuned to the IRIX convention) - startup screen pixel-faithful |
+| M7 | Sound: SDL2 software mixer (SoundSDL.c++) replaces the IRIX dmedia stub - per-car engine loops with live pitch (variable-rate playback, linear interp), screech, crash one-shots. AIFFs converted to WAV (originals kept); verified via SDL's disk audio driver (engine fires at the Start click) |
 
 ## 11. Process notes (how not to lose work)
 
