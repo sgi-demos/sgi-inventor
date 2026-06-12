@@ -1,5 +1,5 @@
 --- library_glemu.js.orig	2026-06-12 03:25:11.085313202 +0000
-+++ library_glemu.js	2026-06-12 03:46:58.015685765 +0000
++++ library_glemu.js	2026-06-12 04:06:20.333786503 +0000
 @@ -321,6 +321,15 @@
            {{{ makeSetValue('p', '0', 'result === true ? 1 : 0', 'i8') }}};
            return;
@@ -144,7 +144,7 @@
    },
  
    glVertex2fv__deps: ['glVertex2f'],
-@@ -3224,16 +3319,247 @@
+@@ -3224,16 +3319,259 @@
    glVertex4i: 'glVertex4f',
  
    glTexCoord2i: function(u, v) {
@@ -234,25 +234,37 @@
 +
 +    makeTexture: function(rec) {
 +      var rowBytes = ((rec.w + 31) >> 5) << 2;
-+      var data = new Uint8Array(rec.w * rec.h);
++      // RGBA rather than ALPHA: alpha-only textures hit driver/ANGLE
++      // quirks in real browsers (sampled as if incomplete -> a=1
++      // everywhere -> solid rectangles); RGBA is the battle-tested path.
++      var data = new Uint8Array(rec.w * rec.h * 4);
 +      for (var j = 0; j < rec.h; j++) {        // rows stored bottom-up
 +        for (var i = 0; i < rec.w; i++) {
 +          var byte = rec.bits[j * rowBytes + (i >> 3)];
-+          if (byte & (0x80 >> (i & 7))) data[j * rec.w + i] = 255;
++          if (byte & (0x80 >> (i & 7))) {
++            var o = (j * rec.w + i) * 4;
++            data[o] = data[o+1] = data[o+2] = data[o+3] = 255;
++          }
 +        }
 +      }
 +      var tex = GLctx.createTexture();
 +      var prevTex = GLctx.getParameter(GLctx.TEXTURE_BINDING_2D);
 +      var prevAlign = GLctx.getParameter(GLctx.UNPACK_ALIGNMENT);
++      var prevFlip = GLctx.getParameter(0x9240);      // UNPACK_FLIP_Y_WEBGL
++      var prevPremul = GLctx.getParameter(0x9241);    // UNPACK_PREMULTIPLY_ALPHA_WEBGL
 +      GLctx.bindTexture(GLctx.TEXTURE_2D, tex);
 +      GLctx.pixelStorei(GLctx.UNPACK_ALIGNMENT, 1);
-+      GLctx.texImage2D(GLctx.TEXTURE_2D, 0, GLctx.ALPHA, rec.w, rec.h, 0,
-+                       GLctx.ALPHA, GLctx.UNSIGNED_BYTE, data);
++      if (prevFlip) GLctx.pixelStorei(0x9240, false);
++      if (prevPremul) GLctx.pixelStorei(0x9241, false);
++      GLctx.texImage2D(GLctx.TEXTURE_2D, 0, GLctx.RGBA, rec.w, rec.h, 0,
++                       GLctx.RGBA, GLctx.UNSIGNED_BYTE, data);
 +      GLctx.texParameteri(GLctx.TEXTURE_2D, GLctx.TEXTURE_MIN_FILTER, GLctx.NEAREST);
 +      GLctx.texParameteri(GLctx.TEXTURE_2D, GLctx.TEXTURE_MAG_FILTER, GLctx.NEAREST);
 +      GLctx.texParameteri(GLctx.TEXTURE_2D, GLctx.TEXTURE_WRAP_S, GLctx.CLAMP_TO_EDGE);
 +      GLctx.texParameteri(GLctx.TEXTURE_2D, GLctx.TEXTURE_WRAP_T, GLctx.CLAMP_TO_EDGE);
 +      GLctx.pixelStorei(GLctx.UNPACK_ALIGNMENT, prevAlign);
++      if (prevFlip) GLctx.pixelStorei(0x9240, prevFlip);
++      if (prevPremul) GLctx.pixelStorei(0x9241, prevPremul);
 +      GLctx.bindTexture(GLctx.TEXTURE_2D, prevTex);
 +      rec.tex = tex;
 +    },
@@ -398,7 +410,7 @@
    glTexCoord2fv: function(v) {
      _glTexCoord2i({{{ makeGetValue('v', '0', 'float') }}}, {{{ makeGetValue('v', '4', 'float') }}});
    },
-@@ -3246,24 +3572,22 @@
+@@ -3246,24 +3584,22 @@
      b = Math.max(Math.min(b, 1), 0);
      a = Math.max(Math.min(a, 1), 0);
  
@@ -436,7 +448,7 @@
    },
  
    glColor4d: 'glColor4f',
-@@ -3416,16 +3740,13 @@
+@@ -3416,16 +3752,13 @@
    },
  
    glNormal3f: function(x, y, z) {
@@ -460,7 +472,7 @@
    },
  
    glNormal3fv__deps: ['glNormal3f'],
-@@ -3818,7 +4139,7 @@
+@@ -3818,7 +4151,7 @@
          // multiply position with current modelviewmatrix
          GLImmediate.matrixLib.mat4.multiplyVec4(GLImmediate.matrix[0], GLEmulation.lightPosition[lightId]);
        } else {
@@ -469,7 +481,7 @@
        }
      }
    },
-@@ -3827,7 +4148,7 @@
+@@ -3827,7 +4160,7 @@
      if (pname == 0x0B52) { // GL_LIGHT_MODEL_TWO_SIDE
        GLEmulation.lightModelTwoSide = (param != 0) ? true : false;
      } else {
@@ -478,7 +490,7 @@
      }
    },
  
-@@ -3838,7 +4159,7 @@
+@@ -3838,7 +4171,7 @@
        GLEmulation.lightModelAmbient[2] = {{{ makeGetValue('param', '8', 'float') }}};
        GLEmulation.lightModelAmbient[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else {
@@ -487,7 +499,7 @@
      }
    },
  
-@@ -3862,11 +4183,35 @@
+@@ -3862,11 +4195,35 @@
        GLEmulation.materialSpecular[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else if (pname == 0x1601) { // GL_SHININESS
        GLEmulation.materialShininess[0] = {{{ makeGetValue('param', '0', 'float') }}};
