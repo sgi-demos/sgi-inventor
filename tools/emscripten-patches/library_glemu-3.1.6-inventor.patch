@@ -1,5 +1,5 @@
 --- library_glemu.js.orig	2026-06-12 03:25:11.085313202 +0000
-+++ library_glemu.js	2026-06-12 14:13:51.010380358 +0000
++++ library_glemu.js	2026-06-12 14:38:27.135776143 +0000
 @@ -321,6 +321,15 @@
            {{{ makeSetValue('p', '0', 'result === true ? 1 : 0', 'i8') }}};
            return;
@@ -144,7 +144,7 @@
    },
  
    glVertex2fv__deps: ['glVertex2f'],
-@@ -3224,16 +3319,343 @@
+@@ -3224,16 +3319,289 @@
    glVertex4i: 'glVertex4f',
  
    glTexCoord2i: function(u, v) {
@@ -186,7 +186,7 @@
 +
 +    ensureProgram: function() {
 +      if (GLBitmapEmu.prog) return;
-+      out('[sgi-demos] glemu bitmap-text r6 (overwrite hunt)');
++      out('[sgi-demos] glemu bitmap-text r7');
 +      var vs = GLctx.createShader(GLctx.VERTEX_SHADER);
 +      GLctx.shaderSource(vs,
 +        'attribute vec2 a_ndc; attribute vec2 a_uv; varying vec2 v_uv;' +
@@ -284,31 +284,7 @@
 +        try {
 +        out('[GLBitmapEmu] first glyph upload ' + rec.w + 'x' + rec.h +
 +            ' glError=0x' + GLctx.getError().toString(16));
-+        // Definitive GPU-side check: read the texture back through an
-+        // FBO and print it as ASCII art. Separates "upload corrupted"
-+        // from "sampling broken" with zero dependence on shaders.
-+        var fbo = GLctx.createFramebuffer();
-+        var prevFBO = GLctx.getParameter(GLctx.FRAMEBUFFER_BINDING);
-+        GLctx.bindFramebuffer(GLctx.FRAMEBUFFER, fbo);
-+        GLctx.framebufferTexture2D(GLctx.FRAMEBUFFER,
-+            GLctx.COLOR_ATTACHMENT0, GLctx.TEXTURE_2D, tex, 0);
-+        if (GLctx.checkFramebufferStatus(GLctx.FRAMEBUFFER) ==
-+            GLctx.FRAMEBUFFER_COMPLETE) {
-+          var rb = new Uint8Array(rec.w * rec.h * 4);
-+          GLctx.readPixels(0, 0, rec.w, rec.h, GLctx.RGBA,
-+                           GLctx.UNSIGNED_BYTE, rb);
-+          for (var j = rec.h - 1; j >= 0; j--) {     // print top-down
-+            var line = '';
-+            for (var i = 0; i < rec.w; i++)
-+              line += rb[(j * rec.w + i) * 4 + 3] >= 128 ? '#' : '.';
-+            out('[GLBitmapEmu] tex |' + line + '|');
-+          }
-+        } else {
-+          out('[GLBitmapEmu] texture readback FBO incomplete');
-+        }
-+        GLctx.bindFramebuffer(GLctx.FRAMEBUFFER, prevFBO);
-+        GLctx.deleteFramebuffer(fbo);
-+        } catch (e) { out('[GLBitmapEmu] upload diag failed: ' + e); }
++        } catch (e) {}
 +      }
 +      GLctx.bindTexture(GLctx.TEXTURE_2D, prevTex);
 +      rec.tex = tex;
@@ -362,37 +338,7 @@
 +              GLctx.getError().toString(16) +
 +              ' tex=' + (rec.tex ? 'ok' : 'NULL') +
 +              ' prog=' + (GLBitmapEmu.prog ? 'ok' : 'NULL'));
-+          out('[GLBitmapEmu] raster=(' + r.x.toFixed(1) + ',' +
-+              r.y.toFixed(1) + ') glyph=' + rec.w + 'x' + rec.h +
-+              ' xo=' + rec.xo + ' yo=' + rec.yo +
-+              ' quadPx=(' + x0.toFixed(1) + ',' + y0.toFixed(1) + ')-(' +
-+              x1.toFixed(1) + ',' + y1.toFixed(1) + ')' +
-+              ' vp=[' + vp[0] + ',' + vp[1] + ',' + vp[2] + ',' + vp[3] + ']' +
-+              ' color=[' + r.color.map(function(c){return c.toFixed(2);}).join(',') + ']');
-+          out('[GLBitmapEmu] verts ' +
-+              Array.prototype.map.call(v, function(f){return f.toFixed(3);}).join(' '));
-+          // Read back what actually landed in the framebuffer for the
-+          // quad rect: '#' where the pixel is close to the text color,
-+          // '.' elsewhere. The ground truth of this draw.
-+          var rx = Math.max(0, Math.floor(Math.min(x0, x1))),
-+              ry = Math.max(0, Math.floor(Math.min(y0, y1))),
-+              rw = Math.min(24, Math.max(1, Math.ceil(Math.abs(x1 - x0)))),
-+              rh = Math.min(24, Math.max(1, Math.ceil(Math.abs(y1 - y0))));
-+          var px = new Uint8Array(rw * rh * 4);
-+          GLctx.readPixels(rx, ry, rw, rh, GLctx.RGBA, GLctx.UNSIGNED_BYTE, px);
-+          var tr = r.color[0] * 255, tg = r.color[1] * 255, tb = r.color[2] * 255;
-+          for (var jj = rh - 1; jj >= 0; jj--) {
-+            var line = '';
-+            for (var ii = 0; ii < rw; ii++) {
-+              var o = (jj * rw + ii) * 4;
-+              var close = Math.abs(px[o] - tr) < 40 &&
-+                          Math.abs(px[o+1] - tg) < 40 &&
-+                          Math.abs(px[o+2] - tb) < 40;
-+              line += close ? '#' : '.';
-+            }
-+            out('[GLBitmapEmu] fb |' + line + '|');
-+          }
-+          } catch (e) { out('[GLBitmapEmu] draw diag failed: ' + e); }
++          } catch (e) {}
 +        }
 +        // Restore.
 +        if (depthWas) GLctx.enable(GLctx.DEPTH_TEST);
@@ -494,7 +440,7 @@
    glTexCoord2fv: function(v) {
      _glTexCoord2i({{{ makeGetValue('v', '0', 'float') }}}, {{{ makeGetValue('v', '4', 'float') }}});
    },
-@@ -3246,24 +3668,22 @@
+@@ -3246,24 +3614,22 @@
      b = Math.max(Math.min(b, 1), 0);
      a = Math.max(Math.min(a, 1), 0);
  
@@ -532,7 +478,7 @@
    },
  
    glColor4d: 'glColor4f',
-@@ -3416,16 +3836,13 @@
+@@ -3416,16 +3782,13 @@
    },
  
    glNormal3f: function(x, y, z) {
@@ -556,7 +502,7 @@
    },
  
    glNormal3fv__deps: ['glNormal3f'],
-@@ -3818,7 +4235,7 @@
+@@ -3818,7 +4181,7 @@
          // multiply position with current modelviewmatrix
          GLImmediate.matrixLib.mat4.multiplyVec4(GLImmediate.matrix[0], GLEmulation.lightPosition[lightId]);
        } else {
@@ -565,7 +511,7 @@
        }
      }
    },
-@@ -3827,7 +4244,7 @@
+@@ -3827,7 +4190,7 @@
      if (pname == 0x0B52) { // GL_LIGHT_MODEL_TWO_SIDE
        GLEmulation.lightModelTwoSide = (param != 0) ? true : false;
      } else {
@@ -574,7 +520,7 @@
      }
    },
  
-@@ -3838,7 +4255,7 @@
+@@ -3838,7 +4201,7 @@
        GLEmulation.lightModelAmbient[2] = {{{ makeGetValue('param', '8', 'float') }}};
        GLEmulation.lightModelAmbient[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else {
@@ -583,7 +529,7 @@
      }
    },
  
-@@ -3862,11 +4279,35 @@
+@@ -3862,11 +4225,35 @@
        GLEmulation.materialSpecular[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else if (pname == 0x1601) { // GL_SHININESS
        GLEmulation.materialShininess[0] = {{{ makeGetValue('param', '0', 'float') }}};

@@ -2092,6 +2092,13 @@ SoOutlineFontCache::hasFrontDisplayList(const char* c,
     
     // If we don't and we can't build one, return FALSE.
     if (otherOpen) return FALSE;
+#ifdef __EMSCRIPTEN__
+    // The GL emulation's display lists record only glBitmap calls
+    // (SoText2 glyphs); geometry compiled into a list is executed once
+    // and replays empty - repeated characters in a string would vanish.
+    // Always take the direct rendering path.
+    return FALSE;
+#endif
     
     // Build one:
     glNewList(frontList->getFirstIndex()+key, GL_COMPILE);
@@ -2126,6 +2133,13 @@ SoOutlineFontCache::hasSideDisplayList(const char* c,
     
     // If we don't and we can't build one, return FALSE.
     if (otherOpen) return FALSE;
+#ifdef __EMSCRIPTEN__
+    // The GL emulation's display lists record only glBitmap calls
+    // (SoText2 glyphs); geometry compiled into a list is executed once
+    // and replays empty - repeated characters in a string would vanish.
+    // Always take the direct rendering path.
+    return FALSE;
+#endif
     
     // Build one:
     glNewList(sideList->getFirstIndex()+key, GL_COMPILE);

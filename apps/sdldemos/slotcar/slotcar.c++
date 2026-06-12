@@ -425,7 +425,11 @@ slotcar_main( int argc, char *argv[] )
 
     //Create the render area
 #ifdef SDL_PORT
-    myRenderArea = new SoSDLRenderArea("Slotcar Race", 650, 400);
+    // 1280x1024: the standard SGI monitor resolution of the era (the
+    // original ran in a 650x400 window on such a screen). More pixels
+    // also keep the point-sized SoText2 HUD proportionally closer to
+    // the original look.
+    myRenderArea = new SoSDLRenderArea("Slotcar Race", 1280, 1024);
     myRenderArea->setWindowCloseCallback(exitCB, gameState);
 #else
     myRenderArea = new SoXtRenderArea(myWindow);
