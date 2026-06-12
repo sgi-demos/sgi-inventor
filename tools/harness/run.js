@@ -12,7 +12,7 @@ delete globalThis.Headers; delete globalThis.Request; delete globalThis.Response
 const log = { uniform4fv: [], materialfv: [], draws: 0, warns: [], calls: {} };
 let uniformNames = new Map();
 
-const glConsts = { VERSION:0x1F02, RENDERER:0x1F01, VENDOR:0x1F00,
+const glConsts = { MAX_TEXTURE_IMAGE_UNITS:0x8872, CURRENT_PROGRAM:0x8B8D, VERSION:0x1F02, RENDERER:0x1F01, VENDOR:0x1F00,
   MAX_TEXTURE_IMAGE_UNITS:0x8872, MAX_VERTEX_ATTRIBS:0x8869,
   MAX_TEXTURE_SIZE:0xD33, MAX_CUBE_MAP_TEXTURE_SIZE:0x851C,
   MAX_VERTEX_UNIFORM_VECTORS:0x8DFB, MAX_FRAGMENT_UNIFORM_VECTORS:0x8DFD,
@@ -41,7 +41,7 @@ const GLC = { DEPTH_BUFFER_BIT:0x100, STENCIL_BUFFER_BIT:0x400, COLOR_BUFFER_BIT
  COLOR_ATTACHMENT0:0x8CE0, DEPTH_ATTACHMENT:0x8D00, DEPTH_COMPONENT16:0x81A5,
  UNPACK_FLIP_Y_WEBGL:0x9240, UNPACK_PREMULTIPLY_ALPHA_WEBGL:0x9241, UNPACK_ALIGNMENT:0xCF5, PACK_ALIGNMENT:0xD05,
  NO_ERROR:0, NONE:0, LEQUAL:0x203, LESS:0x201, CCW:0x901, CW:0x900,
- VERSION:0x1F02, RENDERER:0x1F01, VENDOR:0x1F00, MAX_VERTEX_ATTRIBS:0x8869 };
+ MAX_TEXTURE_IMAGE_UNITS:0x8872, CURRENT_PROGRAM:0x8B8D, VERSION:0x1F02, RENDERER:0x1F01, VENDOR:0x1F00, MAX_VERTEX_ATTRIBS:0x8869 };
 let fakeConstNext = 0x20000; const fakeConsts = new Map();
 
 let idCounter = 1;
@@ -55,7 +55,17 @@ const mockTarget = {
       case glConsts.RENDERER: return 'mock'; case glConsts.VENDOR: return 'mock';
       case glConsts.ALIASED_LINE_WIDTH_RANGE:
       case glConsts.ALIASED_POINT_SIZE_RANGE: return new Float32Array([1, 64]);
-      default: return 4096; // every MAX_* query
+      case 0x8869: case 0x8872: case 0xD33: case 0x851C: case 0x8DFB:
+      case 0x8DFD: case 0x8DFC: case 0x8B4D: case 0x8B4C: case 0x84E8:
+        return 4096;                       // legitimate WebGL1 MAX_* queries
+      case 0xD32: return 6;                // not WebGL enums, but harmless
+      case 0x8B8D: return null;            // CURRENT_PROGRAM: none bound
+      default:
+        // mimic real WebGL: unknown enum -> warning + null (INVALID_ENUM)
+        log.warns.push('mockGL INVALID_ENUM getParameter 0x' + p.toString(16));
+        if (!log.gpTraced) { log.gpTraced = {}; }
+        if (!log.gpTraced[p]) { log.gpTraced[p] = 1; console.log('  getParameter(0x'+p.toString(16)+') from:\n' + new Error().stack.split('\n').slice(2,6).join('\n')); }
+        return null;
     }
   },
   getSupportedExtensions() { return []; },
@@ -87,7 +97,7 @@ const mockGL = new Proxy(mockTarget, {
   get(t, k) {
     if (k in t) return t[k];
     if (typeof k === 'string' && /^[A-Z][A-Z0-9_]*$/.test(k)) {   // unknown enum
-      if (!fakeConsts.has(k)) fakeConsts.set(k, fakeConstNext++);
+      if (!fakeConsts.has(k)) { fakeConsts.set(k, fakeConstNext); console.log('  fakeConst', '0x'+fakeConstNext.toString(16), '=', k); fakeConstNext++; }
       return fakeConsts.get(k);
     }
     return function(){ log.calls[k] = (log.calls[k]||0)+1; };

@@ -1,6 +1,37 @@
---- /usr/share/emscripten/src/library_glemu.js.orig	2026-06-12 00:36:04.590369035 +0000
-+++ /usr/share/emscripten/src/library_glemu.js	2026-06-12 00:36:04.630138746 +0000
-@@ -3818,7 +3818,7 @@
+--- library_glemu.js.orig	2026-06-12 00:36:04.590369035 +0000
++++ library_glemu.js	2026-06-12 01:37:29.169267269 +0000
+@@ -321,6 +321,15 @@
+           {{{ makeSetValue('p', '0', 'result === true ? 1 : 0', 'i8') }}};
+           return;
+         }
++        // GL1 framebuffer-mode queries; WebGL is always RGBA + double buffered
++        if (pname == 0x0C31 /* GL_RGBA_MODE */ || pname == 0x0C32 /* GL_DOUBLEBUFFER */) {
++          {{{ makeSetValue('p', '0', '1', 'i8') }}};
++          return;
++        }
++        if (pname == 0x0C33 /* GL_STEREO */ || pname == 0x0C30 /* GL_INDEX_MODE */) {
++          {{{ makeSetValue('p', '0', '0', 'i8') }}};
++          return;
++        }
+         glGetBooleanv(pname, p);
+       };
+       {{{ updateExport('glGetBooleanv') }}}
+@@ -394,6 +403,14 @@
+             {{{ makeSetValue('params', '0', 'GLEmulation.MAX_CLIP_PLANES', 'i32') }}}; // all implementations need to support atleast 6
+             return;
+           }
++          case 0x0D31: { // GL_MAX_LIGHTS
++            {{{ makeSetValue('params', '0', 'GLEmulation.MAX_LIGHTS', 'i32') }}};
++            return;
++          }
++          case 0x0C01: { // GL_DRAW_BUFFER (no MRT in WebGL1: report GL_BACK)
++            {{{ makeSetValue('params', '0', '0x0405', 'i32') }}};
++            return;
++          }
+           case 0x0BA0: { // GL_MATRIX_MODE
+             {{{ makeSetValue('params', '0', 'GLImmediate.currentMatrix + 0x1700', 'i32') }}};
+             return;
+@@ -3818,7 +3835,7 @@
          // multiply position with current modelviewmatrix
          GLImmediate.matrixLib.mat4.multiplyVec4(GLImmediate.matrix[0], GLEmulation.lightPosition[lightId]);
        } else {
@@ -9,7 +40,7 @@
        }
      }
    },
-@@ -3827,7 +3827,7 @@
+@@ -3827,7 +3844,7 @@
      if (pname == 0x0B52) { // GL_LIGHT_MODEL_TWO_SIDE
        GLEmulation.lightModelTwoSide = (param != 0) ? true : false;
      } else {
@@ -18,7 +49,7 @@
      }
    },
  
-@@ -3838,7 +3838,7 @@
+@@ -3838,7 +3855,7 @@
        GLEmulation.lightModelAmbient[2] = {{{ makeGetValue('param', '8', 'float') }}};
        GLEmulation.lightModelAmbient[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else {
@@ -27,7 +58,7 @@
      }
    },
  
-@@ -3862,11 +3862,35 @@
+@@ -3862,11 +3879,35 @@
        GLEmulation.materialSpecular[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else if (pname == 0x1601) { // GL_SHININESS
        GLEmulation.materialShininess[0] = {{{ makeGetValue('param', '0', 'float') }}};
