@@ -1,5 +1,5 @@
 --- library_glemu.js.orig	2026-06-12 00:36:04.590369035 +0000
-+++ library_glemu.js	2026-06-12 01:37:29.169267269 +0000
++++ library_glemu.js	2026-06-12 01:50:53.694035584 +0000
 @@ -321,6 +321,15 @@
            {{{ makeSetValue('p', '0', 'result === true ? 1 : 0', 'i8') }}};
            return;
@@ -31,7 +31,188 @@
            case 0x0BA0: { // GL_MATRIX_MODE
              {{{ makeSetValue('params', '0', 'GLImmediate.currentMatrix + 0x1700', 'i32') }}};
              return;
-@@ -3818,7 +3835,7 @@
+@@ -3143,6 +3160,17 @@
+     }
+     GLImmediate.rendererComponentPointer = 0;
+     GLImmediate.vertexData = GLImmediate.tempData;
++
++    // SGI-Inventor port: classic GL semantics. glNormal/glColor/glTexCoord
++    // only update *current* state; every glVertex emits a full record. This
++    // keeps the interleaved layout consistent when normals/colors are set
++    // per-face (before glBegin or once per facet), as Inventor does.
++    if (!GLImmediate.currentNormal) GLImmediate.currentNormal = [0, 0, 1];
++    if (!GLImmediate.currentColorUB) GLImmediate.currentColorUB = [255, 255, 255, 255];
++    if (!GLImmediate.currentTex) GLImmediate.currentTex = [0, 0];
++    GLImmediate.batchNeedNormal = GLEmulation.lightingEnabled;
++    GLImmediate.batchNeedColor = false;
++    GLImmediate.batchNeedTex = false;
+   },
+ 
+   glEnd: function() {
+@@ -3172,6 +3200,26 @@
+     assert(GLImmediate.vertexCounter << 2 < GL.MAX_TEMP_BUFFER_SIZE);
+ #endif
+     GLImmediate.addRendererComponent(GLImmediate.VERTEX, 4, GLctx.FLOAT);
++    if (GLImmediate.batchNeedNormal) {
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentNormal[0];
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentNormal[1];
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentNormal[2];
++      GLImmediate.addRendererComponent(GLImmediate.NORMAL, 3, GLctx.FLOAT);
++    }
++    if (GLImmediate.batchNeedColor) {
++      var cstart = GLImmediate.vertexCounter << 2;
++      GLImmediate.vertexDataU8[cstart + 0] = GLImmediate.currentColorUB[0];
++      GLImmediate.vertexDataU8[cstart + 1] = GLImmediate.currentColorUB[1];
++      GLImmediate.vertexDataU8[cstart + 2] = GLImmediate.currentColorUB[2];
++      GLImmediate.vertexDataU8[cstart + 3] = GLImmediate.currentColorUB[3];
++      GLImmediate.vertexCounter++;
++      GLImmediate.addRendererComponent(GLImmediate.COLOR, 4, GLctx.UNSIGNED_BYTE);
++    }
++    if (GLImmediate.batchNeedTex) {
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentTex[0];
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentTex[1];
++      GLImmediate.addRendererComponent(GLImmediate.TEXTURE0, 2, GLctx.FLOAT);
++    }
+   },
+ 
+   glVertex3f: function(x, y, z) {
+@@ -3186,6 +3234,27 @@
+     assert(GLImmediate.vertexCounter << 2 < GL.MAX_TEMP_BUFFER_SIZE);
+ #endif
+     GLImmediate.addRendererComponent(GLImmediate.VERTEX, 4, GLctx.FLOAT);
++
++    if (GLImmediate.batchNeedNormal) {
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentNormal[0];
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentNormal[1];
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentNormal[2];
++      GLImmediate.addRendererComponent(GLImmediate.NORMAL, 3, GLctx.FLOAT);
++    }
++    if (GLImmediate.batchNeedColor) {
++      var cstart = GLImmediate.vertexCounter << 2;
++      GLImmediate.vertexDataU8[cstart + 0] = GLImmediate.currentColorUB[0];
++      GLImmediate.vertexDataU8[cstart + 1] = GLImmediate.currentColorUB[1];
++      GLImmediate.vertexDataU8[cstart + 2] = GLImmediate.currentColorUB[2];
++      GLImmediate.vertexDataU8[cstart + 3] = GLImmediate.currentColorUB[3];
++      GLImmediate.vertexCounter++;
++      GLImmediate.addRendererComponent(GLImmediate.COLOR, 4, GLctx.UNSIGNED_BYTE);
++    }
++    if (GLImmediate.batchNeedTex) {
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentTex[0];
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentTex[1];
++      GLImmediate.addRendererComponent(GLImmediate.TEXTURE0, 2, GLctx.FLOAT);
++    }
+   },
+ 
+   glVertex4f: function(x, y, z, w) {
+@@ -3200,6 +3269,27 @@
+     assert(GLImmediate.vertexCounter << 2 < GL.MAX_TEMP_BUFFER_SIZE);
+ #endif
+     GLImmediate.addRendererComponent(GLImmediate.VERTEX, 4, GLctx.FLOAT);
++
++    if (GLImmediate.batchNeedNormal) {
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentNormal[0];
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentNormal[1];
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentNormal[2];
++      GLImmediate.addRendererComponent(GLImmediate.NORMAL, 3, GLctx.FLOAT);
++    }
++    if (GLImmediate.batchNeedColor) {
++      var cstart = GLImmediate.vertexCounter << 2;
++      GLImmediate.vertexDataU8[cstart + 0] = GLImmediate.currentColorUB[0];
++      GLImmediate.vertexDataU8[cstart + 1] = GLImmediate.currentColorUB[1];
++      GLImmediate.vertexDataU8[cstart + 2] = GLImmediate.currentColorUB[2];
++      GLImmediate.vertexDataU8[cstart + 3] = GLImmediate.currentColorUB[3];
++      GLImmediate.vertexCounter++;
++      GLImmediate.addRendererComponent(GLImmediate.COLOR, 4, GLctx.UNSIGNED_BYTE);
++    }
++    if (GLImmediate.batchNeedTex) {
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentTex[0];
++      GLImmediate.vertexData[GLImmediate.vertexCounter++] = GLImmediate.currentTex[1];
++      GLImmediate.addRendererComponent(GLImmediate.TEXTURE0, 2, GLctx.FLOAT);
++    }
+   },
+ 
+   glVertex2fv__deps: ['glVertex2f'],
+@@ -3224,12 +3314,11 @@
+   glVertex4i: 'glVertex4f',
+ 
+   glTexCoord2i: function(u, v) {
+-#if ASSERTIONS
+-    assert(GLImmediate.mode >= 0); // must be in begin/end
+-#endif
+-    GLImmediate.vertexData[GLImmediate.vertexCounter++] = u;
+-    GLImmediate.vertexData[GLImmediate.vertexCounter++] = v;
+-    GLImmediate.addRendererComponent(GLImmediate.TEXTURE0, 2, GLctx.FLOAT);
++    // SGI-Inventor port: set current texcoord; emitted per-vertex in glVertex*.
++    if (!GLImmediate.currentTex) GLImmediate.currentTex = [0, 0];
++    GLImmediate.currentTex[0] = u;
++    GLImmediate.currentTex[1] = v;
++    if (GLImmediate.mode >= 0) GLImmediate.batchNeedTex = true;
+   },
+   glTexCoord2f: 'glTexCoord2i',
+ 
+@@ -3246,24 +3335,22 @@
+     b = Math.max(Math.min(b, 1), 0);
+     a = Math.max(Math.min(a, 1), 0);
+ 
+-    // TODO: make ub the default, not f, save a few mathops
++    // SGI-Inventor port: set current color; emitted per-vertex in glVertex*.
++    if (!GLImmediate.currentColorUB) GLImmediate.currentColorUB = [255, 255, 255, 255];
++    GLImmediate.currentColorUB[0] = r * 255;
++    GLImmediate.currentColorUB[1] = g * 255;
++    GLImmediate.currentColorUB[2] = b * 255;
++    GLImmediate.currentColorUB[3] = a * 255;
+     if (GLImmediate.mode >= 0) {
+-      var start = GLImmediate.vertexCounter << 2;
+-      GLImmediate.vertexDataU8[start + 0] = r * 255;
+-      GLImmediate.vertexDataU8[start + 1] = g * 255;
+-      GLImmediate.vertexDataU8[start + 2] = b * 255;
+-      GLImmediate.vertexDataU8[start + 3] = a * 255;
+-      GLImmediate.vertexCounter++;
+-      GLImmediate.addRendererComponent(GLImmediate.COLOR, 4, GLctx.UNSIGNED_BYTE);
+-    } else {
+-      GLImmediate.clientColor[0] = r;
+-      GLImmediate.clientColor[1] = g;
+-      GLImmediate.clientColor[2] = b;
+-      GLImmediate.clientColor[3] = a;
++      GLImmediate.batchNeedColor = true;
++    }
++    GLImmediate.clientColor[0] = r;
++    GLImmediate.clientColor[1] = g;
++    GLImmediate.clientColor[2] = b;
++    GLImmediate.clientColor[3] = a;
+ #if GL_FFP_ONLY
+-      GLctx.vertexAttrib4fv(GLImmediate.COLOR, GLImmediate.clientColor);
++    GLctx.vertexAttrib4fv(GLImmediate.COLOR, GLImmediate.clientColor);
+ #endif
+-    }
+   },
+ 
+   glColor4d: 'glColor4f',
+@@ -3416,16 +3503,13 @@
+   },
+ 
+   glNormal3f: function(x, y, z) {
+-#if ASSERTIONS
+-    assert(GLImmediate.mode >= 0); // must be in begin/end
+-#endif
+-    GLImmediate.vertexData[GLImmediate.vertexCounter++] = x;
+-    GLImmediate.vertexData[GLImmediate.vertexCounter++] = y;
+-    GLImmediate.vertexData[GLImmediate.vertexCounter++] = z;
+-#if ASSERTIONS
+-    assert(GLImmediate.vertexCounter << 2 < GL.MAX_TEMP_BUFFER_SIZE);
+-#endif
+-    GLImmediate.addRendererComponent(GLImmediate.NORMAL, 3, GLctx.FLOAT);
++    // SGI-Inventor port: set current normal; emitted per-vertex in glVertex*.
++    // Legal outside begin/end (classic GL), which Inventor relies on.
++    if (!GLImmediate.currentNormal) GLImmediate.currentNormal = [0, 0, 1];
++    GLImmediate.currentNormal[0] = x;
++    GLImmediate.currentNormal[1] = y;
++    GLImmediate.currentNormal[2] = z;
++    if (GLImmediate.mode >= 0) GLImmediate.batchNeedNormal = true;
+   },
+ 
+   glNormal3fv__deps: ['glNormal3f'],
+@@ -3818,7 +3902,7 @@
          // multiply position with current modelviewmatrix
          GLImmediate.matrixLib.mat4.multiplyVec4(GLImmediate.matrix[0], GLEmulation.lightPosition[lightId]);
        } else {
@@ -40,7 +221,7 @@
        }
      }
    },
-@@ -3827,7 +3844,7 @@
+@@ -3827,7 +3911,7 @@
      if (pname == 0x0B52) { // GL_LIGHT_MODEL_TWO_SIDE
        GLEmulation.lightModelTwoSide = (param != 0) ? true : false;
      } else {
@@ -49,7 +230,7 @@
      }
    },
  
-@@ -3838,7 +3855,7 @@
+@@ -3838,7 +3922,7 @@
        GLEmulation.lightModelAmbient[2] = {{{ makeGetValue('param', '8', 'float') }}};
        GLEmulation.lightModelAmbient[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else {
@@ -58,7 +239,7 @@
      }
    },
  
-@@ -3862,11 +3879,35 @@
+@@ -3862,11 +3946,35 @@
        GLEmulation.materialSpecular[3] = {{{ makeGetValue('param', '12', 'float') }}};
      } else if (pname == 0x1601) { // GL_SHININESS
        GLEmulation.materialShininess[0] = {{{ makeGetValue('param', '0', 'float') }}};

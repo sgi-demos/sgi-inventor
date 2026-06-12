@@ -17,7 +17,16 @@ Why (two independent causes of the "grayscale maze"):
 Related: SoGLLightIdElement queries glGetIntegerv(GL_MAX_LIGHTS), also
 not a WebGL enum -> 0 lights -> headlight never enabled -> black screen.
 
+3. Stock glemu immediate mode writes normal/color/texcoord records into
+   the vertex stream AS THE CALLS ARRIVE. Inventor sets normals per FACE
+   (one glNormal3fv, then several glVertex3fv), which corrupts the
+   interleaved layout and stride -> "triangle jumble" geometry.
+
 The patch:
+  - immediate mode: glNormal*/glColor*/glTexCoord* only update current
+    state; every glVertex* emits a full record (position + normal when
+    lighting is on + color + texcoord per batchNeed flags) - classic GL
+    semantics. glNormal is legal outside glBegin/glEnd.
   - glGetBooleanv hook: answer GL_RGBA_MODE/GL_DOUBLEBUFFER (true),
     GL_STEREO/GL_INDEX_MODE (false)
   - glGetIntegerv hook: answer GL_MAX_LIGHTS (8), GL_DRAW_BUFFER (GL_BACK)
