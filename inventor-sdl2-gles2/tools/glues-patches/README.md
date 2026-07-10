@@ -1,39 +1,27 @@
-# glues double-precision libtess
+# glues patches — upstreamed
 
-The Emscripten build links GLU functionality from the `glues` project
-(GLU ES port). Its libtess had been mechanically converted to GLfloat
-for OpenGL ES, which created two failures for this port:
+The patches that used to live here are now folded into the canonical
+glues fork (https://github.com/sgi-demos/glues), which all the sgi-demos
+ports share; the build scripts (`tools/build-glues-em.sh`,
+`tools/build-glues-gl4es.sh`) compile straight from that checkout.
 
-1. **ABI mismatch.** Inventor compiles against the standard `GL/glu.h`
-   (sysroot), where `gluTessVertex` takes `GLdouble*` (8-byte doubles).
-   glues' float-converted implementation read the same bytes as
-   `GLfloat[3]`, producing garbage coordinates.
-2. **Precision.** libtess' sweep algorithm needs double precision;
-   with floats, font-outline contours (SoText3) hit the
-   `CheckForIntersect` assertion / memory corruption.
+What was upstreamed (see this directory's git history for the patches):
 
-`libtess-gldouble.patch` reverts `source/libtess/` to SGI's original
-GLdouble types and updates the tess prototypes in `source/glues.h`
-(adding a `GLdouble` typedef the GLES headers lack). Tess math is
-entirely CPU-side; OpenGL ES never sees these values.
+- **libtess GLdouble internals** (`libtess-gldouble.patch`): reverts
+  `source/libtess/` to SGI's original GLdouble types, matching the
+  GLdouble public tess API the fork already declared. The float-converted
+  internals both broke the standard GLU ABI (callers pass GLdouble*) and
+  lost the precision libtess' sweep algorithm needs (SoText3 glyph
+  outlines hit the CheckForIntersect assertion). Tess math is CPU-side;
+  GLES never sees these values.
 
-The patch is generated against https://github.com/sgi-demos/glues
-(whose HEAD already converts the public calling types; this patch
-converts the libtess internals to match). Apply with `patch -p1` from
-the glues checkout root — or just run `tools/build-glues-em.sh`, which
-copies the checkout aside, applies the patch to the copy, and builds
-`build-em/glues/libglues.a` with:
+- **gl4es hardware mipmaps** (`hw-mipmap-gl4es.patch`, from the
+  rss-sdl2-gles2 port): gated by `-DGLUES_USE_HW_MIPMAP`, defers
+  power-of-two `gluBuild2DMipmaps` to gl4es' `GL_GENERATE_MIPMAP` —
+  CPU-built chains sample black under gl4es `*_MIPMAP_*` min filters.
 
-    emcc -O2 -DNDEBUG -DLIBRARYBUILD -D__USE_SDL_GLES__=1 -sUSE_SDL=2 \
-         -Iinclude -Isource -c <each .c/.cc>
-
-(`-DNDEBUG` matches release GLU; the assertions are advisory.)
-
-## hw-mipmap-gl4es.patch
-
-For the gl4es backend only (applied by `tools/build-glues-gl4es.sh`,
-enabled with `-DGLUES_USE_HW_MIPMAP`): defers power-of-two
-`gluBuild2DMipmaps` to gl4es' hardware `GL_GENERATE_MIPMAP` — the CPU
-mipmap chain sampled black under gl4es `*_MIPMAP_*` min filters
-(notably POT `GL_RGB`). Originated in the rss-sdl2-gles2 port's glues
-copy; NPOT input still takes the CPU path.
+Also reconciled upstream: the `GLUES_GL4ES` branch of `glues.h`
+self-includes gl4es's `GL/glu_mangle.h` on Apple/Emscripten, so glues'
+glu* definitions get the same mangled names (mglu*) that consumers
+compiled against gl4es's `<GL/glu.h>` reference — no build-system
+`-include` needed.

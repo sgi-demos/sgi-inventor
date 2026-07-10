@@ -4,15 +4,10 @@
 #
 # Usage: tools/build-glues-gl4es.sh [native|web|all] [glues-checkout] [gl4es-checkout]
 #
-# Differences from tools/build-glues-em.sh (the glemu-backend script):
-#   - compiles against gl4es' <GL/gl.h>/<GL/glu.h> (-DGLUES_GL4ES), so
-#     glues' internal GL calls resolve to gl4es (gl4es_gl* on Apple/web);
-#   - force-includes GL/glu_mangle.h so the exported glu* definitions get
-#     the same mglu* names consumers compiled with -DUSE_MGL_NAMESPACE see;
-#   - builds a native variant too (desktop GLU disappears with ANGLE).
-#
-# The glues checkout is never modified: sources are copied and the
-# libtess GLdouble patch (tools/glues-patches/) is applied to the copy.
+# Compiles straight from the glues checkout: since the reconciliation,
+# https://github.com/sgi-demos/glues carries the libtess GLdouble
+# internals (standard GLU ABI) and the gl4es hardware-mipmap fix
+# (enabled by -DGLUES_USE_HW_MIPMAP below) — no patching needed.
 #
 # Output: build-gl4es/glues/libglues-native.a and/or libglues-web.a
 set -e
@@ -32,41 +27,41 @@ if [ -z "$GL4ES" ]; then
         if [ -d "$c/include/GL" ]; then GL4ES=$c; break; fi
     done
 fi
-[ -n "$GLUES_SRC" ] || { echo "ERROR: glues checkout not found"; exit 1; }
-[ -n "$GL4ES" ]     || { echo "ERROR: gl4es checkout not found"; exit 1; }
+if [ -z "$GLUES_SRC" ]; then
+    GLUES_SRC="$REPO/build-gl4es/glues/glues-checkout"
+    [ -d "$GLUES_SRC" ] || git clone https://github.com/sgi-demos/glues.git "$GLUES_SRC"
+fi
+[ -n "$GL4ES" ] || { echo "ERROR: gl4es checkout not found"; exit 1; }
 echo "glues: $GLUES_SRC"
 echo "gl4es: $GL4ES"
 
 OUT="$REPO/build-gl4es/glues"
-WORK="$OUT/src"
-rm -rf "$WORK"
-mkdir -p "$WORK"
-cp -R "$GLUES_SRC/source" "$WORK/"
-(cd "$WORK" && patch -p1 -s < "$REPO/tools/glues-patches/libtess-gldouble.patch")
-# rss-port fix: defer POT gluBuild2DMipmaps to gl4es hardware mipmaps
-# (CPU-built chains sample black under gl4es *_MIPMAP_* min filters);
-# enabled by -DGLUES_USE_HW_MIPMAP below.
-(cd "$WORK" && patch -p1 -s < "$REPO/tools/glues-patches/hw-mipmap-gl4es.patch")
+SRC="$GLUES_SRC/source"
 
-# -DGLUES_GL4ES: glues.h includes gl4es' <GL/gl.h> (mangles gl*->gl4es_gl*
-#   on Apple/Emscripten).
-# -include GL/glu_mangle.h: exported glu* definitions become mglu*.
+# -DGLUES_GL4ES: glues.h includes gl4es' <GL/gl.h> and self-mangles the
+#   glu* definitions to mglu* on Apple/Emscripten (matching consumers
+#   compiled with -DUSE_MGL_NAMESPACE against gl4es's <GL/glu.h>).
+# -DGLUES_USE_HW_MIPMAP: POT gluBuild2DMipmaps defers to gl4es'
+#   GL_GENERATE_MIPMAP (CPU chains sample black under gl4es).
 # gnu++14 for the 1990s libnurbs sources ('register').
-COMMON="-O2 -DNDEBUG -DLIBRARYBUILD -DGLUES_GL4ES -DGLUES_USE_HW_MIPMAP -I$GL4ES/include -include GL/glu_mangle.h -I$WORK/source"
-NURBS_INCS="-I$WORK/source/libnurbs/interface -I$WORK/source/libnurbs/internals -I$WORK/source/libnurbs/nurbtess"
+# -include GL/glu_mangle.h: some TUs (glues_mipmap.c) reach their
+# definitions before glues.h's self-mangle; force-include keeps every
+# glu* definition uniformly mangled (idempotent - include-guarded).
+COMMON="-O2 -DNDEBUG -DLIBRARYBUILD -DGLUES_GL4ES -DGLUES_USE_HW_MIPMAP -I$GL4ES/include -include GL/glu_mangle.h -I$SRC"
+NURBS_INCS="-I$SRC/libnurbs/interface -I$SRC/libnurbs/internals -I$SRC/libnurbs/nurbtess"
 
 build_variant() {  # $1 = native|web
     if [ "$1" = web ]; then CC="emcc"; CXX="em++"; AR="emar"; else CC=cc; CXX=c++; AR=ar; fi
     OBJ="$OUT/obj-$1"
     rm -rf "$OBJ"
     mkdir -p "$OBJ"
-    for f in "$WORK"/source/*.c "$WORK"/source/libtess/*.c; do
+    for f in "$SRC"/*.c "$SRC"/libtess/*.c; do
         echo "  [$1] CC  $(basename "$f")"
         $CC $COMMON -c "$f" -o "$OBJ/$(basename "$f" .c).o"
     done
-    for f in "$WORK"/source/libnurbs/interface/*.cc \
-             "$WORK"/source/libnurbs/internals/*.cc \
-             "$WORK"/source/libnurbs/nurbtess/*.cc; do
+    for f in "$SRC"/libnurbs/interface/*.cc \
+             "$SRC"/libnurbs/internals/*.cc \
+             "$SRC"/libnurbs/nurbtess/*.cc; do
         echo "  [$1] CXX $(basename "$f")"
         $CXX $COMMON -std=gnu++14 $NURBS_INCS -c "$f" -o "$OBJ/$(basename "$f" .cc).o"
     done

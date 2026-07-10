@@ -6,9 +6,9 @@
 #
 # The glues checkout is found in this order: $1, ../glues or
 # ~/Github/glues next to this repo, else cloned from
-# https://github.com/sgi-demos/glues. The checkout is never modified:
-# sources are copied into the output dir and the libtess GLdouble patch
-# (tools/glues-patches/libtess-gldouble.patch) is applied to the copy.
+# https://github.com/sgi-demos/glues. Compiles straight from the
+# checkout: since the reconciliation the fork carries the libtess
+# GLdouble internals (standard GLU ABI) upstream — no patching needed.
 #
 # Output: <output-dir>/libglues.a  (default build-em/glues/libglues.a,
 # where the top-level CMakeLists expects it).
@@ -29,14 +29,7 @@ if [ -z "$SRC" ]; then
 fi
 echo "glues source: $SRC"
 
-WORK="$OUT/src"
-rm -rf "$WORK"
-mkdir -p "$WORK"
-cp -R "$SRC/source" "$SRC/include" "$WORK/"
-
-# Revert libtess to SGI's original GLdouble types (ABI + precision; see
-# tools/glues-patches/README.md).
-(cd "$WORK" && patch -p1 -s < "$REPO/tools/glues-patches/libtess-gldouble.patch")
+WORK="$SRC"
 
 CFLAGS="-O2 -DNDEBUG -DLIBRARYBUILD -D__USE_SDL_GLES__=1 -sUSE_SDL=2"
 INCS="-I$WORK/include -I$WORK/source"
