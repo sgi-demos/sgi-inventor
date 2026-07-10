@@ -1,0 +1,47 @@
+Slotcar is a networked slotcar racing game for any number of players.
+
+% slotcar -h
+
+will print out a usage message explaining all of the options.  A Startup
+screen explains a little bit about the game.
+
+A couple of features that are not yet explained in the Startup screen are:
+Pressing the 'A' key while playing will toggle on and off the annotation
+above each of the other cars saying who they are.
+
+Using the -g command line option with an odd-numbered game number will give
+a short race course.  Using an even-numbered game number will give a longer
+race course.  Omitting the -g option will default to game 0 with the longer
+race course.
+
+
+-------------------------------------------------------------------------
+Source code notes:
+
+
+The program is an Inventor program using Xt.  The program reads in a
+track and initializes a network class for sending and receiving packets
+of information from other players.  When the program is sitting in
+the main Xt loop, it is waiting for either mouse/keyboard input from the
+user, or packets from the network.  The callback for mouse/keyboard is
+used to adjust speed, and look for pressing of the start button or the 'A'
+key.  The network callback drains the queue of incoming packets before
+returning to Xt.  Each packet updates a game state structure storing the
+state of the game simulation.  
+
+When the main loop is idle, the simulation runs, simulating the player's
+car and updating the positions of the other players and any robot cars
+that are being simulated.  At specified time intervals, the simulation
+will broadcast the current position of the player's car and any robot
+cars that the player is simulating.
+
+A network administrator can choose override the default multicast address 
+and port used by slotcar.
+
+To use a different port, edit /etc/services and a line like
+sgi-slotcar      5140/udp
+(but change the port to a value you like).
+
+To use a different multicast address, update the hosts 
+database (/etc/host,NIS,DNS) to have a value something like
+224.0.1.2      sgi-slotcar.mcast.net

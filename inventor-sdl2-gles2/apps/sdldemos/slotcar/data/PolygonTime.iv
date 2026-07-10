@@ -1,0 +1,15 @@
+#Inventor V2.0 ascii
+
+# This scene graph is used to time polygon rendering performance. It is
+# never rendered as part of the game. Since there is no light in this
+# scene and the polygon is black, it is displayed as a dark window.
+
+Separator {
+    OrthographicCamera { height 2 }
+    # This is used to scale the square based on the window size
+    DEF PolygonTimeScale Scale {}
+    LightModel { model BASE_COLOR }
+    BaseColor { rgb 0 0 0 }
+    Coordinate3 { point [-1 1 0, -1 -1 0, 1 -1 0, 1 1 0] }
+    FaceSet {}
+}

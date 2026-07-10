@@ -1,0 +1,242 @@
+#Inventor V2.0 ascii
+
+# Scene graph for overlay heads-up display
+
+Separator {
+    renderCaching OFF
+
+    OrthographicCamera {
+	position 0 0 1
+	nearDistance 0.1
+	farDistance  10.0
+	focalDistance 1.0
+	viewportMapping LEAVE_ALONE
+	height 2
+    }
+    LightModel { model BASE_COLOR }
+    Complexity { value .7 }
+    Font { name Utopia-Regular size 20 }
+
+    # ColorIndex[0] = clear
+    # ColorIndex[1] = blue          LABEL_COLOR
+    # ColorIndex[2] = red           HIGHLIGHT_COLOR
+    # ColorIndex[3] = red           IMPORTANT_COLOR
+
+    # Different displays for different game modes:
+    Switch {
+	whichChild 3
+	    = DEF GAME_MODE GlobalField { type SFInt32 GameMode 3 }.GameMode
+
+	# Startup mode
+	Label {}
+
+	# Practice mode
+	Separator {
+	    Separator {
+		BaseColor { rgb .9 0 0 }
+		Translation { translation -.15 .8 0 }
+		Text2 {
+                    justification CENTER
+                    string "Stop at starting line for new race!"
+                }
+	    }
+	    DEF PositionInfo Separator {
+		BaseColor { rgb 0 0 .25 }
+
+		#
+		# Global fields to edit:
+		#
+		# Position1 = (string) username in position 1
+		# Pos1Color = (1,2)  1=normal or final, 2=racing
+		# ... [1-8]
+
+		Translation { translation 0.95 0.9 0 }
+		Separator {
+		    Text2 { justification RIGHT string "Positions:" }
+		}
+
+		Translation { translation 0 -0.11 0 }
+		Separator {
+		    Switch { 
+			whichChild 1
+			    = GlobalField { type SFInt32 Pos1Color 1 }.Pos1Color
+			DEF LabelColor   	BaseColor { rgb 0 0 .25 }
+			DEF HighlightColor      BaseColor { rgb .9 0 0 }
+			DEF ImportantColor 	BaseColor { rgb .9 0 0 }
+		    }
+		    Text2 {
+                        justification RIGHT
+			string = GlobalField {
+				type SFString Position1 " " }.Position1
+		    }
+		}
+
+		Translation { translation 0 -0.1 0 }
+		Separator {
+		    Switch { 
+			whichChild 1
+			    = GlobalField { type SFInt32 Pos2Color 1 }.Pos2Color
+			USE LabelColor USE HighlightColor
+		    }
+		    Text2 {
+                        justification RIGHT
+			string = GlobalField {
+				type SFString Position2 "" }.Position2
+		    }
+		}
+		Translation { translation 0 -0.1 0 }
+		Separator {
+		    Switch { 
+			whichChild 1
+			    = GlobalField { type SFInt32 Pos3Color 1 }.Pos3Color
+			USE LabelColor USE HighlightColor
+		    }
+		    Text2 {
+                        justification RIGHT
+			string = GlobalField {
+				type SFString Position3 "" }.Position3
+		    }
+		}
+		Translation { translation 0 -0.15 0 }
+		Separator {
+		    Switch { 
+			whichChild 1
+			    = GlobalField { type SFInt32 Pos4Color 1 }.Pos4Color
+			USE LabelColor USE HighlightColor
+		    }
+		    Text2 {
+                        justification RIGHT
+			string = GlobalField {
+				type SFString Position4 "" }.Position4
+		    }
+		}
+		Translation { translation 0 -0.1 0 }
+		Separator {
+		    Switch { 
+			whichChild 1
+			    = GlobalField { type SFInt32 Pos5Color 1 }.Pos5Color
+			USE LabelColor USE HighlightColor
+		    }
+		    Text2 {
+                        justification RIGHT
+			string = GlobalField {
+				type SFString Position5 "" }.Position5
+		    }
+		}
+		Translation { translation 0 -0.1 0 }
+		Separator {
+		    Switch { 
+			whichChild 1
+			    = GlobalField { type SFInt32 Pos6Color 1 }.Pos6Color
+			USE LabelColor USE HighlightColor
+		    }
+		    Text2 {
+                        justification RIGHT
+			string = GlobalField {
+				type SFString Position6 "" }.Position6
+		    }
+		}
+		Translation { translation 0 -0.1 0 }
+		Separator {
+		    Switch { 
+			whichChild 1
+			    = GlobalField { type SFInt32 Pos7Color 1 }.Pos7Color
+			USE LabelColor USE HighlightColor
+		    }
+		    Text2 {
+                        justification RIGHT
+			string = GlobalField {
+				type SFString Position7 "" }.Position7
+		    }
+		}
+		Translation { translation 0 -0.1 0 }
+		Separator {
+		    Switch { 
+			whichChild 1
+			    = GlobalField { type SFInt32 Pos8Color 1 }.Pos8Color
+			USE LabelColor USE HighlightColor
+		    }
+		    Text2 {
+                        justification RIGHT
+			string = GlobalField {
+				type SFString Position8 "" }.Position8
+		    }
+		}
+	    }
+	}
+
+	# Pre-race mode
+	Separator {
+	    USE ImportantColor
+	    Translation { translation 0 .8 0 }
+	    Text2 { string "Next race in: " justification RIGHT }
+	    Text2 { justification LEFT
+		string = GlobalField { type SFInt32 
+				       SecsToStart 0 }.SecsToStart
+	    }
+	}
+
+	# Race mode
+	Separator {
+	    USE ImportantColor
+	    Separator {
+		Translation { translation -.00 .7 0 }
+                Complexity { value .7 }
+                Font { size 60 }
+                Text3 { string " " }
+		DEF RACE_PLACE Text2 { justification CENTER }
+	    }
+	    Separator {
+		Translation { translation -.8 .9 0 }
+		Text2 { string "Lap: " justification RIGHT }
+		Text2 { justification LEFT
+			string = 
+			GlobalField { type SFInt32 Lap 0 }.Lap
+		}
+	    }
+	    USE PositionInfo
+	}
+        
+        # After Racing Mode.
+        # Display the position information as well as the win record
+	Separator {
+	    Separator {
+		USE HighlightColor
+		Translation { translation -.2 .8 0 }
+		Text2 { string "Victory Lap" }
+	    }
+	    USE PositionInfo
+
+        }
+
+        # The race is over.
+        # Display the position information as well as the win record
+	Separator {
+	    Separator {
+		USE HighlightColor
+		Translation { translation -.2 .8 0 }
+		Text2 { string "Practicing" }
+	    }
+            DEF PointTotals Separator {
+                USE LabelColor
+		Translation { translation .95 .9 0 }
+		Text2 { 
+                    justification RIGHT
+                    string [ "Point Totals" ]
+                }
+		Translation { translation -0.08 -0.11 0 }
+		DEF POINT_TOTAL_NAMES Text2 {
+                    spacing 0.75
+                    justification RIGHT
+                }
+		Translation { translation .03 .0 0 }
+		DEF POINT_TOTAL_POINTS Text2 {
+                    spacing 0.75
+                    justification LEFT
+                }
+            }
+        }
+    }
+}
+
+

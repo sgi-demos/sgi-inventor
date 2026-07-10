@@ -1,0 +1,426 @@
+diff -ru a/source/glues.h b/source/glues.h
+--- a/source/glues.h	2026-07-09 21:21:05
++++ b/source/glues.h	2026-07-09 21:21:05
+@@ -130,6 +130,11 @@
+ 
+ typedef GLUquadric GLUquadricObj;
+ typedef GLUtesselator GLUtesselatorObj;
++#ifndef GLUES_HAS_GLDOUBLE
++#define GLUES_HAS_GLDOUBLE
++typedef double GLdouble;  /* CPU-side tess math; standard GLU ABI */
++#endif
++
+ typedef GLUtesselator GLUtriangulatorObj;
+ typedef GLUnurbs GLUnurbsObj;
+ 
+diff -ru a/source/libtess/geom.c b/source/libtess/geom.c
+--- a/source/libtess/geom.c	2026-07-09 21:21:05
++++ b/source/libtess/geom.c	2026-07-09 21:21:05
+@@ -45,7 +45,7 @@
+    return VertLeq(u, v);
+ }
+ 
+-GLfloat __gl_edgeEval(GLUvertex* u, GLUvertex* v, GLUvertex* w)
++GLdouble __gl_edgeEval(GLUvertex* u, GLUvertex* v, GLUvertex* w)
+ {
+    /* Given three vertices u,v,w such that VertLeq(u,v) && VertLeq(v,w),
+     * evaluates the t-coord of the edge uw at the s-coord of the vertex v.
+@@ -57,7 +57,7 @@
+     * let r be the negated result (this evaluates (uw)(v->s)), then
+     * r is guaranteed to satisfy MIN(u->t,w->t) <= r <= MAX(u->t,w->t).
+     */
+-   GLfloat gapL, gapR;
++   GLdouble gapL, gapR;
+ 
+    assert(VertLeq(u, v) && VertLeq(v, w));
+ 
+@@ -80,13 +80,13 @@
+    return 0;
+ }
+ 
+-GLfloat __gl_edgeSign(GLUvertex* u, GLUvertex* v, GLUvertex* w)
++GLdouble __gl_edgeSign(GLUvertex* u, GLUvertex* v, GLUvertex* w)
+ {
+    /* Returns a number whose sign matches EdgeEval(u,v,w) but which
+     * is cheaper to evaluate.  Returns > 0, == 0 , or < 0
+     * as v is above, on, or below the edge uw.
+     */
+-   GLfloat gapL, gapR;
++   GLdouble gapL, gapR;
+ 
+    assert(VertLeq(u, v) && VertLeq(v, w));
+ 
+@@ -106,7 +106,7 @@
+  * Define versions of EdgeSign, EdgeEval with s and t transposed.
+  */
+ 
+-GLfloat __gl_transEval(GLUvertex* u, GLUvertex* v, GLUvertex* w)
++GLdouble __gl_transEval(GLUvertex* u, GLUvertex* v, GLUvertex* w)
+ {
+    /* Given three vertices u,v,w such that TransLeq(u,v) && TransLeq(v,w),
+     * evaluates the t-coord of the edge uw at the s-coord of the vertex v.
+@@ -118,7 +118,7 @@
+     * let r be the negated result (this evaluates (uw)(v->t)), then
+     * r is guaranteed to satisfy MIN(u->s,w->s) <= r <= MAX(u->s,w->s).
+     */
+-   GLfloat gapL, gapR;
++   GLdouble gapL, gapR;
+ 
+    assert(TransLeq(u, v) && TransLeq(v, w));
+ 
+@@ -141,13 +141,13 @@
+    return 0;
+ }
+ 
+-GLfloat __gl_transSign(GLUvertex* u, GLUvertex* v, GLUvertex* w)
++GLdouble __gl_transSign(GLUvertex* u, GLUvertex* v, GLUvertex* w)
+ {
+    /* Returns a number whose sign matches TransEval(u,v,w) but which
+     * is cheaper to evaluate.  Returns > 0, == 0 , or < 0
+     * as v is above, on, or below the edge uw.
+     */
+-   GLfloat gapL, gapR;
++   GLdouble gapL, gapR;
+ 
+    assert(TransLeq(u, v) && TransLeq(v, w));
+ 
+@@ -199,7 +199,7 @@
+ #include <stdlib.h>
+ extern int RandomInterpolate;
+ 
+-GLfloat Interpolate(GLfloat a, GLfloat x, GLfloat b, GLfloat y)
++GLdouble Interpolate(GLdouble a, GLdouble x, GLdouble b, GLdouble y)
+ {
+    printf("*********************%d\n",RandomInterpolate);
+    if (RandomInterpolate)
+@@ -224,7 +224,7 @@
+  * bounding rectangles defined by each edge.
+  */
+ {
+-   GLfloat z1, z2;
++   GLdouble z1, z2;
+ 
+    /* This is certainly not the most efficient way to find the intersection
+     * of two line segments, but it is very numerically stable.
+diff -ru a/source/libtess/geom.h b/source/libtess/geom.h
+--- a/source/libtess/geom.h	2026-07-09 21:21:05
++++ b/source/libtess/geom.h	2026-07-09 21:21:05
+@@ -74,10 +74,10 @@
+ #define VertCCW(u, v, w) __gl_vertCCW(u, v, w)
+ 
+ int     __gl_vertLeq(GLUvertex* u, GLUvertex* v);
+-GLfloat __gl_edgeEval(GLUvertex* u, GLUvertex* v, GLUvertex* w);
+-GLfloat __gl_edgeSign(GLUvertex* u, GLUvertex* v, GLUvertex* w);
+-GLfloat __gl_transEval(GLUvertex* u, GLUvertex* v, GLUvertex* w);
+-GLfloat __gl_transSign(GLUvertex* u, GLUvertex* v, GLUvertex* w);
++GLdouble __gl_edgeEval(GLUvertex* u, GLUvertex* v, GLUvertex* w);
++GLdouble __gl_edgeSign(GLUvertex* u, GLUvertex* v, GLUvertex* w);
++GLdouble __gl_transEval(GLUvertex* u, GLUvertex* v, GLUvertex* w);
++GLdouble __gl_transSign(GLUvertex* u, GLUvertex* v, GLUvertex* w);
+ int     __gl_vertCCW(GLUvertex* u, GLUvertex* v, GLUvertex* w);
+ void    __gl_edgeIntersect(GLUvertex* o1, GLUvertex* d1,
+                            GLUvertex* o2, GLUvertex* d2,
+diff -ru a/source/libtess/mesh.h b/source/libtess/mesh.h
+--- a/source/libtess/mesh.h	2026-07-09 21:21:05
++++ b/source/libtess/mesh.h	2026-07-09 21:21:05
+@@ -121,8 +121,8 @@
+    void*         data;          /* client's data */
+ 
+    /* Internal data (keep hidden) */
+-   GLfloat coords[3];           /* vertex location in 3D */
+-   GLfloat s, t;                /* projection onto the sweep plane */
++   GLdouble coords[3];           /* vertex location in 3D */
++   GLdouble s, t;                /* projection onto the sweep plane */
+    long    pqHandle;            /* to allow deletion from priority queue */
+ };
+ 
+diff -ru a/source/libtess/normal.c b/source/libtess/normal.c
+--- a/source/libtess/normal.c	2026-07-09 21:21:05
++++ b/source/libtess/normal.c	2026-07-09 21:21:05
+@@ -48,7 +48,7 @@
+ #undef ABS
+ #define ABS(x) ((x)<0 ? -(x) : (x))
+ 
+-static int LongAxis(GLfloat v[3])
++static int LongAxis(GLdouble v[3])
+ {
+    int i=0;
+ 
+@@ -64,11 +64,11 @@
+    return i;
+ }
+ 
+-static void ComputeNormal(GLUtesselator* tess, GLfloat norm[3])
++static void ComputeNormal(GLUtesselator* tess, GLdouble norm[3])
+ {
+    GLUvertex* v, *v1, *v2;
+-   GLfloat c, tLen2, maxLen2;
+-   GLfloat maxVal[3], minVal[3], d1[3], d2[3], tNorm[3];
++   GLdouble c, tLen2, maxLen2;
++   GLdouble maxVal[3], minVal[3], d1[3], d2[3], tNorm[3];
+    GLUvertex* maxVert[3], *minVert[3];
+    GLUvertex* vHead=&tess->mesh->vHead;
+    int i;
+@@ -150,7 +150,7 @@
+ 
+ static void CheckOrientation(GLUtesselator* tess)
+ {
+-   GLfloat area;
++   GLdouble area;
+    GLUface* f, *fHead=&tess->mesh->fHead;
+    GLUvertex* v, *vHead=&tess->mesh->vHead;
+    GLUhalfEdge* e;
+@@ -216,9 +216,9 @@
+ void __gl_projectPolygon(GLUtesselator* tess)
+ {
+    GLUvertex *v, *vHead=&tess->mesh->vHead;
+-   GLfloat norm[3];
+-   GLfloat* sUnit;
+-   GLfloat* tUnit;
++   GLdouble norm[3];
++   GLdouble* sUnit;
++   GLdouble* tUnit;
+    int i;
+    int computedNormal=FALSE;
+ 
+diff -ru a/source/libtess/render.c b/source/libtess/render.c
+--- a/source/libtess/render.c	2026-07-09 21:21:05
++++ b/source/libtess/render.c	2026-07-09 21:21:05
+@@ -405,7 +405,7 @@
+ 
+ #define SIGN_INCONSISTENT 2
+ 
+-static int ComputeNormal(GLUtesselator* tess, GLfloat norm[3], int check)
++static int ComputeNormal(GLUtesselator* tess, GLdouble norm[3], int check)
+ /*
+  * If check==FALSE, we compute the polygon normal and place it in norm[].
+  * If check==TRUE, we check that each triangle in the fan from v0 has a
+@@ -418,7 +418,7 @@
+    CachedVertex* v0=tess->cache;
+    CachedVertex* vn=v0+tess->cacheCount;
+    CachedVertex* vc;
+-   GLfloat dot, xc, yc, zc, xp, yp, zp, n[3];
++   GLdouble dot, xc, yc, zc, xp, yp, zp, n[3];
+    int sign=0;
+ 
+    /* Find the polygon normal.  It is important to get a reasonable
+@@ -511,7 +511,7 @@
+    CachedVertex* v0=tess->cache;
+    CachedVertex* vn=v0+tess->cacheCount;
+    CachedVertex* vc;
+-   GLfloat norm[3];
++   GLdouble norm[3];
+    int sign;
+ 
+    if (tess->cacheCount<3)
+diff -ru a/source/libtess/sweep.c b/source/libtess/sweep.c
+--- a/source/libtess/sweep.c	2026-07-09 21:21:05
++++ b/source/libtess/sweep.c	2026-07-09 21:21:05
+@@ -117,7 +117,7 @@
+    GLUvertex* event=tess->event;
+    GLUhalfEdge* e1;
+    GLUhalfEdge* e2;
+-   GLfloat t1, t2;
++   GLdouble t1, t2;
+ 
+    e1=reg1->eUp;
+    e2=reg2->eUp;
+@@ -474,9 +474,9 @@
+ }
+ 
+ static void CallCombine(GLUtesselator* tess, GLUvertex* isect,
+-                        void* data[4], GLfloat weights[4], int needed)
++                        void* data[4], GLdouble weights[4], int needed)
+ {
+-   GLfloat coords[3];
++   GLdouble coords[3];
+ 
+    /* Copy coord data in case the callback changes it. */
+    coords[0]=isect->coords[0];
+@@ -514,7 +514,7 @@
+ static void SpliceMergeVertices(GLUtesselator* tess, GLUhalfEdge *e1, GLUhalfEdge* e2)
+ {
+    void* data[4]={NULL, NULL, NULL, NULL};
+-   GLfloat weights[4]={0.5f, 0.5f, 0.0f, 0.0f};
++   GLdouble weights[4]={0.5f, 0.5f, 0.0f, 0.0f};
+ 
+    data[0]=e1->Org->data;
+    data[1]=e2->Org->data;
+@@ -533,10 +533,10 @@
+  * relative distance to "isect".
+  */
+ static void VertexWeights(GLUvertex* isect, GLUvertex* org, GLUvertex* dst,
+-                          GLfloat* weights)
++                          GLdouble* weights)
+ {
+-   GLfloat t1=VertL1dist(org, isect);
+-   GLfloat t2=VertL1dist(dst, isect);
++   GLdouble t1=VertL1dist(org, isect);
++   GLdouble t2=VertL1dist(dst, isect);
+ 
+    weights[0]=0.5f*t2/(t1+t2);
+    weights[1]=0.5f*t1/(t1+t2);
+@@ -555,7 +555,7 @@
+                              GLUvertex* orgLo, GLUvertex* dstLo)
+ {
+    void* data[4];
+-   GLfloat weights[4];
++   GLdouble weights[4];
+ 
+    data[0]=orgUp->data;
+    data[1]=dstUp->data;
+@@ -742,7 +742,7 @@
+    GLUvertex* orgLo=eLo->Org;
+    GLUvertex* dstUp=eUp->Dst;
+    GLUvertex* dstLo=eLo->Dst;
+-   GLfloat tMinUp, tMaxLo;
++   GLdouble tMinUp, tMaxLo;
+    GLUvertex  isect;
+    GLUvertex* orgMin;
+    GLUhalfEdge* e;
+@@ -1413,7 +1413,7 @@
+  * We add two sentinel edges above and below all other edges,
+  * to avoid special cases at the top and bottom.
+  */
+-static void AddSentinel(GLUtesselator* tess, GLfloat t)
++static void AddSentinel(GLUtesselator* tess, GLdouble t)
+ {
+    GLUhalfEdge*  e;
+    ActiveRegion* reg=(ActiveRegion*)memAlloc(sizeof(ActiveRegion));
+diff -ru a/source/libtess/tess.c b/source/libtess/tess.c
+--- a/source/libtess/tess.c	2026-07-09 21:21:05
++++ b/source/libtess/tess.c	2026-07-09 21:21:05
+@@ -56,8 +56,8 @@
+ /*ARGSUSED*/ static void APIENTRY noVertex(void* data) {}
+ /*ARGSUSED*/ static void APIENTRY noEnd(void) {}
+ /*ARGSUSED*/ static void APIENTRY noError(GLenum errnum) {}
+-/*ARGSUSED*/ static void APIENTRY noCombine(GLfloat coords[3], void *data[4],
+-                                            GLfloat weight[4], void **dataOut) {}
++/*ARGSUSED*/ static void APIENTRY noCombine(GLdouble coords[3], void *data[4],
++                                            GLdouble weight[4], void **dataOut) {}
+ /*ARGSUSED*/ static void APIENTRY noMesh(GLUmesh* mesh) {}
+ 
+ /*ARGSUSED*/ void APIENTRY __gl_noBeginData(GLenum type, void* polygonData) {}
+@@ -65,8 +65,8 @@
+ /*ARGSUSED*/ void APIENTRY __gl_noVertexData(void* data, void* polygonData) {}
+ /*ARGSUSED*/ void APIENTRY __gl_noEndData(void* polygonData) {}
+ /*ARGSUSED*/ void APIENTRY __gl_noErrorData( GLenum errnum, void* polygonData) {}
+-/*ARGSUSED*/ void APIENTRY __gl_noCombineData(GLfloat coords[3], void* data[4],
+-                                              GLfloat weight[4], void** outData,
++/*ARGSUSED*/ void APIENTRY __gl_noCombineData(GLdouble coords[3], void* data[4],
++                                              GLdouble weight[4], void** outData,
+                                               void* polygonData) {}
+ 
+ /* Half-edges are allocated in pairs (see mesh.c) */
+@@ -250,7 +250,7 @@
+                   tess->windingRule==GLU_TESS_WINDING_POSITIVE ||
+                   tess->windingRule==GLU_TESS_WINDING_NEGATIVE ||
+                   tess->windingRule==GLU_TESS_WINDING_ABS_GEQ_TWO);
+-           *value=(GLfloat)tess->windingRule;
++           *value=(GLdouble)tess->windingRule;
+            break;
+       case GLU_TESS_BOUNDARY_ONLY:
+            assert(tess->boundaryOnly==TRUE || tess->boundaryOnly==FALSE);
+@@ -317,11 +317,11 @@
+            return;
+       case GLU_TESS_COMBINE:
+            tess->callCombine=(fn==NULL) ? &noCombine:
+-              (void (APIENTRY*)(GLfloat[3], void*[4], GLfloat[4], void**))fn;
++              (void (APIENTRY*)(GLdouble[3], void*[4], GLdouble[4], void**))fn;
+            return;
+       case GLU_TESS_COMBINE_DATA:
+            tess->callCombineData=(fn==NULL) ? &__gl_noCombineData:
+-              (void (APIENTRY*)(GLfloat [3], void*[4], GLfloat[4], void**, void*))fn;
++              (void (APIENTRY*)(GLdouble [3], void*[4], GLdouble[4], void**, void*))fn;
+            return;
+       case GLU_TESS_MESH:
+            tess->callMesh=(fn==NULL) ? &noMesh: (void (APIENTRY*)(GLUmesh*))fn;
+@@ -332,7 +332,7 @@
+    }
+ }
+ 
+-static int AddVertex(GLUtesselator* tess, GLfloat coords[3], void* data)
++static int AddVertex(GLUtesselator* tess, GLdouble coords[3], void* data)
+ {
+    GLUhalfEdge* e=NULL;
+ 
+@@ -381,7 +381,7 @@
+    return 1;
+ }
+ 
+-static void CacheVertex(GLUtesselator* tess, GLfloat coords[3], void* data)
++static void CacheVertex(GLUtesselator* tess, GLdouble coords[3], void* data)
+ {
+    CachedVertex* v=&tess->cache[tess->cacheCount];
+ 
+@@ -421,7 +421,7 @@
+ {
+    int i;
+    int tooLarge=FALSE;
+-   GLfloat x, clamped[3];
++   GLdouble x, clamped[3];
+ 
+    RequireState(tess, T_IN_CONTOUR);
+ 
+diff -ru a/source/libtess/tess.h b/source/libtess/tess.h
+--- a/source/libtess/tess.h	2026-07-09 21:21:05
++++ b/source/libtess/tess.h	2026-07-09 21:21:05
+@@ -55,7 +55,7 @@
+ 
+ typedef struct CachedVertex
+ {
+-   GLfloat coords[3];
++   GLdouble coords[3];
+    void*   data;
+ } CachedVertex;
+ 
+@@ -71,12 +71,12 @@
+    void (APIENTRY* callError)(GLenum errnum);
+ 
+    /*** state needed for projecting onto the sweep plane ***/
+-   GLfloat normal[3]; /* user-specified normal (if provided) */
+-   GLfloat sUnit[3];  /* unit vector in s-direction (debugging) */
+-   GLfloat tUnit[3];  /* unit vector in t-direction (debugging) */
++   GLdouble normal[3]; /* user-specified normal (if provided) */
++   GLdouble sUnit[3];  /* unit vector in s-direction (debugging) */
++   GLdouble tUnit[3];  /* unit vector in t-direction (debugging) */
+ 
+    /*** state needed for the line sweep ***/
+-   GLfloat   relTolerance;      /* tolerance for merging features */
++   GLdouble   relTolerance;      /* tolerance for merging features */
+    GLenum    windingRule;       /* rule for determining polygon interior */
+    GLboolean fatalError;        /* fatal error: needed combine callback */
+ 
+@@ -84,8 +84,8 @@
+    PriorityQ* pq;               /* priority queue of vertex events */
+    GLUvertex* event;            /* current sweep event being processed */
+ 
+-   void (APIENTRY* callCombine)(GLfloat coords[3], void*  data[4],
+-                                GLfloat weight[4], void** outData);
++   void (APIENTRY* callCombine)(GLdouble coords[3], void*  data[4],
++                                GLdouble weight[4], void** outData);
+ 
+   /*** state needed for rendering callbacks (see render.c) ***/
+   GLboolean     flagBoundary;   /* mark boundary edges (use EdgeFlag) */
+@@ -111,8 +111,8 @@
+   void (APIENTRY* callVertexData)(void* data, void* polygonData);
+   void (APIENTRY* callEndData)(void* polygonData);
+   void (APIENTRY* callErrorData)(GLenum errnum, void *polygonData);
+-  void (APIENTRY* callCombineData)(GLfloat coords[3], void* data[4],
+-                                   GLfloat weight[4], void** outData,
++  void (APIENTRY* callCombineData)(GLdouble coords[3], void* data[4],
++                                   GLdouble weight[4], void** outData,
+                                    void* polygonData);
+ 
+   jmp_buf env;          /* place to jump to when memAllocs fail */
+@@ -125,8 +125,8 @@
+ GLAPI void APIENTRY __gl_noVertexData(void* data, void* polygonData);
+ GLAPI void APIENTRY __gl_noEndData(void* polygonData);
+ GLAPI void APIENTRY __gl_noErrorData(GLenum errnum, void* polygonData);
+-GLAPI void APIENTRY __gl_noCombineData(GLfloat coords[3], void* data[4],
+-                                       GLfloat weight[4], void** outData,
++GLAPI void APIENTRY __gl_noCombineData(GLdouble coords[3], void* data[4],
++                                       GLdouble weight[4], void** outData,
+                                        void* polygonData);
+ 
+ #define CALL_BEGIN_OR_BEGIN_DATA(a)                     \

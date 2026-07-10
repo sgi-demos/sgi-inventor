@@ -1,0 +1,8 @@
+add_executable(ivread ivread.c++)
+target_link_libraries(ivread PRIVATE Inventor FLiv image JPEG::JPEG)
+add_executable(ivcone ivcone.c++)
+target_link_libraries(ivcone PRIVATE Inventor FLiv image JPEG::JPEG ${SDL2_LIBRARIES} OpenGL::GL OpenGL::GLU)
+add_executable(ivview ivview.c++)
+target_link_libraries(ivview PRIVATE SoSDL Inventor FLiv image JPEG::JPEG OpenGL::GLU)
+add_executable(ivinteract ivinteract.c++)
+target_link_libraries(ivinteract PRIVATE SoSDL Inventor FLiv image JPEG::JPEG OpenGL::GLU)

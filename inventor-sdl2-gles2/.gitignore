@@ -1,0 +1,9 @@
+build/
+build-em/
+*.o
+*.a
+*.wasm
+.DS_Store
+.claude/
+/previous-chat.md
+/previous-chat-artifacts/
