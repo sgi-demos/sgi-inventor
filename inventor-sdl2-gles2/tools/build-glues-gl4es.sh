@@ -43,12 +43,16 @@ rm -rf "$WORK"
 mkdir -p "$WORK"
 cp -R "$GLUES_SRC/source" "$WORK/"
 (cd "$WORK" && patch -p1 -s < "$REPO/tools/glues-patches/libtess-gldouble.patch")
+# rss-port fix: defer POT gluBuild2DMipmaps to gl4es hardware mipmaps
+# (CPU-built chains sample black under gl4es *_MIPMAP_* min filters);
+# enabled by -DGLUES_USE_HW_MIPMAP below.
+(cd "$WORK" && patch -p1 -s < "$REPO/tools/glues-patches/hw-mipmap-gl4es.patch")
 
 # -DGLUES_GL4ES: glues.h includes gl4es' <GL/gl.h> (mangles gl*->gl4es_gl*
 #   on Apple/Emscripten).
 # -include GL/glu_mangle.h: exported glu* definitions become mglu*.
 # gnu++14 for the 1990s libnurbs sources ('register').
-COMMON="-O2 -DNDEBUG -DLIBRARYBUILD -DGLUES_GL4ES -I$GL4ES/include -include GL/glu_mangle.h -I$WORK/source"
+COMMON="-O2 -DNDEBUG -DLIBRARYBUILD -DGLUES_GL4ES -DGLUES_USE_HW_MIPMAP -I$GL4ES/include -include GL/glu_mangle.h -I$WORK/source"
 NURBS_INCS="-I$WORK/source/libnurbs/interface -I$WORK/source/libnurbs/internals -I$WORK/source/libnurbs/nurbtess"
 
 build_variant() {  # $1 = native|web

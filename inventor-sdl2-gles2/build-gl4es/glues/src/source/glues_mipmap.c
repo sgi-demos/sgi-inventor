@@ -1365,6 +1365,31 @@ gluBuild2DMipmaps(GLenum target, GLint internalFormat, GLsizei width,
       return GLU_INVALID_VALUE;
    }
 
+#if defined(GLUES_USE_HW_MIPMAP)
+   /*
+    * rss-port: gl4es implements OpenGL on GLES2 and generates a complete,
+    * correct mipmap chain in hardware when GL_GENERATE_MIPMAP is enabled
+    * before the base-level upload. The portable CPU mipmap builder below
+    * produced chains that gl4es treated as incomplete for some formats
+    * (notably power-of-two GL_RGB), making the texture sample black under
+    * a *_MIPMAP_* min filter. Defer to hardware generation for the common
+    * power-of-two case; fall through to the CPU path only for NPOT input,
+    * which gl4es scales separately.
+    */
+   {
+      GLint w2, h2;
+      closestFit(target, width, height, internalFormat, format, type, &w2, &h2);
+      if (w2==width && h2==height)
+      {
+         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+         glTexParameteri(target, GL_GENERATE_MIPMAP, GL_TRUE);
+         glTexImage2D(target, 0, internalFormat, width, height, 0,
+                      format, type, data);
+         return 0;
+      }
+   }
+#endif
+
    closestFit(target, width, height, internalFormat, format, type,
               &widthPowerOf2,&heightPowerOf2);
 

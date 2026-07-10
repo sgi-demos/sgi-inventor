@@ -28,3 +28,12 @@ copies the checkout aside, applies the patch to the copy, and builds
          -Iinclude -Isource -c <each .c/.cc>
 
 (`-DNDEBUG` matches release GLU; the assertions are advisory.)
+
+## hw-mipmap-gl4es.patch
+
+For the gl4es backend only (applied by `tools/build-glues-gl4es.sh`,
+enabled with `-DGLUES_USE_HW_MIPMAP`): defers power-of-two
+`gluBuild2DMipmaps` to gl4es' hardware `GL_GENERATE_MIPMAP` — the CPU
+mipmap chain sampled black under gl4es `*_MIPMAP_*` min filters
+(notably POT `GL_RGB`). Originated in the rss-sdl2-gles2 port's glues
+copy; NPOT input still takes the CPU path.
