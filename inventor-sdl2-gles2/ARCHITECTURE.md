@@ -307,6 +307,7 @@ verification is always a real browser.
 | M6e/f | SoText3 repeated-character fix (geometry display lists vs the bitmap-only emulation); 1280x1024; outline glyph scale corrected (KLUDGE_FACTOR retuned to the IRIX convention) - startup screen pixel-faithful |
 | M7 | Sound: SDL2 software mixer (SoundSDL.c++) replaces the IRIX dmedia stub - per-car engine loops with live pitch (variable-rate playback, linear interp), screech, crash one-shots. AIFFs converted to WAV (originals kept); verified via SDL's disk audio driver (engine fires at the Start click) |
 | M8 | macOS native build (GL header shim, Homebrew SDL2) and the glemu patch ported to emscripten 4.0.x; glues build scripted (`tools/build-glues-em.sh`); both demos verified on mac native and in-browser. First public check-in. |
+| M9 | gl4es backend (`-DIV_GL_BACKEND=gl4es`): one GL1→GLES2 path on both targets — ANGLE natively, stock unpatched emscripten on the web. Six gl4es bugs found/fixed (glGet routing, GL_N_BYTES call lists, raster pos/color, bitmap alignment, readback flush, sized internal formats) + a 40-year-old LP64 heap-corruption bug in libimage's RLE tables (rowstart/rowsize declared long*, allocated/read as int32) found with guard malloc — textures were black on LP64 under any backend. Demos pixel-identical to desktop GL (maze 0.000%, slotcar 0.002%). |
 
 ## 11. Process notes (how not to lose work)
 

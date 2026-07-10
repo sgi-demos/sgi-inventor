@@ -1,5 +1,8 @@
 build/
 build-em/
+build-em-gl4es/
+build-gl4es/
+build-gl4es-native/
 *.o
 *.a
 *.wasm

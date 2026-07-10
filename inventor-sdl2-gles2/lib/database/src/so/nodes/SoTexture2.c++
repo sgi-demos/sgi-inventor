@@ -413,9 +413,14 @@ typedef struct {
     char                name[80];
     uint32_t            colormap;
 } IMAGE;
-extern IMAGE *fiopen(int fd, const char *mode);
+// Full prototypes matching libimage's definitions (open.c/close.c): the
+// trailing fiopen args are only read in "w" mode, but a 2-arg declaration
+// is a signature mismatch that traps under WebAssembly.
+extern IMAGE *fiopen(int fd, const char *mode, unsigned int type,
+		     unsigned int dim, unsigned int xsize,
+		     unsigned int ysize, unsigned int zsize);
 extern int getrow(IMAGE *, short *, int, int);
-extern void iclose(IMAGE *);
+extern int iclose(IMAGE *);
 extern void i_seterror(void (*func)(char *, int, int, int, int));
 };  /* end of extern "C" */
 
@@ -429,7 +434,7 @@ SbBool ReadSGIImage(const SoInput& in, int &w, int &h, int &nc,
     IMAGE *image_in;
     int i, j, row;
 
-    if ( (image_in = fiopen(fileno(in.getCurFile()), "r")) == NULL)
+    if ( (image_in = fiopen(fileno(in.getCurFile()), "r", 0, 0, 0, 0, 0)) == NULL)
 	return FALSE;
 	
     w = image_in->xsize;

@@ -104,6 +104,38 @@ graph — after re-applying or changing the glemu patch, delete
 `build-em/apps` (or the whole `build-em` except `glues/`) to force a
 relink.
 
+## The gl4es backend (one GL path, native and web)
+
+`-DIV_GL_BACKEND=gl4es` routes all of Inventor's GL1 through
+[gl4es](https://github.com/sgi-demos/gl4es) to OpenGL ES 2 on **both**
+targets — ANGLE (GLES-on-Metal) natively on macOS, WebGL in the browser
+— so rendering bugs reproduce natively where they are debuggable. On the
+web this uses **stock, unpatched emscripten** (no LEGACY_GL_EMULATION,
+no glemu patch). Verified pixel-identical (maze 0.000%, slotcar title
+0.002%) against the desktop-GL backend.
+
+Prerequisites: sibling checkouts of
+[gl4es](https://github.com/sgi-demos/gl4es) (run its `build-all.sh` to
+produce `lib/libGL-{native,web}.a`) and
+[opengl-for-mac](https://github.com/erik-larsen/opengl-for-mac) (ANGLE
+headers + dylibs, native only), plus the same
+[glues](https://github.com/sgi-demos/glues) checkout as above. Then:
+
+```sh
+tools/build-glues-gl4es.sh            # full glues for gl4es, native + web
+
+# native (ANGLE)
+cmake -S . -B build-gl4es-native -DCMAKE_BUILD_TYPE=Release -DIV_GL_BACKEND=gl4es
+cmake --build build-gl4es-native -j8
+
+# web (stock emscripten; native build must exist first, for ppp)
+emcmake cmake -S . -B build-em-gl4es -DCMAKE_BUILD_TYPE=Release -DIV_GL_BACKEND=gl4es
+cmake --build build-em-gl4es -j8
+```
+
+Paths default to `../../gl4es` and `../../opengl-for-mac` relative to
+this directory; override with `-DGL4ES_DIR=` / `-DGLES_DIR=`.
+
 ## Repository layout
 
 ```

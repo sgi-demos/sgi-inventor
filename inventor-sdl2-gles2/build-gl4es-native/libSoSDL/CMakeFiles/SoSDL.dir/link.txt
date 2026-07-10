@@ -1,2 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/ar qc libSoSDL.a CMakeFiles/SoSDL.dir/SoSDL.c++.o CMakeFiles/SoSDL.dir/SoSDLRenderArea.c++.o CMakeFiles/SoSDL.dir/SoSDLExaminerViewer.c++.o
-/Library/Developer/CommandLineTools/usr/bin/ranlib libSoSDL.a

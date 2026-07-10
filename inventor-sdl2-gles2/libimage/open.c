@@ -124,8 +124,8 @@ IMAGE *imgopen(int f, char *file, char *mode,
 	    image->flags = _IOREAD;
 	if(ISRLE(image->type)) {
 	    tablesize = image->ysize*image->zsize*sizeof(int);
-	    image->rowstart = (unsigned long *)malloc(tablesize);
-	    image->rowsize = (long *)malloc(tablesize);
+	    image->rowstart = (unsigned int *)malloc(tablesize);
+	    image->rowsize = (int *)malloc(tablesize);
 	    if( image->rowstart == 0 || image->rowsize == 0 ) {
 		free(image);
 		close(f);

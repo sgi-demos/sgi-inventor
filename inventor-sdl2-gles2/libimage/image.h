@@ -108,8 +108,13 @@ typedef struct {
     unsigned short	*tmpbuf;
     unsigned long	offset;
     unsigned long	rleend;		/* for rle images */
-    unsigned long	*rowstart;	/* for rle images */
-    long		*rowsize;	/* for rle images */
+    /* The RLE offset/length tables are 32-bit in the file format and were
+     * allocated/read as N*sizeof(int) bytes; on IRIX (ILP32) 'long' matched.
+     * On LP64 platforms 'long' is 8 bytes: indexing 8-byte entries in a
+     * 4-byte-entry allocation both reads garbage offsets and writes past
+     * the heap block (initialization loop) -> corrupted textures + heap. */
+    unsigned int	*rowstart;	/* for rle images */
+    int			*rowsize;	/* for rle images */
 } IMAGE;
 
 IMAGE *icreate();
