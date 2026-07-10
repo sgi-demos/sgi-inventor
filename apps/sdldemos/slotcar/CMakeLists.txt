@@ -10,14 +10,14 @@ target_compile_definitions(slotcar PRIVATE SDL_PORT)
 target_include_directories(slotcar PRIVATE ${CMAKE_SOURCE_DIR}/libSoSDL)
 target_link_libraries(slotcar PRIVATE SoSDL Inventor FLiv image JPEG::JPEG OpenGL::GLU)
 if (NOT EMSCRIPTEN)
-    find_package(SDL2 REQUIRED)
+    # SDL2 vars come from the top-level pkg-config lookup.
     target_include_directories(slotcar PRIVATE ${SDL2_INCLUDE_DIRS})
     target_link_libraries(slotcar PRIVATE ${SDL2_LIBRARIES})
 endif()
 
 if (EMSCRIPTEN)
     set_target_properties(slotcar PROPERTIES SUFFIX ".html")
-    target_link_libraries(slotcar PRIVATE /home/claude/glues/build-em/libglues.a)
+    target_link_libraries(slotcar PRIVATE ${GLUES_LIBRARY})
     target_link_options(slotcar PRIVATE
         -sUSE_SDL=2 -sUSE_FREETYPE=1
         -sLEGACY_GL_EMULATION=1 -sGL_UNSAFE_OPTS=0

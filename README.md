@@ -1,90 +1,128 @@
-[![make build status](https://github.com/aumuell/open-inventor/workflows/make/badge.svg)](https://github.com/aumuell/open-inventor/actions?query=workflow%3Amake)
-[![CMake build status](https://github.com/aumuell/open-inventor/workflows/CMake/badge.svg)](https://github.com/aumuell/open-inventor/actions?query=workflow%3ACMake)
-[![macOS build status](https://github.com/aumuell/open-inventor/workflows/macOS/badge.svg)](https://github.com/aumuell/open-inventor/actions?query=workflow%3AmacOS)
+# SGI Open Inventor — SDL2 / OpenGL ES 2 / WebAssembly port
 
-Open Inventor
-=============
+Genuine 1990s SGI Inventor demos, running natively on modern machines and
+in any web browser — built from the actual SGI source lineage, not a
+reimplementation. Part of the [sgi-demos](https://github.com/sgi-demos)
+historical preservation project.
 
-Open Inventor is an object oriented scene graph library implemented in C++
-layered on top of OpenGL. It was originally developed by
-[SGI](http://www.sgi.com/).
+Two complete SGI demos are ported so far:
 
-This Repository
-===============
+| Demo | Origin | Native | Browser |
+|---|---|---|---|
+| **maze** | SGI demo, 1994 | ✅ | ✅ |
+| **slotcar** ("SlotCars") | Bell/Immel, SGI 1994 — with SoText3 title, textures, robot cars, engine sound | ✅ | ✅ |
 
-The aim of this repository is to integrate patches applied by various Linux
-distributions and to apply build fixes for macOS.
-It is based on an import of SGI's CVS repository at `:pserver:cvs@oss.sgi.com:/cvs`.
+The scene-graph core is kept byte-identical where possible; the Xt/Motif
+windowing layer is replaced by a small SDL2 layer (`libSoSDL`), and
+Emscripten's `LEGACY_GL_EMULATION` is patched to handle the GL1 idioms
+Inventor actually uses. See [ARCHITECTURE.md](ARCHITECTURE.md) for the full
+design and the war stories; the upstream open-inventor README is preserved
+as [README.upstream.md](README.upstream.md).
 
-Currently, patches from Fedora and Debian are included. It also includes bug fixes,
-most notably for font rendering on 64 bit Linux platforms.
-A [CMake](https://cmake.org) build system has been added. It can be used
-instead of the traditional Makefiles.
-The precompiled font library `libFL_i386.a` and unused RPM .spec files have been removed.
+## Prerequisites (macOS)
 
-Building and Installation
-=========================
+```sh
+brew install cmake sdl2 jpeg-turbo freetype pkg-config
+```
 
-You can build with CMake like this:
+Xcode Command Line Tools provide the compiler, OpenGL framework, bison,
+and iconv.
 
-    git clone https://github.com/aumuell/open-inventor
-    mkdir open-inventor-build
-    cd open-inventor-build
-    cmake -DCMAKE_INSTALL_PREFIX=/opt/inventor ../open-inventor
-    make -j10
-    make install
+## Native macOS build
 
-The last step is optional, as all the programs that do not try to read from
-hard-coded paths also work from the build directory.
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j8
+```
 
-The included `README.FIRST` has instructions on how to use the original make
-build system.
+Run the demos (each opens an SDL window):
 
-For building on macOS, there is a [Homebrew](https://brew.sh)
-[formula](https://github.com/hlrs-vis/homebrew-tap) based on this repository.
+```sh
+build/apps/sdldemos/maze/maze          # tilt the maze, roll the marble
+build/apps/sdldemos/slotcar/slotcar    # click Start, race
+```
 
-More Information
-================
+maze: drag tilts the board. slotcar: mouse up/down = speed, left/right
+click = change lanes, arrow keys = camera, stop at the start/finish line
+for a new race.
 
-Refer to [SGI's Open Inventor page](http://oss.sgi.com/projects/inventor/)
-([archive link](https://web.archive.org/web/20170811183842/http://oss.sgi.com/projects/inventor/))
-for more information.
+Also built: `build/apps/sdltests/{ivread,ivcone,ivview,ivinteract}` —
+smoke tests (`ivview <file.iv>` is a handy generic viewer, e.g. against
+`data/models/*.iv`).
 
-There are also helpful books for studying Open Inventor:
+Debug aid: `IV_DUMP_DIR=/some/dir build/apps/sdldemos/maze/maze` writes
+each rendered frame as a PPM — ground truth for headless testing.
 
-- **The Inventor Mentor**: Programming Object-Oriented 3D Graphics With Open Inventor, Release 2
-  ([html](http://www-evasion.imag.fr/Membres/Francois.Faure/doc/inventorMentor/sgi_html/),
-   [pdf](http://www.cs.ualberta.ca/~graphics/books/mentor.pdf))  
-  *Josie Wernecke*  
-  Addison-Wesley, 1994  
-  ISBN: 978-0-201-62495-3  
+## Browser (WebAssembly) build
 
-  This book illustrates how to use Open Inventor.
+Three one-time setup steps, then a normal `emcmake` build.
 
-- **The Inventor Toolmaker**: Extending Open Inventor, Release 2
-    ([html](http://www-evasion.imag.fr/Membres/Francois.Faure/doc/inventorToolmaker/sgi_html/index.html),
-     [pdf](http://www.cs.ualberta.ca/~graphics/books/toolmaker.pdf))  
-  *Josie Wernecke, Open Inventor Architecture Group*  
-  Addison-Wesley, 1994  
-  ISBN: 978-0-201-62493-9  
+**1. Emscripten with the GL-emulation patch.** The build needs an
+[emscripten](https://github.com/emscripten-core/emscripten) source
+checkout (tested with 4.0.12) with our `LEGACY_GL_EMULATION` patch
+applied — stock emulation renders Inventor gray/black/jumbled (see
+[tools/emscripten-patches/README.txt](tools/emscripten-patches/README.txt)):
 
-  This book covers how to extend the functionality of Open Inventor.
+```sh
+cd <your-emscripten-checkout>
+patch -p1 < <this-repo>/tools/emscripten-patches/library_glemu-4.0.12-inventor.patch
+```
 
-Related Projects
-================
+**2. Native build first.** The wasm build runs Inventor's `ppp` code
+generator on the host, and expects it at `build/tools/ppp/ppp` (already
+there if you did the native build above; override with `-DPPP_COMMAND=`).
 
-- [MeVisLab Open Inventor](https://www.mevislab.de/mevislab/features/open-inventor), a
-  further development of the code open sourced by SGI, available as part of the
-  MeVisLabOpenSource\_MeVisLabSDK on the [MeVisLab download
-  page](https://www.mevislab.de/download). It comes with Qt GUI bindings (SoQtMeVis).
+**3. GLU for GLES (glues).** SoText3/NURBS need the SGI GLU tessellator.
+One script builds it for wasm (it looks for a
+[glues](https://github.com/sgi-demos/glues) checkout at `../glues` or
+`~/Github/glues`, cloning one otherwise):
 
-- [Open Inventor Toolkit](https://www.openinventor.com/en) by ThermoFisher
-  Scientific is a closed source derivative of SGI Open Inventor.
+```sh
+tools/build-glues-em.sh          # -> build-em/glues/libglues.a
+```
 
-- [Coin3D](https://coin3d.github.io), a clean room open source reimplementation of the Open
-  Inventor API. Together with this, bindings for many different GUI
-  tool kits, such as Qt ([SoQt](https://github.com/coin3d/soqt) and
-  [Quarter](https://github.com/coin3d/quarter)),
-  X11 ([SoXt](https://github.com/coin3d/soxt)), and Windows
-  ([SoWin](https://github.com/coin3d/sowin)) are provided.
-  Commercial support has ended, but still maintained on [GitHub](https://github.com/coin3d).
+Then configure and build:
+
+```sh
+emcmake cmake -S . -B build-em -DCMAKE_BUILD_TYPE=Release
+cmake --build build-em -j8
+```
+
+Serve and play (wasm requires HTTP, not file://):
+
+```sh
+python3 -m http.server 8000
+# http://localhost:8000/build-em/apps/sdldemos/maze/maze.html
+# http://localhost:8000/build-em/apps/sdldemos/slotcar/slotcar.html
+```
+
+The only expected console output is Emscripten's two boilerplate
+"using emscripten GL emulation" warnings.
+
+Note: emscripten's system JS libraries are not in the build dependency
+graph — after re-applying or changing the glemu patch, delete
+`build-em/apps` (or the whole `build-em` except `glues/`) to force a
+relink.
+
+## Repository layout
+
+```
+lib/                     Core libInventor — upstream SGI code, minimal patches
+libFL/  libimage/        Font + SGI .rgb image libraries (upstream)
+libSoSDL/                The SDL2 windowing/viewer layer (replaces SoXt)
+apps/sdldemos/           The ported demos: maze, slotcar
+apps/sdltests/           Native smoke tests
+tools/ppp/               Inventor's code generator (host tool)
+tools/emscripten-patches/  LEGACY_GL_EMULATION patch + root-cause notes
+tools/glues-patches/     libtess GLdouble patch for glues
+tools/build-glues-em.sh  Builds libglues.a for the wasm link
+tools/harness/           Headless Node mock-WebGL test harness
+ARCHITECTURE.md          Full port writeup: design, failures, lessons
+```
+
+Linux and Windows native builds, and CI, are planned but not yet wired up.
+
+## License
+
+The SGI Open Inventor sources retain their original license (see
+[COPYING](COPYING)). Port additions follow the same terms.

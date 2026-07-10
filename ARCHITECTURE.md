@@ -128,8 +128,11 @@ CMakeLists.txt, `if (EMSCRIPTEN)` blocks):
 - **GLU**: linked from a wasm build of **glues** (the GLU-ES port — the
   original SGI tessellator/NURBS/mipmap code, which matters for behavioral
   fidelity). The C sources need `-D__USE_SDL_GLES__`; libnurbs is C++
-  (`.cc`) and needs `-DLIBRARYBUILD`. Archive everything into
-  `libglues.a`.
+  (`.cc`) and needs `-DLIBRARYBUILD`. `tools/build-glues-em.sh` does all
+  of this: it takes a checkout of https://github.com/sgi-demos/glues
+  (cloning one if none is found), applies the libtess GLdouble patch to a
+  copy, and archives `build-em/glues/libglues.a`, which is where the
+  CMake `GLUES_LIBRARY` variable points by default.
 - **Render caching disabled at runtime**: `SoSDL::init()` sets
   `IV_SEPARATOR_MAX_CACHES=0` before `SoDB::init()` — display lists do not
   exist under the GL emulation.
@@ -149,8 +152,13 @@ CMakeLists.txt, `if (EMSCRIPTEN)` blocks):
 Emscripten's `LEGACY_GL_EMULATION` is explicitly "a collection of limited
 workarounds." Inventor exercises GL1 idioms it does not handle, producing
 three independent, compounding failures. The fix lives in
-`tools/emscripten-patches/library_glemu-3.1.6-inventor.patch` (created
-against emscripten 3.1.6; apply to `<emscripten>/src/library_glemu.js`).
+`tools/emscripten-patches/` in two variants of the same patch:
+`library_glemu-4.0.12-inventor.patch` for emscripten 4.0.x (apply to
+`<emscripten>/src/lib/libglemu.js`; this is what the README's build
+instructions use) and the historical
+`library_glemu-3.1.6-inventor.patch` for emscripten 3.1.6 (apply to
+`<emscripten>/src/library_glemu.js`), where the port was originally
+debugged.
 
 **Failure 1 — color-index gray (the original "grayscale maze").**
 `SoGLLazyElement::init()` calls `glGetBooleanv(GL_RGBA_MODE)` to detect
@@ -298,6 +306,7 @@ verification is always a real browser.
 | M6d | The tofu-box saga: UCS-2 endianness fix in SoText2/SoText3 (glibc vs musl iconv, failure 7) and double-precision glues libtess (GLU ABI mismatch, failure 8). Full text pipeline working in wasm |
 | M6e/f | SoText3 repeated-character fix (geometry display lists vs the bitmap-only emulation); 1280x1024; outline glyph scale corrected (KLUDGE_FACTOR retuned to the IRIX convention) - startup screen pixel-faithful |
 | M7 | Sound: SDL2 software mixer (SoundSDL.c++) replaces the IRIX dmedia stub - per-car engine loops with live pitch (variable-rate playback, linear interp), screech, crash one-shots. AIFFs converted to WAV (originals kept); verified via SDL's disk audio driver (engine fires at the Start click) |
+| M8 | macOS native build (GL header shim, Homebrew SDL2) and the glemu patch ported to emscripten 4.0.x; glues build scripted (`tools/build-glues-em.sh`); both demos verified on mac native and in-browser. First public check-in. |
 
 ## 11. Process notes (how not to lose work)
 
@@ -321,9 +330,10 @@ are now policy:
 
 ## 12. Roadmap
 
-- **M6 follow-ups**: slotcar browser verification on real hardware;
-  network play over WebRTC/WebSocket relay (the Xt socket hook is the
-  only missing piece); SDL_mixer audio for the AIFF engine sounds.
+- Network play over a WebRTC/WebSocket relay (the Xt socket hook is the
+  only missing piece).
+- Linux and Windows native builds (the SDL2/CMake layer is
+  platform-neutral; Linux built throughout M1–M7 — needs re-verification).
 - Two-sided lighting quality check (glLightModeli is wired but the FFP
   shader's treatment is approximate).
 - Performance: the emulation re-creates renderer state per flush in places;

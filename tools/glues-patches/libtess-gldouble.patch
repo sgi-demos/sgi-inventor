@@ -1,8 +1,7 @@
-Only in source: glu.h
-diff -ru /tmp/glues-orig/source/glues.h source/glues.h
---- /tmp/glues-orig/source/glues.h	2026-06-12 14:29:52.529684436 +0000
-+++ source/glues.h	2026-06-12 14:28:23.296003941 +0000
-@@ -122,6 +122,11 @@
+diff -ru a/source/glues.h b/source/glues.h
+--- a/source/glues.h	2026-07-09 21:21:05
++++ b/source/glues.h	2026-07-09 21:21:05
+@@ -130,6 +130,11 @@
  
  typedef GLUquadric GLUquadricObj;
  typedef GLUtesselator GLUtesselatorObj;
@@ -14,44 +13,9 @@ diff -ru /tmp/glues-orig/source/glues.h source/glues.h
  typedef GLUtesselator GLUtriangulatorObj;
  typedef GLUnurbs GLUnurbsObj;
  
-@@ -219,7 +224,7 @@
- GLAPI void APIENTRY gluBeginPolygon(GLUtesselator* tess);
- GLAPI void APIENTRY gluDeleteTess(GLUtesselator* tess);
- GLAPI void APIENTRY gluEndPolygon(GLUtesselator* tess);
--GLAPI void APIENTRY gluGetTessProperty(GLUtesselator* tess, GLenum which, GLfloat* data);
-+GLAPI void APIENTRY gluGetTessProperty(GLUtesselator* tess, GLenum which, GLdouble* data);
- GLAPI GLUtesselator* APIENTRY gluNewTess(void);
- GLAPI void APIENTRY gluNextContour(GLUtesselator* tess, GLenum type);
- GLAPI void APIENTRY gluTessBeginContour(GLUtesselator* tess);
-@@ -227,9 +232,9 @@
- GLAPI void APIENTRY gluTessCallback(GLUtesselator* tess, GLenum which, _GLUfuncptr CallBackFunc);
- GLAPI void APIENTRY gluTessEndContour(GLUtesselator* tess);
- GLAPI void APIENTRY gluTessEndPolygon(GLUtesselator* tess);
--GLAPI void APIENTRY gluTessNormal(GLUtesselator* tess, GLfloat valueX, GLfloat valueY, GLfloat valueZ);
--GLAPI void APIENTRY gluTessProperty(GLUtesselator* tess, GLenum which, GLfloat data);
--GLAPI void APIENTRY gluTessVertex(GLUtesselator* tess, GLfloat* location, GLvoid* data);
-+GLAPI void APIENTRY gluTessNormal(GLUtesselator* tess, GLdouble valueX, GLdouble valueY, GLdouble valueZ);
-+GLAPI void APIENTRY gluTessProperty(GLUtesselator* tess, GLenum which, GLdouble data);
-+GLAPI void APIENTRY gluTessVertex(GLUtesselator* tess, GLdouble* location, GLvoid* data);
- 
- /* NurbsDisplay */
- /*      GLU_FILL */
-Only in source: glues_error.c
-Only in source: glues_error.h
-Only in source: glues_mipmap.c
-Only in source: glues_mipmap.h
-Only in source: glues_project.c
-Only in source: glues_project.h
-Only in source: glues_quad.c
-Only in source: glues_quad.h
-Only in source: glues_registry.c
-Only in source: glues_registry.h
-Only in source: libnurbs
-Only in source/libtess: README
-Only in source/libtess: alg-outline
-diff -ru /tmp/glues-orig/source/libtess/geom.c source/libtess/geom.c
---- /tmp/glues-orig/source/libtess/geom.c	2026-06-12 14:29:52.528148588 +0000
-+++ source/libtess/geom.c	2026-06-12 14:28:23.289446745 +0000
+diff -ru a/source/libtess/geom.c b/source/libtess/geom.c
+--- a/source/libtess/geom.c	2026-07-09 21:21:05
++++ b/source/libtess/geom.c	2026-07-09 21:21:05
 @@ -45,7 +45,7 @@
     return VertLeq(u, v);
  }
@@ -138,9 +102,9 @@ diff -ru /tmp/glues-orig/source/libtess/geom.c source/libtess/geom.c
  
     /* This is certainly not the most efficient way to find the intersection
      * of two line segments, but it is very numerically stable.
-diff -ru /tmp/glues-orig/source/libtess/geom.h source/libtess/geom.h
---- /tmp/glues-orig/source/libtess/geom.h	2026-06-12 14:29:52.529473367 +0000
-+++ source/libtess/geom.h	2026-06-12 14:28:23.295767725 +0000
+diff -ru a/source/libtess/geom.h b/source/libtess/geom.h
+--- a/source/libtess/geom.h	2026-07-09 21:21:05
++++ b/source/libtess/geom.h	2026-07-09 21:21:05
 @@ -74,10 +74,10 @@
  #define VertCCW(u, v, w) __gl_vertCCW(u, v, w)
  
@@ -156,9 +120,9 @@ diff -ru /tmp/glues-orig/source/libtess/geom.h source/libtess/geom.h
  int     __gl_vertCCW(GLUvertex* u, GLUvertex* v, GLUvertex* w);
  void    __gl_edgeIntersect(GLUvertex* o1, GLUvertex* d1,
                             GLUvertex* o2, GLUvertex* d2,
-diff -ru /tmp/glues-orig/source/libtess/mesh.h source/libtess/mesh.h
---- /tmp/glues-orig/source/libtess/mesh.h	2026-06-12 14:29:52.529341165 +0000
-+++ source/libtess/mesh.h	2026-06-12 14:28:23.295589721 +0000
+diff -ru a/source/libtess/mesh.h b/source/libtess/mesh.h
+--- a/source/libtess/mesh.h	2026-07-09 21:21:05
++++ b/source/libtess/mesh.h	2026-07-09 21:21:05
 @@ -121,8 +121,8 @@
     void*         data;          /* client's data */
  
@@ -170,9 +134,9 @@ diff -ru /tmp/glues-orig/source/libtess/mesh.h source/libtess/mesh.h
     long    pqHandle;            /* to allow deletion from priority queue */
  };
  
-diff -ru /tmp/glues-orig/source/libtess/normal.c source/libtess/normal.c
---- /tmp/glues-orig/source/libtess/normal.c	2026-06-12 14:29:52.528964556 +0000
-+++ source/libtess/normal.c	2026-06-12 14:28:23.295182400 +0000
+diff -ru a/source/libtess/normal.c b/source/libtess/normal.c
+--- a/source/libtess/normal.c	2026-07-09 21:21:05
++++ b/source/libtess/normal.c	2026-07-09 21:21:05
 @@ -48,7 +48,7 @@
  #undef ABS
  #define ABS(x) ((x)<0 ? -(x) : (x))
@@ -219,10 +183,9 @@ diff -ru /tmp/glues-orig/source/libtess/normal.c source/libtess/normal.c
     int i;
     int computedNormal=FALSE;
  
-Only in source/libtess: priorityq-heap.i
-diff -ru /tmp/glues-orig/source/libtess/render.c source/libtess/render.c
---- /tmp/glues-orig/source/libtess/render.c	2026-06-12 14:29:52.528773286 +0000
-+++ source/libtess/render.c	2026-06-12 14:28:23.294874460 +0000
+diff -ru a/source/libtess/render.c b/source/libtess/render.c
+--- a/source/libtess/render.c	2026-07-09 21:21:05
++++ b/source/libtess/render.c	2026-07-09 21:21:05
 @@ -405,7 +405,7 @@
  
  #define SIGN_INCONSISTENT 2
@@ -250,9 +213,9 @@ diff -ru /tmp/glues-orig/source/libtess/render.c source/libtess/render.c
     int sign;
  
     if (tess->cacheCount<3)
-diff -ru /tmp/glues-orig/source/libtess/sweep.c source/libtess/sweep.c
---- /tmp/glues-orig/source/libtess/sweep.c	2026-06-12 14:29:52.528687194 +0000
-+++ source/libtess/sweep.c	2026-06-12 14:28:23.291493312 +0000
+diff -ru a/source/libtess/sweep.c b/source/libtess/sweep.c
+--- a/source/libtess/sweep.c	2026-07-09 21:21:05
++++ b/source/libtess/sweep.c	2026-07-09 21:21:05
 @@ -117,7 +117,7 @@
     GLUvertex* event=tess->event;
     GLUhalfEdge* e1;
@@ -324,9 +287,9 @@ diff -ru /tmp/glues-orig/source/libtess/sweep.c source/libtess/sweep.c
  {
     GLUhalfEdge*  e;
     ActiveRegion* reg=(ActiveRegion*)memAlloc(sizeof(ActiveRegion));
-diff -ru /tmp/glues-orig/source/libtess/tess.c source/libtess/tess.c
---- /tmp/glues-orig/source/libtess/tess.c	2026-06-12 14:29:52.528333681 +0000
-+++ source/libtess/tess.c	2026-06-12 14:28:23.290856588 +0000
+diff -ru a/source/libtess/tess.c b/source/libtess/tess.c
+--- a/source/libtess/tess.c	2026-07-09 21:21:05
++++ b/source/libtess/tess.c	2026-07-09 21:21:05
 @@ -56,8 +56,8 @@
  /*ARGSUSED*/ static void APIENTRY noVertex(void* data) {}
  /*ARGSUSED*/ static void APIENTRY noEnd(void) {}
@@ -349,24 +312,6 @@ diff -ru /tmp/glues-orig/source/libtess/tess.c source/libtess/tess.c
                                                void* polygonData) {}
  
  /* Half-edges are allocated in pairs (see mesh.c) */
-@@ -190,7 +190,7 @@
-    memFree(tess);
- }
- 
--GLAPI void APIENTRY gluTessProperty(GLUtesselator* tess, GLenum which, GLfloat value)
-+GLAPI void APIENTRY gluTessProperty(GLUtesselator* tess, GLenum which, GLdouble value)
- {
-    GLenum windingRule;
- 
-@@ -235,7 +235,7 @@
- }
- 
- /* Returns tessellator property */
--GLAPI void APIENTRY gluGetTessProperty(GLUtesselator* tess, GLenum which, GLfloat* value)
-+GLAPI void APIENTRY gluGetTessProperty(GLUtesselator* tess, GLenum which, GLdouble* value)
- {
-    switch (which)
-    {
 @@ -250,7 +250,7 @@
                    tess->windingRule==GLU_TESS_WINDING_POSITIVE ||
                    tess->windingRule==GLU_TESS_WINDING_NEGATIVE ||
@@ -376,15 +321,6 @@ diff -ru /tmp/glues-orig/source/libtess/tess.c source/libtess/tess.c
             break;
        case GLU_TESS_BOUNDARY_ONLY:
             assert(tess->boundaryOnly==TRUE || tess->boundaryOnly==FALSE);
-@@ -263,7 +263,7 @@
-    }
- }
- 
--GLAPI void APIENTRY gluTessNormal(GLUtesselator* tess, GLfloat x, GLfloat y, GLfloat z)
-+GLAPI void APIENTRY gluTessNormal(GLUtesselator* tess, GLdouble x, GLdouble y, GLdouble z)
- {
-    tess->normal[0]=x;
-    tess->normal[1]=y;
 @@ -317,11 +317,11 @@
             return;
        case GLU_TESS_COMBINE:
@@ -417,12 +353,7 @@ diff -ru /tmp/glues-orig/source/libtess/tess.c source/libtess/tess.c
  {
     CachedVertex* v=&tess->cache[tess->cacheCount];
  
-@@ -417,11 +417,11 @@
- }
- 
- 
--void APIENTRY gluTessVertex(GLUtesselator* tess, GLfloat coords[3], void* data)
-+void APIENTRY gluTessVertex(GLUtesselator* tess, GLdouble coords[3], void* data)
+@@ -421,7 +421,7 @@
  {
     int i;
     int tooLarge=FALSE;
@@ -431,9 +362,9 @@ diff -ru /tmp/glues-orig/source/libtess/tess.c source/libtess/tess.c
  
     RequireState(tess, T_IN_CONTOUR);
  
-diff -ru /tmp/glues-orig/source/libtess/tess.h source/libtess/tess.h
---- /tmp/glues-orig/source/libtess/tess.h	2026-06-12 14:29:52.529110436 +0000
-+++ source/libtess/tess.h	2026-06-12 14:28:23.295409126 +0000
+diff -ru a/source/libtess/tess.h b/source/libtess/tess.h
+--- a/source/libtess/tess.h	2026-07-09 21:21:05
++++ b/source/libtess/tess.h	2026-07-09 21:21:05
 @@ -55,7 +55,7 @@
  
  typedef struct CachedVertex

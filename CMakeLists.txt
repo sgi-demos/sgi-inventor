@@ -46,6 +46,11 @@ if (EMSCRIPTEN)
 else()
     find_package(JPEG REQUIRED)
     find_package(OpenGL REQUIRED COMPONENTS OpenGL)
+    if (APPLE)
+        # The tree includes <GL/gl.h>; Apple ships <OpenGL/gl.h>.
+        include_directories(BEFORE SYSTEM "${CMAKE_SOURCE_DIR}/cmake/mac-gl-shim")
+        add_definitions(-DGL_SILENCE_DEPRECATION)
+    endif()
 endif()
 if (EMSCRIPTEN)
     # SDL2/GL come from Emscripten ports via compile/link flags.
@@ -54,6 +59,9 @@ if (EMSCRIPTEN)
 else()
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(SDL2 REQUIRED sdl2)
+    # Use absolute paths so the linker finds SDL2 outside the default
+    # search path (e.g. Homebrew's /opt/homebrew/lib on macOS).
+    set(SDL2_LIBRARIES ${SDL2_LINK_LIBRARIES})
 endif()
 if (EMSCRIPTEN)
     add_library(Iconv::Iconv INTERFACE IMPORTED)  # emscripten libc has iconv
@@ -85,6 +93,10 @@ if (EMSCRIPTEN)
     if (NOT PPP_COMMAND)
         set(PPP_COMMAND ${CMAKE_SOURCE_DIR}/build/tools/ppp/ppp)
     endif()
+    # GLU for OpenGL ES (SGI tessellator/NURBS/mipmap), built by
+    # tools/build-glues-em.sh into the build dir by default.
+    set(GLUES_LIBRARY "${CMAKE_BINARY_DIR}/glues/libglues.a"
+        CACHE FILEPATH "wasm libglues.a built by tools/build-glues-em.sh")
 else()
     add_subdirectory(tools)
     set(PPP_COMMAND ppp)
@@ -93,6 +105,9 @@ add_subdirectory(libimage)
 add_subdirectory(libFL)
 add_subdirectory(lib)
 add_subdirectory(libSoSDL)
-add_subdirectory(apps/sdltests)
+if (NOT EMSCRIPTEN)
+    # Native smoke tests; the browser targets are the demos themselves.
+    add_subdirectory(apps/sdltests)
+endif()
 add_subdirectory(apps/sdldemos/maze)
 add_subdirectory(apps/sdldemos/slotcar)
