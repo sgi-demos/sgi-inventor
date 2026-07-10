@@ -1,0 +1,14 @@
+# Hashes of file build rules.
+0d1cbd8a67799b368ee2a6f29a1f63a9 lib/SoCalcParse.c++
+ef3d2ace18429187812b7b5a8d27c02c lib/SoCone.c++
+f2727288c539dab82188b79972c67061 lib/SoCube.c++
+d1d773538a33e056359d6a4f90bbe09e lib/SoCylinder.c++
+3bdb595a1364b1ff6aed78b63977c2a6 lib/SoFaceSet.c++
+5fea6770c2dd0f9ef414685041d117dc lib/SoIndexedFaceSet.c++
+2ea29dfc3122269792b6f7ae3ae490bd lib/SoIndexedLineSet.c++
+83addf6d5b64891e05fc323b4b34158b lib/SoIndexedTriangleStripSet.c++
+db844b8202477865c20d1905eccb63e8 lib/SoLineSet.c++
+46ca3a8d72ba08f667d637c5545804f2 lib/SoPointSet.c++
+3cc301fe44c45f74cbcac7244eb524d1 lib/SoQuadMesh.c++
+147d74451523e4506f82ea1f79be65be lib/SoSphere.c++
+b56a5a051f25b0adc6ac0f944d7258f6 lib/SoTriangleStripSet.c++

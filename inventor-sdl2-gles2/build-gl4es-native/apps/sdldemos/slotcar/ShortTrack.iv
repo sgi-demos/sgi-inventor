@@ -1,0 +1,108 @@
+#Inventor V2.0 ascii
+
+# Track pieces are automatically linked together by the reading
+# program.  Straight pieces just have a length (default 1.0).  Curved
+# pieces have a radius (default 1.0) and an angle, expressed as a
+# fraction of a full turn (so .25, the default, is a 90 degree turn).
+# Positive radii/angles are left-hand (counter-clockwise) turns,
+# negative radii/angles are right-hand turns; both radius and angle
+# must be negative to get reasonable results.
+
+Separator {
+    renderCaching OFF	# Don't try to cache here...
+    renderCulling OFF
+
+    Sky {
+	horizonColor .8 .7 .9 	# old: horizonColor 1 .6 .0
+#	skyTopColor .0 .0 .1
+	horizonHeight 2000
+    }
+
+    LightModel { model BASE_COLOR }	# Assume no lighting!
+
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+
+    Curve {
+        angle -.25 radius -1 renderCulling ON
+        Separator {
+            renderCulling ON
+            Translation { translation -100 0 0 }
+            RotationXYZ { axis Y angle 0.2 }
+            File  { name billboard.iv }
+            Translation { translation 0 30 5 }
+            Complexity { value 0.0 }
+            BaseColor { rgb 0 0 .3 }
+            Font { name Utopia-Regular size 15 }
+            Text3 { justification CENTER string "Inventor" }
+        }
+    }
+    Curve { angle -.25 radius -1 renderCulling ON }
+    Curve { angle -.25 radius -1 renderCulling ON }
+    
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+
+    Curve { renderCulling ON }
+
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+    Straight { renderCulling ON }
+
+    Curve { angle -.25 radius -1 renderCulling ON }
+    Curve { renderCulling ON }
+   
+    Curve { angle .25 radius 2 renderCulling ON }
+    Curve { angle .25 radius 2 renderCulling ON }
+
+    Straight { renderCulling ON }
+    StartFinish { renderCulling ON length 1.0 }
+
+    #
+    # SCENERY
+    #
+
+    File { name "mountains.iv" }
+    File { name "ocean.iv" }
+
+    Separator {
+        renderCaching ON
+        renderCulling ON
+        Translation { translation 500 0 -2000 }
+        RotationXYZ { axis Y angle  -0.2 }
+        File { name ./forest1.iv }
+    }
+    Separator {
+        renderCaching ON
+        renderCulling ON
+        Translation { translation -1000 0 1700 }
+        RotationXYZ { axis Y angle 3.0 }
+        File { name ./forest2.iv }
+    }
+    Separator {
+        renderCaching ON
+        renderCulling ON
+        Translation { translation 240 0 180 }
+        RotationXYZ { axis Y angle -1.2 }
+        File { name ./forest3.iv }
+    }
+
+    Separator {
+        renderCaching ON
+        renderCulling ON
+        Environment { ambientIntensity 1.0 }
+        Translation { translation 150 0 0 }
+        RotationXYZ { axis Y angle  -1.57 }
+        File { name ./Grandstand.iv }
+    }
+
+    Separator {
+	Translation { translation -430 0 -80 }
+	File { name "bldg1.iv" }
+    }
+}

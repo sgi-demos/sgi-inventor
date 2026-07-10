@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc libFLiv.a CMakeFiles/FLiv.dir/fl.c.o CMakeFiles/FLiv.dir/flclient.c.o CMakeFiles/FLiv.dir/flfreetype.c.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libFLiv.a

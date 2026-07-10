@@ -1,6 +1,6 @@
 add_library(SoSDL STATIC
     SoSDL.c++ SoSDLRenderArea.c++ SoSDLExaminerViewer.c++
-    $<$<BOOL:${EMSCRIPTEN}>:gl1stubs.c>
+    $<$<AND:$<BOOL:${EMSCRIPTEN}>,$<NOT:$<BOOL:${IV_GL4ES}>>>:gl1stubs.c>
     SoSDL.h SoSDLRenderArea.h SoSDLExaminerViewer.h
 )
 set_property(TARGET SoSDL PROPERTY POSITION_INDEPENDENT_CODE ON)

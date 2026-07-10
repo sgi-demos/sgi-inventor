@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc libimage.a CMakeFiles/image.dir/close.c.o CMakeFiles/image.dir/filbuf.c.o CMakeFiles/image.dir/flsbuf.c.o CMakeFiles/image.dir/name.c.o CMakeFiles/image.dir/open.c.o CMakeFiles/image.dir/pix.c.o CMakeFiles/image.dir/rdwr.c.o CMakeFiles/image.dir/rle.c.o CMakeFiles/image.dir/row.c.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libimage.a

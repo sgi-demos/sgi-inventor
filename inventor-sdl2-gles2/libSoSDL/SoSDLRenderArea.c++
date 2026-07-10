@@ -18,6 +18,70 @@ static SoMouseButtonEvent	*buttonEvent = NULL;
 static SoLocation2Event		*locationEvent = NULL;
 static SoKeyboardEvent		*keyboardEvent = NULL;
 
+#ifdef IV_GL4ES
+//
+// gl4es backend: Inventor's GL1 calls are translated to GLES2 by gl4es
+// (statically linked; entry points below are its bootstrap API, declared
+// here to avoid depending on <GL/gl4esinit.h>'s include path). The GLES2
+// context itself comes from SDL2 — ANGLE on macOS, WebGL1 under
+// Emscripten. Wiring follows the freeglut-sdl2-ogles2 backend.
+//
+extern "C" {
+    void set_getprocaddress(void *(*proc)(const char *));
+    void set_getmainfbsize(void (*cb)(int *width, int *height));
+    void initialize_gl4es(void);
+    void gl4es_pre_swap(void);
+    void gl4es_post_swap(void);
+#ifdef __EMSCRIPTEN__
+    void createMainFBO(int width, int height);
+    void bindMainFBO(void);
+#endif
+}
+
+// The window whose drawable size gl4es queries (single-window demos).
+static SDL_Window *gl4esWindow = NULL;
+
+static void
+gl4esGetMainFBSize(int *width, int *height)
+{
+    if (gl4esWindow)
+	SDL_GL_GetDrawableSize(gl4esWindow, width, height);
+    else
+	*width = *height = 0;
+}
+
+// Hand the now-current GLES2 context to gl4es, once, before any GL call.
+// Order matters: proc-address resolver first, or gl4es's hardware probe
+// calls glGetString through an empty function table and crashes.
+static void
+gl4esBootstrap(SDL_Window *window)
+{
+    static bool done = false;
+    if (done)
+	return;
+    done = true;
+    gl4esWindow = window;
+#ifdef __EMSCRIPTEN__
+    // WebGL has no real back buffer: the browser presents whatever is in
+    // the drawing buffer when the frame callback returns. LIBGL_FB=2 makes
+    // gl4es render into an internal FBO that gl4es_pre_swap() blits to the
+    // canvas at swap time. (0: don't override a page-provided value.)
+    setenv("LIBGL_FB", "2", 0);
+#endif
+    set_getprocaddress((void *(*)(const char *))SDL_GL_GetProcAddress);
+    set_getmainfbsize(gl4esGetMainFBSize);
+    initialize_gl4es();
+#ifdef __EMSCRIPTEN__
+    // gl4es built with NOEGL+NOX11 has no MakeCurrent path, which is where
+    // it normally creates the LIBGL_FB=2 main FBO; create and bind it here.
+    int w = 0, h = 0;
+    SDL_GL_GetDrawableSize(window, &w, &h);
+    createMainFBO(w, h);
+    bindMainFBO();
+#endif
+}
+#endif // IV_GL4ES
+
 SoSDLRenderArea::SoSDLRenderArea(const char *title, int width, int height)
 {
     size.setValue(width, height);
@@ -26,6 +90,23 @@ SoSDLRenderArea::SoSDLRenderArea(const char *title, int width, int height)
     overlayMgr = NULL;
     closeCB = NULL;
     closeCBData = NULL;
+
+#ifdef IV_GL4ES
+    // GLES 2.0 context for gl4es. On macOS there is no native GLES
+    // driver; SDL_GL_CONTEXT_EGL routes context creation through EGL
+    // (i.e. ANGLE) instead of falling back to Apple desktop GL.
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+#ifndef __EMSCRIPTEN__
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_EGL, 1);
+#endif
+    SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+#endif
 
     window = SDL_CreateWindow(title,
 	SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
@@ -42,6 +123,9 @@ SoSDLRenderArea::SoSDLRenderArea(const char *title, int width, int height)
 	sceneMgr = NULL;
 	return;
     }
+#ifdef IV_GL4ES
+    gl4esBootstrap(window);
+#endif
 
     // SoXtRenderArea enabled depth testing when realizing its GL widget;
     // as the GL surface owner, that responsibility is ours now.
@@ -181,7 +265,15 @@ SoSDLRenderArea::render()
 	delete [] pix;
     }
 
+#ifdef IV_GL4ES
+    // Flush gl4es's batches (and blit its main FBO under LIBGL_FB=2)
+    // before presenting; rebind after.
+    gl4es_pre_swap();
     SDL_GL_SwapWindow(window);
+    gl4es_post_swap();
+#else
+    SDL_GL_SwapWindow(window);
+#endif
     redrawNeeded = false;
 }
 
