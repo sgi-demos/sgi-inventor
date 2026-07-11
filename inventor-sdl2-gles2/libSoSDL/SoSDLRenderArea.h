@@ -14,6 +14,7 @@ class SoNode;
 class SoSceneManager;
 class SoEvent;
 class SoGLRenderAction;
+class SoSelection;
 
 class SoSDLRenderArea {
   public:
@@ -28,6 +29,13 @@ class SoSDLRenderArea {
     // Forwarded to the scene manager's GL render action.
     void		setTransparencyType(int type);
     SoGLRenderAction	*getGLRenderAction() const;
+    // Replace the scene manager's GL render action (e.g. with a
+    // highlight action). The render area owns the old action's slot;
+    // SoSceneManager semantics apply.
+    void		setGLRenderAction(SoGLRenderAction *ra);
+    // Schedule a redraw whenever the selection changes
+    // (SoXtRenderArea::redrawOnSelectionChange semantics).
+    void		redrawOnSelectionChange(SoSelection *s);
     // Window title (SoXtComponent::setTitle semantics).
     void		setTitle(const char *title);
     SbVec2s		getSize() const { return size; }

@@ -19,6 +19,8 @@ Ported so far (all run native and in-browser):
 | **pbn** (pbnsolve + pbncreate) | Inventor Games CD — Paint By Numbers puzzles + editor |
 | **revo** | SGI demo — surface-of-revolution editor (draw a profile, spin it) |
 | **qmorf** | Gavin Bell, SGI — 3D morphing between quad-mesh CyberHeads |
+| **noodle** | Paul Isaacs, SGI 1994 — generalized-cylinder editor (5 windows) |
+| **textomatic** | SGI demo — 3D text editor with extrusion-bevel editing |
 
 The scene-graph core is kept byte-identical where possible; the Xt/Motif
 windowing layer is replaced by a small SDL2 layer (`libSoSDL`), and all of

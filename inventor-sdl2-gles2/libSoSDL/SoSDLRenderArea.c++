@@ -3,6 +3,7 @@
 
 #include <GL/gl.h>
 #include <Inventor/SoSceneManager.h>
+#include <Inventor/nodes/SoSelection.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoWindowElement.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
@@ -57,8 +58,19 @@ static void
 gl4esBootstrap(SDL_Window *window)
 {
     static bool done = false;
-    if (done)
+    if (done) {
+#ifdef __EMSCRIPTEN__
+	// Every SDL window is the same canvas on the web, and creating
+	// a later window resizes it; gl4es's main FBO must follow, or
+	// the last window shows the first window's FBO stretched.
+	gl4esWindow = window;
+	int w = 0, h = 0;
+	SDL_GL_GetDrawableSize(window, &w, &h);
+	createMainFBO(w, h);
+	bindMainFBO();
+#endif
 	return;
+    }
     done = true;
     gl4esWindow = window;
 #ifdef __EMSCRIPTEN__
@@ -118,13 +130,16 @@ SoSDLRenderArea::SoSDLRenderArea(const char *title, int width, int height)
 	sceneMgr = NULL;
 	return;
     }
-#ifdef IV_GL4ES
+#if defined(IV_GL4ES) && !defined(__EMSCRIPTEN__)
     // gl4es keeps ONE global shadow state (fixed-pipeline shader
     // programs, buffer/texture ids). With a GL context per window,
     // those ids are only valid in the first context and every other
     // window renders black. Share a single GL context across all
     // render areas instead; per-window differences (viewport, clear)
     // are re-established on every render anyway.
+    // (Native only: on Emscripten every SDL window maps to the same
+    // canvas, whose WebGL context cannot be re-targeted; there the
+    // last-created window owns the canvas, as before.)
     static SDL_GLContext sharedContext = NULL;
     if (sharedContext == NULL) {
 	sharedContext = SDL_GL_CreateContext(window);
@@ -147,6 +162,9 @@ SoSDLRenderArea::SoSDLRenderArea(const char *title, int width, int height)
 	sceneMgr = NULL;
 	return;
     }
+#ifdef IV_GL4ES
+    gl4esBootstrap(window);
+#endif
 #endif
 
     // SoXtRenderArea enabled depth testing when realizing its GL widget;
@@ -165,7 +183,7 @@ SoSDLRenderArea::~SoSDLRenderArea()
 {
     SoSDL::removeRenderArea(this);
     delete sceneMgr;
-#ifdef IV_GL4ES
+#if defined(IV_GL4ES) && !defined(__EMSCRIPTEN__)
     // The GL context is shared between render areas; leak it rather
     // than pull it out from under the survivors (process teardown
     // reclaims it).
@@ -240,6 +258,26 @@ SoNode *
 SoSDLRenderArea::getSceneGraph() const
 {
     return sceneMgr->getSceneGraph();
+}
+
+void
+SoSDLRenderArea::setGLRenderAction(SoGLRenderAction *ra)
+{
+    if (sceneMgr)
+	sceneMgr->setGLRenderAction(ra);
+}
+
+static void
+selectionChangeCB(void *userData, SoSelection *)
+{
+    ((SoSDLRenderArea *)userData)->scheduleRedraw();
+}
+
+void
+SoSDLRenderArea::redrawOnSelectionChange(SoSelection *s)
+{
+    if (s)
+	s->addChangeCallback(selectionChangeCB, this);
 }
 
 SoGLRenderAction *
