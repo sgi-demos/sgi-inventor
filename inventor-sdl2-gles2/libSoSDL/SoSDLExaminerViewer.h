@@ -40,6 +40,10 @@ class SoSDLExaminerViewer : public SoSDLRenderArea {
     SoCamera		*getCamera() const	{ return camera; }
     void		viewAll();
 
+    // Turn the built-in headlight on/off (apps that light their own
+    // scenes turn it off).
+    void		setHeadlight(SbBool on);
+
     bool		isViewing() const	{ return viewing; }
     void		setViewing(bool on)	{ viewing = on; }
 
@@ -55,7 +59,20 @@ class SoSDLExaminerViewer : public SoSDLRenderArea {
     void		dollyCamera(float amount);
     void		spinCamera(const SbVec2f &newLocatorNorm);
 
-  private:
+    // The headlight grafted above the user scene.
+    SoDirectionalLight	*getHeadlight() const	{ return headlight; }
+
+    // When off, near/far are not recomputed each render (SoXtViewer's
+    // setAutoClipping semantics; scenes with fixed cameras use this).
+    void		setAutoClipping(SbBool on)	{ autoClipping = on; }
+
+    // Save/restore the camera's home position (SoXtViewer semantics).
+    void		saveHomePosition();
+    void		resetToHomePosition();
+
+  protected:
+    // Drag machinery, available to viewer subclasses with their own
+    // input bindings (e.g. drop's TsViewer).
     enum DragMode { IDLE, SPIN, PAN, DOLLY };
 
     void		startDrag(DragMode mode, const SbVec2s &pos);
@@ -63,6 +80,7 @@ class SoSDLExaminerViewer : public SoSDLRenderArea {
     void		endDrag();
     SbVec2f		normalize(const SbVec2s &pos) const;
 
+  private:
     SoSeparator		*viewerRoot;	// camera + headlight + user scene
     SoCamera		*camera;
     bool		cameraIsMine;
@@ -70,6 +88,12 @@ class SoSDLExaminerViewer : public SoSDLRenderArea {
     SoGroup		*userSceneHolder;
 
     bool		viewing;
+    SbBool		autoClipping;
+    // saved home position (saveHomePosition/resetToHomePosition)
+    SbVec3f		homePos;
+    SbRotation		homeOrient;
+    float		homeFocal, homeHeight;
+    SbBool		homeSaved;
     DragMode		mode;
     SbVec2s		locator;	// last mouse pos, y-up
     SbSphereSheetProjector *sphereSheet;

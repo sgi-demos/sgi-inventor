@@ -87,6 +87,7 @@ SoSDLRenderArea::SoSDLRenderArea(const char *title, int width, int height)
     size.setValue(width, height);
     redrawNeeded = false;
     autoRedraw = TRUE;
+    clearBeforeRender = TRUE;
     overlayMgr = NULL;
     closeCB = NULL;
     closeCBData = NULL;
@@ -215,6 +216,20 @@ SoSDLRenderArea::getSceneGraph() const
 }
 
 void
+SoSDLRenderArea::setTransparencyType(int type)
+{
+    sceneMgr->getGLRenderAction()->setTransparencyType(
+	(SoGLRenderAction::TransparencyType) type);
+    scheduleRedraw();
+}
+
+void
+SoSDLRenderArea::setTitle(const char *title)
+{
+    if (window) SDL_SetWindowTitle(window, title);
+}
+
+void
 SoSDLRenderArea::setBackgroundColor(const SbColor &c)
 {
     sceneMgr->setBackgroundColor(c);
@@ -235,7 +250,7 @@ SoSDLRenderArea::render()
     // windowing layer to restore it). Reset it for every pass.
     glViewport(0, 0, size[0], size[1]);
     sceneMgr->getGLRenderAction()->setUpdateArea(SbVec2f(0, 0), SbVec2f(1, 1));
-    sceneMgr->render();
+    sceneMgr->render(clearBeforeRender, TRUE);
 
     // Overlay-plane emulation: render the overlay graph over the main
     // scene with a fresh depth buffer but without clearing color.

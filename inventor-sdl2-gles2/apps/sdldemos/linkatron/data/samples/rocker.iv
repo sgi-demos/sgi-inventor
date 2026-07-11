@@ -1,0 +1,113 @@
+#Inventor V2.0 ascii
+
+Separator {
+    DoubleStrut {
+	origin	-0.436565 5.56144 0
+	endPoint	3.59979 1.43487 -2.08616e-07
+	size1	6.23542
+	size2	3.71828
+	strut1		Strut {
+	    origin	-0.436565 5.56144 0
+	    endPoint	5.69432 4.50709 -1.8241e-07
+	    originAxle		    Axle {
+		origin	-0.436565 5.56144 0
+		zRotation	1.35118
+		leadingAxle			DEF +0 Axle {
+		    pinActivationDist	-1
+		    leadingAxle	NULL
+		}
+
+	    }
+
+	    endPointAxle		    Axle {
+		origin	5.69432 4.50709 -1.8241e-07
+		pinActivationDist	-1
+		leadingAxle	NULL
+	    }
+
+	}
+
+	strut2		Strut {
+	    origin	5.69432 4.50709 -1.8241e-07
+	    endPoint	3.59979 1.43487 -2.08616e-07
+	    originAxle		    Axle {
+		origin	5.69432 4.50709 -1.8241e-07
+		leadingAxle	NULL
+	    }
+
+	    endPointAxle		    Axle {
+		origin	3.59979 1.43487 -2.08616e-07
+		leadingAxle	NULL
+	    }
+
+	}
+
+    }
+    RotorMotor {
+	origin	-2.05252 2.89743 -3.81423
+	on	FALSE
+	onOffButton		ToggleButton {
+	    isOn	FALSE
+	}
+
+	axle		DEF +1 Axle {
+	    origin	-2.05252 2.89743 -3.81423
+	    zRotation	0
+	    canFollowRot	FALSE
+	    leadingAxle	NULL
+	}
+
+	speedStick		RotateDiscDragger {
+	    rotation	0 0 1  1
+	}
+
+    }
+    Wheel {
+	origin	-2.05252 2.89743 -2.23277
+	radius	1
+	zRotation	37.1558
+	offsetRotation	0.243153
+	originAxle		Axle {
+	    origin	-2.05252 2.89743 -2.23277
+	    zRotation	37.1558
+	    leadingAxle		    USE +1
+
+	}
+
+	inertAxle		DEF +2 Axle {
+	    pinActivationDist	-1
+	    leadingAxle	NULL
+	}
+
+	rotatorRing		RotateDiscDragger {
+	    rotation	0 0 1  0.243153
+	}
+
+	sizingRing		Scale2UniformDragger {
+	}
+
+    }
+    Arrow {
+	origin	-1.56507 0.505891 -8.9407e-07
+	dirPoint	-1.09723 2.60175 -2.98023e-06
+	length	5.17997
+	originAxle		Axle {
+	    origin	-1.56507 0.505891 -8.9407e-07
+	    leadingAxle	NULL
+	}
+
+	dirPointAxle		Axle {
+	    origin	-1.09723 2.60175 -2.98023e-06
+	    zRotation	37.399
+	    leadingAxle		    USE +2
+
+	}
+
+	inertAxle		USE +0
+
+	sizingDragger		Translate1Dragger {
+	    translation	5.17997 0 0
+	}
+
+    }
+}

@@ -68,6 +68,8 @@ SoSDLExaminerViewer::SoSDLExaminerViewer(const char *title, int w, int h)
 {
     camera = NULL;
     cameraIsMine = false;
+    autoClipping = TRUE;
+    homeSaved = FALSE;
     viewing = true;
     mode = IDLE;
 
@@ -139,10 +141,46 @@ SoSDLExaminerViewer::setSceneGraph(SoNode *root)
 }
 
 void
+SoSDLExaminerViewer::saveHomePosition()
+{
+    if (!camera) return;
+    homePos    = camera->position.getValue();
+    homeOrient = camera->orientation.getValue();
+    homeFocal  = camera->focalDistance.getValue();
+    homeHeight = camera->isOfType(SoPerspectiveCamera::getClassTypeId())
+	? ((SoPerspectiveCamera *)camera)->heightAngle.getValue()
+	: ((SoOrthographicCamera *)camera)->height.getValue();
+    homeSaved = TRUE;
+}
+
+void
+SoSDLExaminerViewer::resetToHomePosition()
+{
+    if (!camera || !homeSaved) return;
+    camera->position = homePos;
+    camera->orientation = homeOrient;
+    camera->focalDistance = homeFocal;
+    if (camera->isOfType(SoPerspectiveCamera::getClassTypeId()))
+	((SoPerspectiveCamera *)camera)->heightAngle = homeHeight;
+    else
+	((SoOrthographicCamera *)camera)->height = homeHeight;
+    scheduleRedraw();
+}
+
+void
 SoSDLExaminerViewer::render()
 {
-    adjustCameraClippingPlanes(camera, viewerRoot, getSize());
+    if (autoClipping)
+	adjustCameraClippingPlanes(camera, viewerRoot, getSize());
     SoSDLRenderArea::render();
+}
+
+void
+SoSDLExaminerViewer::setHeadlight(SbBool on)
+{
+    if (headlight)
+	headlight->on = on;
+    scheduleRedraw();
 }
 
 void

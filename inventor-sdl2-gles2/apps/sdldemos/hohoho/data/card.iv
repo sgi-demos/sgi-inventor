@@ -1,0 +1,144 @@
+#Inventor V2.0 ascii
+#
+# A Merry Christmas Card from Tim Heidmann, 1993
+#
+Separator {
+    # A gradation background
+    OrthographicCamera { 
+	viewportMapping LEAVE_ALONE
+	nearDistance 0.01
+	farDistance  1.01
+    }
+    LightModel { model BASE_COLOR }
+    MaterialBinding { value PER_VERTEX }
+    BaseColor { rgb [ 0 0 0.5, 0 0 0.5, 0 0 0.1, 0 0 0.1 ] }
+    Coordinate3 { point [ -1 -1 0, 1 -1 0, 1 1 0, -1 1 0 ] }
+    FaceSet {}
+
+    PerspectiveCamera {
+	position 0 0 22
+	nearDistance 19.5
+	farDistance 25
+	heightAngle .19635
+    }
+
+    Separator {
+	# Translate to center of frame
+	Translation { translation 0 -.67 0 }
+
+	# Orient the entire scene
+	Translation { translation 0  .4 0 }
+	DEF dome Group {}
+	Translation { translation 0 -.4 0 }
+
+	# Rotate light with cube to keep floor dark
+	DirectionalLight { direction -0.5 -0.0 -1.0 }
+
+	# Shape of the ellipsoid
+	Scale { scaleFactor 1.7 2 1.2 }
+
+	# The background, outline, and reflections off the glass
+	Separator {
+	    # Keep the dome outside the flakes
+	    Scale { scaleFactor 1.05 1.05 1.05 }
+
+	    # Invisible cube to mask lower part of reflections
+	    Separator {
+		Group { Info { string "wmzmzfzc 0 1 1 0" } }
+		Translation { translation 0 -1.11 0 }
+		Cube { }
+		Group { Info { string "wmzmzfzc 1 1 1 0" } }
+	    }
+
+	    Separator {
+		DEF silhouette Group {}
+
+		LightModel { model BASE_COLOR }
+
+		# Blue background
+		Group { Info { string "wmzmzfzc 1 0 1 0" } }
+		DrawStyle { style FILLED }
+		BaseColor { rgb 0 0 .2 }
+		File { name "bg.iv" }
+		Group { Info { string "wmzmzfzc 1 1 1 0" } }
+
+		# Silhouette and reflections
+		DrawStyle { style LINES }
+		BaseColor { rgb .4 .4 1 }
+		File { name "silhouette.iv" }
+		DrawStyle { style FILLED }
+		BaseColor { rgb .5 .5 .7 }
+		File { name "refl.iv" }
+	    }
+	}
+
+	# Base of the dome
+	DrawStyle { style FILLED }
+	LightModel { model PHONG }
+	Separator {
+	    Translation { translation 0 -.06 0 }
+	    Material { ambientColor  1 1 1 diffuseColor  .7 .7 .7 }
+	    Complexity { value .6 }
+	    Cylinder { height .1 radius 1.1 }
+	}
+
+
+	# The Scene goes here
+	DrawStyle { style FILLED }
+	LightModel { model PHONG }
+	Separator {
+	    Info { string "cache_me" }
+	    Separator {
+		Translation { translation -.4 0 -.2 }
+		RotationXYZ { axis Y angle .5 }
+		Scale { scaleFactor 1.7 1.7 1.7 }
+		Translation { translation 0 0.287 0 }
+		File { name "tree.iv" }
+	    }
+	    Separator {
+		Translation { translation .3 0 -.2 }
+		RotationXYZ { axis Y angle -.4 }
+		Scale { scaleFactor 1.2 1.2 1.2 }
+		Translation { translation 0 0.25 0 }
+		File { name "house.iv" }
+	    }
+	    Separator {
+		Translation { translation -.2 0 .2 }
+		RotationXYZ { axis Y angle .2 }
+		Scale { scaleFactor 0.9 0.9 0.9 }
+		Translation { translation 0 0.25 0 }
+		File { name "snowman.iv" }
+	    }
+	}
+
+
+	# This group describes the snowflakes to be created
+	Separator {
+	    LightModel {
+	        model BASE_COLOR
+	    }
+
+	    BaseColor { rgb 1 1 1 }
+
+	    Info { string "nflakes 600" }
+	    Info { string "fall 0.015 0.03" }
+
+	    Info { string "swirl 0 .2 0" }
+	    Info { string "arm 1 1.5   3.0 0.3   0.5 0.02   10.0" }
+
+	    Info { string "swirl 0 .3 0" }
+	    Info { string "arm 1 0.3   1.0 0.3   0.2 0.02    10.0" }
+	    Info { string "arm 2 0.75 10.0 2.0   1.8 0.20    10.0" }
+
+	    Info { string "swirl 0 .2 0" }
+	    Info { string "arm 1 0.6   1.0 0.3   0.2 0.02    10.0" }
+	    Info { string "arm 0 0.2   2.0 0.2   0.2 0.02    10.0" }
+	    Info { string "arm 0 0.6  14.0 6.0   2.0 0.30    10.0" }
+	     
+	    # Coefs: agitation_randomization
+	    Info { string "coefs 0.2" }
+	    DEF flakes Callback { }
+	}
+
+    }
+}

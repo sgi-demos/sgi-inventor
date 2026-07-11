@@ -13,6 +13,9 @@ class SoSDLRenderArea;
 
 class SoSDL {
   public:
+    // Source-compat with SoXt::getAppContext() callers (ports alias
+    // SoXt to SoSDL); there is no Xt app context under SDL.
+    static void *	getAppContext() { return 0; }
     // Initializes SDL video and the Inventor database (SoDB, SoNodeKit,
     // SoInteraction). Call once before creating render areas.
     static void		init();

@@ -1,0 +1,44 @@
+#Inventor V2.0 ascii
+
+Separator {
+    DEF TunnelCoords Coordinate3 {}
+    DEF TunnelNormals Normal {}
+    DEF TunnelTexCoords TextureCoordinate2 {}
+    NormalBinding {
+	value	PER_VERTEX
+    }
+
+    # The per-section graphs go here
+    DEF TunnelSep Separator {
+	renderCaching OFF
+	MaterialBinding { value PER_PART }
+	Material {
+	    ambientColor 0 0 0
+	    diffuseColor [ .3 .3 .4, .3 .4 .3, .4 .3 .3, .35 .35 .3 ]
+	    specularColor .1 .1 .1
+	    shininess .7
+	}
+    }
+
+    # Axis indicator line. Coordinates are added by the program.
+    Switch {
+	DEF TunnelAxis Separator {
+	    LightModel { model BASE_COLOR }
+	    Material {
+		diffuseColor 1 .04 .42
+		transparency .3
+	    }
+	    DrawStyle { lineWidth 2 }
+	    LineSet {}
+	}
+
+	DEF TunnelPointsGroup Group {
+	    Material {
+		ambientColor 0 0 0
+		diffuseColor 0 0 0
+		emissiveColor .2 .5 .9
+	    }
+	    DrawStyle { pointSize 2 }
+	}
+    }
+}

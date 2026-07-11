@@ -8,6 +8,7 @@
 #include <SDL2/SDL.h>
 #include <Inventor/SbColor.h>
 #include <Inventor/SbLinear.h>
+#include <Inventor/SbViewportRegion.h>
 
 class SoNode;
 class SoSceneManager;
@@ -23,7 +24,13 @@ class SoSDLRenderArea {
     SoNode		*getSceneGraph() const;
 
     void		setBackgroundColor(const SbColor &c);
+    // Forwarded to the scene manager's GL render action.
+    void		setTransparencyType(int type);
+    // Window title (SoXtComponent::setTitle semantics).
+    void		setTitle(const char *title);
     SbVec2s		getSize() const { return size; }
+    SbViewportRegion	getViewportRegion() const
+					{ return SbViewportRegion(size); }
 
     // Overlay-plane emulation: the overlay scene graph is rendered as a
     // second pass over the main scene (depth buffer cleared, color kept).
@@ -34,11 +41,21 @@ class SoSDLRenderArea {
     // Overlay color maps applied to SoColorIndex content have no meaning
     // in RGBA rendering; accepted and ignored for source compatibility.
     void		setOverlayColorMap(int, int, const SbColor *) {}
+    // The overlay is drawn as part of every render pass; an overlay
+    // redraw request is just a redraw request.
+    void		renderOverlay()	{ scheduleRedraw(); }
 
     // When autoRedraw is on (default), scene-graph changes schedule a
     // redraw automatically (SoXtRenderArea semantics).
     void		setAutoRedraw(SbBool flag);
     SbBool		isAutoRedraw() const	{ return autoRedraw; }
+
+    // When off, the color buffer is not cleared before rendering (the
+    // scene is expected to cover the window). SoXtRenderArea semantics.
+    void		setClearBeforeRender(SbBool flag)
+					{ clearBeforeRender = flag; }
+    SbBool		isClearBeforeRender() const
+					{ return clearBeforeRender; }
 
     // Called when the user closes the window (SDL_QUIT / window close).
     // If unset, the main loop simply exits.
@@ -80,6 +97,7 @@ class SoSDLRenderArea {
     SDL_GLContext	context;
     bool		redrawNeeded;
     SbBool		autoRedraw;
+    SbBool		clearBeforeRender;
     SoSceneManager	*overlayMgr;	// NULL until an overlay graph is set
     void		(*closeCB)(void *, SoSDLRenderArea *);
     void		*closeCBData;

@@ -1,0 +1,48 @@
+#Inventor V2.0 ascii
+
+DEF thePuck Separator  {
+    Complexity { 
+	value 0.4 
+    }
+    ShapeHints { 
+	vertexOrdering COUNTERCLOCKWISE 
+	shapeType SOLID
+    }
+
+    # puck
+    Separator {
+   	DEF puckLight Switch {
+	    whichChild 0
+    	    PointLight { intensity 0.9 location 0 25 50 }  # light for player 0
+    	    PointLight { intensity 0.9 location 0 25 -50 } # light for player 1
+	}
+    	LightModel { model PHONG }
+    	Material { diffuseColor 0.20 0.20 0.20  ambientColor .15 .15 .15 }
+    	DEF puckLoc Translation { }
+    	DEF puckGeom Cylinder { parts (SIDES|TOP) }
+    }
+ 
+    # shadow
+    Separator {
+	LightModel { model BASE_COLOR }
+    	Material { diffuseColor 0.4 0.4 0.4 }
+	DEF puckShadowXform Switch {
+	    whichChild 0
+	    MatrixTransform { 		# shadow transform for player 0
+		matrix  35 0 0  0
+			0  0 20 -1
+			0  0 35 0 
+			0  0 0  35
+	    }
+	    MatrixTransform { 		# shadow transform for player 1
+		matrix  35 0 0  0
+			0  0 -20 -1
+			0  0 35 0 
+			0  0 0  35
+	    }
+	}
+	USE puckLoc
+    	DEF puckShadow Cylinder { parts (TOP | SIDES) }
+    }
+}
+

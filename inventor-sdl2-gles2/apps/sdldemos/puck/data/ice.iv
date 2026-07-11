@@ -1,0 +1,148 @@
+#Inventor V2.0 ascii
+
+Separator {
+    Separator {
+	# ice details
+	LightModel { model BASE_COLOR }
+	BaseColor { rgb 1 1 1 }
+
+	Separator {
+	    # faceoff dots
+	    BaseColor { rgb 0 0 1 }
+	    DEF dot Cylinder { parts TOP height 0.05 radius 2.0 }
+	    BaseColor { rgb 1 0 0 }
+	    Translation { translation -30 0 -65 }
+	    USE dot
+	    Translation { translation  60 0   0 }
+	    USE dot
+	    Translation { translation  0  0  130 }
+	    USE dot
+	    Translation { translation  -60 0 0 }
+	    USE dot
+	    Translation { translation   30 0 15 }
+	    USE dot
+	    Translation { translation    0 0 -160 }
+	    USE dot
+
+	    # offsides faceoffs
+	    Translation { translation  -30 0 65 }
+	    USE dot
+	    Translation { translation   60 0 0 }
+	    USE dot
+	    Translation { translation   0 0 30 }
+	    USE dot
+	    Translation { translation   -60 0 0 }
+	    USE dot
+        }
+
+	Separator {
+	    # lines and circles
+
+	    # centerline
+	    BaseColor { rgb 1 0 0 }
+	    Coordinate3 {
+		point [ -60 0 -1, -60 0 1, 60 0 1, 60 0 -1,
+			-59.7 3  1, -59.7 0 1, -59.7 0 -1, -59.7 3 -1,
+			59.7 3  -1, 59.7 0 -1, 59.7 0 1, 59.7 3 1,
+		      ]
+	    }
+	    DEF iceLine FaceSet { numVertices [ 4, 4, 4] }
+	    Separator {
+		BaseColor { rgb 0 0 1 }
+		Translation { translation 0 0 -31 }
+		USE iceLine
+		Translation { translation 0 0 62 }
+		USE iceLine
+	    }
+
+	    DrawStyle { lineWidth 2 }
+	    DEF circle Separator {
+		Coordinate3 {
+		    point	[ 	 -15.0  0.0 0.0,
+				     -14.49 0.0 3.88,
+				     -12.99 0.0 7.5,
+				     -10.61 0.0 10.61,
+				     -7.5   0.0 12.99,
+				     -3.88  0.0 14.49,
+				      0.0   0.0 15.0, 
+				      3.88  0.0 14.49,
+				      7.5   0.0 12.99,
+				      10.61 0.0 10.61,
+				      12.99 0.0 7.5,
+				      14.49 0.0 3.88,
+				      15.0  0.0 0.0,
+				      14.49 0.0 -3.88,
+				      12.99 0.0 -7.5,
+				      10.61 0.0 -10.61,
+				      7.5   0.0 -12.99,
+				      3.88  0.0 -14.49,
+				      0.0   0.0 -15.0, 
+				     -3.88  0.0 -14.49,
+				     -7.5   0.0 -12.99,
+				     -10.61 0.0 -10.61,
+				     -12.99 0.0 -7.5,
+				     -14.49 0.0 -3.88,
+				     -15    0.0  0.0, ]
+
+		}
+		LineSet {}
+	    }
+	    Separator {
+		Translation { translation -30 0 -65 }
+		USE circle
+		Translation { translation  60 0  0 }
+		USE circle
+		Translation { translation  0  0 130 }
+		USE circle
+		Translation { translation  -60  0 0 }
+		USE circle
+	    }
+
+	}
+    }
+
+    Separator {
+	# side, back, and corner boards
+	Separator {
+	    DEF gold Material { 
+		emissiveColor 0.5 0.35 0.0 
+		diffuseColor 1 0.7 0
+		shininess 0
+	    }
+
+	    # side and corner boards
+	    DEF board Separator {
+		Coordinate3 {
+		    point [
+			-60 0 90, -60 0 -86, -56 0 -90, 56 0 -90,  60 0 -86,
+			 60 0 86,  56 0 90,  -56 0 90, -60 1  90, -60 1 -86,
+			-56 1 -90, 56 1 -90, 60 1 -86, 60 1 86, 56 1 90,
+			-56 1 90, ]
+		}
+		IndexedFaceSet {
+		    coordIndex [ 
+			 0,  1,  9,  8, -1,
+			 1,  2, 10,  9, -1,
+			 3,  4, 12, 11, -1,
+			 4,  5, 13, 12, -1,
+			 5,  6, 14, 13, -1,
+			 7,  0,  8, 15, -1,
+		    ]
+		}
+	    }
+	    Material { 
+		emissiveColor 0.2 0.2 0.2
+		diffuseColor 1 1 1 
+		shininess 0
+	    }
+	    Separator {
+		Transform { scaleFactor 1 3 1 translation 0 1 0 }
+		USE board
+		USE gold
+		Transform { scaleFactor 1 0.2 1 translation 0 1 0 }
+		USE board
+	    }
+
+	}
+    }
+}
