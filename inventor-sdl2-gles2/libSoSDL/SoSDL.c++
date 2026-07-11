@@ -8,6 +8,7 @@
 #include <Inventor/SbTime.h>
 
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <vector>
 
@@ -79,6 +80,7 @@ eventWindowId(const SDL_Event *e)
       case SDL_MOUSEWHEEL:	return e->wheel.windowID;
       case SDL_KEYDOWN:
       case SDL_KEYUP:		return e->key.windowID;
+      case SDL_TEXTINPUT:	return e->text.windowID;
       case SDL_WINDOWEVENT:	return e->window.windowID;
       default:			return 0;
     }
@@ -119,6 +121,66 @@ SoSDL::doOneIteration()
 		return false;
 	    }
 	    SoSDLRenderArea *ra = findRenderArea(eventWindowId(&event));
+#ifdef __EMSCRIPTEN__
+	    // On the web every SDL window maps to the same #canvas.
+	    // Each window registers its own DOM handlers there, so one
+	    // browser input event is delivered once per window: drop
+	    // the duplicates (same type/timestamp/payload as the
+	    // previous input event).
+	    {
+		Uint32 ts = 0;
+		Uint64 payload = 0;
+		bool isInput = true;
+		switch (event.type) {
+		  case SDL_KEYDOWN:
+		  case SDL_KEYUP:
+		    ts = event.key.timestamp;
+		    payload = ((Uint64) event.key.keysym.sym << 16) |
+			      (Uint16) event.key.keysym.mod;
+		    break;
+		  case SDL_MOUSEBUTTONDOWN:
+		  case SDL_MOUSEBUTTONUP:
+		    ts = event.button.timestamp;
+		    payload = ((Uint64) event.button.button << 32) |
+			      ((Uint64) (Uint16) event.button.x << 16) |
+			      (Uint16) event.button.y;
+		    break;
+		  case SDL_MOUSEMOTION:
+		    ts = event.motion.timestamp;
+		    payload = ((Uint64) (Uint16) event.motion.x << 16) |
+			      (Uint16) event.motion.y;
+		    break;
+		  case SDL_MOUSEWHEEL:
+		    ts = event.wheel.timestamp;
+		    payload = ((Uint64) (Uint16) event.wheel.x << 16) |
+			      (Uint16) event.wheel.y;
+		    break;
+		  case SDL_TEXTINPUT:
+		    ts = event.text.timestamp;
+		    memcpy(&payload, event.text.text, sizeof(payload));
+		    break;
+		  default:
+		    isInput = false;
+		    break;
+		}
+		if (isInput) {
+		    static Uint32 prevType = 0, prevTs = 0;
+		    static Uint64 prevPayload = 0;
+		    if (event.type == prevType && ts == prevTs &&
+			payload == prevPayload)
+			continue;	// duplicate delivery, next event
+		    prevType = event.type;
+		    prevTs = ts;
+		    prevPayload = payload;
+
+		    // The last-created window is the one on screen, but
+		    // SDL leaves mouse focus on the first window: route
+		    // all input to the canvas owner.
+		    if (!renderAreas.empty())
+			ra = renderAreas.back();
+		}
+	    }
+#endif
 	    if (ra)
 		ra->processEvent(&event);
 	} while (SDL_PollEvent(&event));

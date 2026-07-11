@@ -322,6 +322,7 @@ verification is always a real browser.
 | M11a | glemu path retired: patched-emscripten LEGACY_GL_EMULATION build, `tools/emscripten-patches/`, the Node harness, `build-glues-em.sh`, and `gl1stubs.c` removed; gl4es is the only web backend (CMake errors on `emcmake` without `-DIV_GL_BACKEND=gl4es`). Known issue kept: Inventor render caching (display lists) replays black under gl4es-on-WebGL, so `IV_SEPARATOR_MAX_CACHES=0` stays on Emscripten |
 | M11b (part 1) | First two LGPL apps/demos ported: **revo** (surface of revolution: LineManip2 profile editor window + examiner viewer window, Motif strip → keys, Copy → SoWriteAction to stdout) and **qmorf** (quad-mesh morphing with CyberHeads data, sliders/toggles → keys). Load-bearing libSoSDL fix found via revo: gl4es keeps one global shadow state, so per-window GL contexts made every window after the first render black (linkatron's gl4es viewer had been silently broken); under IV_GL4ES all render areas now share a single GL context. Also found: desktop-GL render caching drops a BaseColor change after an Array node (revo grid axes; SGI-era core bug — gl4es renders it correctly) |
 | M11b (part 2) | **noodle** (the big one: 5 windows — examiner viewer with SoBoxHighlight selection + profile/section/spine/twist LineManip editors; pulldown menus -> Interface::menuAction(id) keyboard dispatch; GeneralizedCylinder nodekit from apps/nodes; Motif gizmos' two booleans as keys) and **textomatic** (3D text editor: SDL text input edits the string live, bevel-profile LineManip window, bundled Times-Roman=DejaVu). Added SoSDLRenderArea::setGLRenderAction + redrawOnSelectionChange. Two web fixes: the shared-GL-context scheme is native-only (on Emscripten every window is the same canvas; last created owns it, main FBO resized per window via gl4esBootstrap), and a gl4es fix — createMainFBO left blitMainFBO's destination size stale after a surface resize (issues/gl4es-mainfbo-resize-fbowidth pair) |
+| M11b (part 3) | **gview** (Paul S. Strauss's scene-graph viewer/editor: examiner window + GraphViewer icon-graph window with two-way selection sync, cut/copy/paste/duplicate with paste-location feedback in the overlay, group open/close, instance display, node creation, field editing). The Motif dialog stack became a console/text-prompt layer: FieldEditor prints fields and applies typed `<name> <value>` lines through the same `SoNode::set()` path the Motif Apply built; NodeCreator takes a typed class name ('?' lists all types); Error prints to stderr. The GraphViewer plane viewer became an SoSDLRenderArea subclass (headlight added — the Xt viewer supplied one; Esc-toggled/middle-drag pan + wheel zoom on the ortho camera). gviewIcons.iv is read at runtime (the compiled-in header needs the ivToIncludeFile host tool, which can't run in a wasm cross-build). Two libSoSDL web fixes found via gview: SDL_TEXTINPUT events were never routed (dropped for every app — latent since textomatic), and on the web each SDL window registers its own DOM handlers on the shared canvas, so every input event arrived once per window with mouse focus stuck on the first — input is now deduped and routed to the canvas-owning window. On the web the scene window never renders (its Rotor-animated redraws would sit permanently on top of the graph window); the graph window — gview's point — is the visible one |
 
 ## 11. Process notes (how not to lose work)
 
@@ -355,8 +356,11 @@ are now policy:
   under gl4es-on-WebGL — works under gl4es-on-ANGLE natively, so it is a
   gl4es web-backend issue; enabling caches would speed up browser
   rendering. Candidate for a gl4es issues/ pair once understood.
-- Remaining LGPL demos from apps/demos: qmorf, revo, noodle, textomatic,
-  gview, SceneViewer (M11b).
+- Remaining LGPL demos from apps/demos: SceneViewer (M11c, the heaviest
+  Motif surface).
+- gl4es has no glPolygonStipple, so SCREEN_DOOR transparency (Inventor's
+  default) renders opaque under gl4es (gview's windmill sails vs the
+  desktop reference). Scenes that set BLEND render identically.
 - Upstreaming: demo pages on sgi-demos.github.io; the gl4es fixes are
   maintained as issues/ pairs in the gl4es fork for eventual upstream
   review.
