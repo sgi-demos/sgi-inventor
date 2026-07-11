@@ -26,6 +26,7 @@ class SoSDLRenderArea {
     SoNode		*getSceneGraph() const;
 
     void		setBackgroundColor(const SbColor &c);
+    const SbColor &	getBackgroundColor() const;
     // Forwarded to the scene manager's GL render action.
     void		setTransparencyType(int type);
     SoGLRenderAction	*getGLRenderAction() const;

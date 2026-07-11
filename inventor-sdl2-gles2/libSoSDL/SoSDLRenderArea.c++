@@ -318,6 +318,12 @@ SoSDLRenderArea::setBackgroundColor(const SbColor &c)
     scheduleRedraw();
 }
 
+const SbColor &
+SoSDLRenderArea::getBackgroundColor() const
+{
+    return sceneMgr->getBackgroundColor();
+}
+
 void
 SoSDLRenderArea::render()
 {

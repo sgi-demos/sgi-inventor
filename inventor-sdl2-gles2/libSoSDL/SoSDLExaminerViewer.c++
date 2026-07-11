@@ -347,7 +347,35 @@ SoSDLExaminerViewer::drag(const SbVec2s &pos)
 void
 SoSDLExaminerViewer::endDrag()
 {
+    if (mode != IDLE)
+	invokeFinishCallbacks();
     mode = IDLE;
+}
+
+void
+SoSDLExaminerViewer::addFinishCallback(FinishCB *cb, void *userData)
+{
+    FinishCBEntry e;
+    e.cb = cb;
+    e.userData = userData;
+    finishCBs.push_back(e);
+}
+
+void
+SoSDLExaminerViewer::removeFinishCallback(FinishCB *cb, void *userData)
+{
+    for (size_t i = 0; i < finishCBs.size(); i++)
+	if (finishCBs[i].cb == cb && finishCBs[i].userData == userData) {
+	    finishCBs.erase(finishCBs.begin() + i);
+	    return;
+	}
+}
+
+void
+SoSDLExaminerViewer::invokeFinishCallbacks()
+{
+    for (size_t i = 0; i < finishCBs.size(); i++)
+	finishCBs[i].cb(finishCBs[i].userData, this);
 }
 
 void
@@ -402,6 +430,7 @@ SoSDLExaminerViewer::processEvent(const SDL_Event *e)
 	return;
       case SDL_MOUSEWHEEL:
 	dollyCamera(e->wheel.y * -0.1f);
+	invokeFinishCallbacks();
 	scheduleRedraw();
 	return;
     }

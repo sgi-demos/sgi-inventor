@@ -19,6 +19,7 @@
 
 #include "SoSDLRenderArea.h"
 #include <Inventor/SbLinear.h>
+#include <vector>
 
 
 class SoCamera;
@@ -70,6 +71,13 @@ class SoSDLExaminerViewer : public SoSDLRenderArea {
     void		saveHomePosition();
     void		resetToHomePosition();
 
+    // Finish callbacks, invoked when a viewer gesture completes
+    // (SoXtViewer::addFinishCallback semantics; the TabBox manip uses
+    // one to adjust its scale tabs after the camera moves).
+    typedef void	FinishCB(void *userData, SoSDLExaminerViewer *viewer);
+    void		addFinishCallback(FinishCB *cb, void *userData = NULL);
+    void		removeFinishCallback(FinishCB *cb, void *userData = NULL);
+
   protected:
     // Drag machinery, available to viewer subclasses with their own
     // input bindings (e.g. drop's TsViewer).
@@ -95,6 +103,9 @@ class SoSDLExaminerViewer : public SoSDLRenderArea {
     float		homeFocal, homeHeight;
     SbBool		homeSaved;
     DragMode		mode;
+    struct FinishCBEntry { FinishCB *cb; void *userData; };
+    std::vector<FinishCBEntry> finishCBs;
+    void		invokeFinishCallbacks();
     SbVec2s		locator;	// last mouse pos, y-up
     SbSphereSheetProjector *sphereSheet;
     SbPlane		focalplane;
