@@ -224,6 +224,17 @@ SoSDLRenderArea::setTransparencyType(int type)
 }
 
 void
+SoSDLRenderArea::setSize(const SbVec2s &newSize)
+{
+    size = newSize;
+    if (window)
+	SDL_SetWindowSize(window, newSize[0], newSize[1]);
+    if (sceneMgr)
+	sceneMgr->setWindowSize(size);
+    scheduleRedraw();
+}
+
+void
 SoSDLRenderArea::setTitle(const char *title)
 {
     if (window) SDL_SetWindowTitle(window, title);

@@ -29,6 +29,8 @@ class SoSDLRenderArea {
     // Window title (SoXtComponent::setTitle semantics).
     void		setTitle(const char *title);
     SbVec2s		getSize() const { return size; }
+    // Resize the window (SoXtComponent::setSize semantics).
+    void		setSize(const SbVec2s &newSize);
     SbViewportRegion	getViewportRegion() const
 					{ return SbViewportRegion(size); }
 
