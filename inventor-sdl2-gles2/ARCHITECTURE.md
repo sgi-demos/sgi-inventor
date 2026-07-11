@@ -36,12 +36,16 @@ tools/ppp/                  Inventor's code generator (host tool)
 libSoSDL/                   NEW: the SDL windowing/viewer layer
 apps/sdltests/              NEW: smoke tests (ivread, ivcone, ivview,
                             ivinteract)
-apps/sdldemos/maze/         Ported SGI maze game (from apps/demos/maze)
-apps/samples/common/        Upstream sample helpers (maze needs
+apps/sdldemos/              Ported demos and games: maze, slotcar, drop,
+                            hohoho, puck, spacecadet, linkatron, pbn
+apps/samples/common/        Upstream sample helpers (several demos need
                             InventorLogo.h from here — keep it!)
-tools/emscripten-patches/   Patch for Emscripten's LEGACY_GL_EMULATION
-tools/harness/              Headless Node mock-WebGL test harness
 ```
+
+Retired in M11a (recoverable from git history): `tools/emscripten-patches/`
+(the LEGACY_GL_EMULATION patch), `tools/harness/` (the Node mock-WebGL
+harness), `tools/build-glues-em.sh`, and `libSoSDL/gl1stubs.c` — all
+belonged to the pre-gl4es web path (§7–§9).
 
 What we deliberately do **not** build: `libSoXt` / `libInventorXt` (the
 Xt/Motif viewers and editors), GLw, man pages, the converters. The cut line
@@ -127,38 +131,40 @@ CMakeLists.txt, `if (EMSCRIPTEN)` blocks):
   texture reading still work.
 - **GLU**: linked from a wasm build of **glues** (the GLU-ES port — the
   original SGI tessellator/NURBS/mipmap code, which matters for behavioral
-  fidelity). The C sources need `-D__USE_SDL_GLES__`; libnurbs is C++
-  (`.cc`) and needs `-DLIBRARYBUILD`. `tools/build-glues-em.sh` does all
-  of this: it takes a checkout of https://github.com/sgi-demos/glues
-  (cloning one if none is found), applies the libtess GLdouble patch to a
-  copy, and archives `build-em/glues/libglues.a`, which is where the
-  CMake `GLUES_LIBRARY` variable points by default.
+  fidelity), built by `tools/build-glues-gl4es.sh` straight from the
+  canonical https://github.com/sgi-demos/glues checkout.
+- **GL**: gl4es (`libGL-web.a`), linked with `-sFULL_ES2=1` so the GLES2
+  entry points gl4es calls into are exported. Stock, unpatched emscripten.
 - **Render caching disabled at runtime**: `SoSDL::init()` sets
-  `IV_SEPARATOR_MAX_CACHES=0` before `SoDB::init()` — display lists do not
-  exist under the GL emulation.
-- **gl1stubs.c**: no-op C stubs for GL1 entry points absent from the
-  emulation (display lists, accum, stipple, raster ops, attrib stack).
-  IMPORTANT: a C stub *shadows* the JS emulation's implementation at link
-  time — never stub a function the emulation implements (this bit us with
-  `glMaterialf` and `glLightModeli`).
-- Link: `-sLEGACY_GL_EMULATION=1 -sGL_UNSAFE_OPTS=0 -sALLOW_MEMORY_GROWTH=1
-  -sEXIT_RUNTIME=0`.
-- Build-system gotcha: Emscripten's system JS libraries are **not** in
-  make's dependency graph. After patching `library_glemu.js`, delete the
-  output html/js/wasm to force a relink.
+  `IV_SEPARATOR_MAX_CACHES=0` before `SoDB::init()` on Emscripten.
+  Historically because display lists did not exist under the GL
+  emulation; today because Inventor's cached separators replay black
+  under gl4es-on-WebGL (works under gl4es-on-ANGLE natively; not yet
+  root-caused — see roadmap).
+- Link: `-sFULL_ES2=1 -sALLOW_MEMORY_GROWTH=1 -sEXIT_RUNTIME=0`.
 
-## 8. The GL emulation patch (M5b–M5d) — the heart of the browser work
+Until M11a the web build instead used emscripten's `LEGACY_GL_EMULATION`
+with a vendored patch (`-sLEGACY_GL_EMULATION=1 -sGL_UNSAFE_OPTS=0`, plus
+no-op C stubs in `gl1stubs.c` for GL1 entry points the emulation lacked —
+where a stub *shadows* the JS implementation at link time, which bit us
+twice). That path was retired once the gl4es backend was verified across
+all demos; §8 preserves its war stories.
+
+## 8. The GL emulation patch (M5b–M5d; retired M11a) — historical
+
+*This whole GL path was retired in M11a in favor of gl4es (§10, M9); the
+patches lived in `tools/emscripten-patches/` and remain in git history.
+The failure analyses below are kept because they document how SGI-era GL1
+actually behaves — most of them later recurred, in mutated form, as gl4es
+bugs.*
 
 Emscripten's `LEGACY_GL_EMULATION` is explicitly "a collection of limited
 workarounds." Inventor exercises GL1 idioms it does not handle, producing
-three independent, compounding failures. The fix lives in
-`tools/emscripten-patches/` in two variants of the same patch:
-`library_glemu-4.0.12-inventor.patch` for emscripten 4.0.x (apply to
-`<emscripten>/src/lib/libglemu.js`; this is what the README's build
-instructions use) and the historical
-`library_glemu-3.1.6-inventor.patch` for emscripten 3.1.6 (apply to
-`<emscripten>/src/library_glemu.js`), where the port was originally
-debugged.
+three independent, compounding failures. The fix was two variants of the
+same patch: `library_glemu-4.0.12-inventor.patch` for emscripten 4.0.x
+(applied to `<emscripten>/src/lib/libglemu.js`) and the historical
+`library_glemu-3.1.6-inventor.patch` for emscripten 3.1.6, where the port
+was originally debugged.
 
 **Failure 1 — color-index gray (the original "grayscale maze").**
 `SoGLLazyElement::init()` calls `glGetBooleanv(GL_RGBA_MODE)` to detect
@@ -254,7 +260,10 @@ INVALID_ENUM plus an untouched (zero) result — and fixed-function code makes
 load-bearing decisions on those zeros. Every glGet* the scene graph performs
 must be audited against the emulation.
 
-## 9. The headless harness (`tools/harness/`)
+## 9. The headless harness (retired M11a) — historical
+
+*Retired with the glemu path it existed to debug; in git history under
+`tools/harness/`.*
 
 A Node.js harness that loads the Emscripten `maze.js` against a recording
 mock WebGL context — no browser needed. It captures draw calls, uniform
@@ -308,6 +317,10 @@ verification is always a real browser.
 | M7 | Sound: SDL2 software mixer (SoundSDL.c++) replaces the IRIX dmedia stub - per-car engine loops with live pitch (variable-rate playback, linear interp), screech, crash one-shots. AIFFs converted to WAV (originals kept); verified via SDL's disk audio driver (engine fires at the Start click) |
 | M8 | macOS native build (GL header shim, Homebrew SDL2) and the glemu patch ported to emscripten 4.0.x; glues build scripted (`tools/build-glues-em.sh`); both demos verified on mac native and in-browser. First public check-in. |
 | M9 | gl4es backend (`-DIV_GL_BACKEND=gl4es`): one GL1→GLES2 path on both targets — ANGLE natively, stock unpatched emscripten on the web. Six gl4es bugs found/fixed (glGet routing, GL_N_BYTES call lists, raster pos/color, bitmap alignment, readback flush, sized internal formats) + a 40-year-old LP64 heap-corruption bug in libimage's RLE tables (rowstart/rowsize declared long*, allocated/read as int32) found with guard malloc — textures were black on LP64 under any backend. Demos pixel-identical to desktop GL (maze 0.000%, slotcar 0.002%). |
+| M9b–d | Hardware mipmaps for glues under gl4es; glues fixes reconciled into the canonical sgi-demos/glues fork (GLdouble libtess, GLUES_GL4ES self-mangling headers) — build scripts compile straight from the checkout, no patches; web build verified on stock emscripten; 1984 libimage LP64 fix upstreamed |
+| M10 | The rest of the Inventor Games CD: drop, hohoho, puck, spacecadet, linkatron, pbn (pbnsolve + pbncreate). SDL_PORT recipe extracted from slotcar; overlay emulation reused; in-process datagram transport for puck's two-player engine; SDL cursors from original X bitmaps; Motif menus → keyboard shortcuts. Verified: gl4es-native pixel diffs vs desktop 0.000–1.5% (AA only) across all games; browser interaction checks all pass. Found + fixed a gl4es glRasterPos3f bug (NDC z<0 rejected — ortho-camera SoText2 text never latched) |
+| M11a | glemu path retired: patched-emscripten LEGACY_GL_EMULATION build, `tools/emscripten-patches/`, the Node harness, `build-glues-em.sh`, and `gl1stubs.c` removed; gl4es is the only web backend (CMake errors on `emcmake` without `-DIV_GL_BACKEND=gl4es`). Known issue kept: Inventor render caching (display lists) replays black under gl4es-on-WebGL, so `IV_SEPARATOR_MAX_CACHES=0` stays on Emscripten |
+| M11b (part 1) | First two LGPL apps/demos ported: **revo** (surface of revolution: LineManip2 profile editor window + examiner viewer window, Motif strip → keys, Copy → SoWriteAction to stdout) and **qmorf** (quad-mesh morphing with CyberHeads data, sliders/toggles → keys). Load-bearing libSoSDL fix found via revo: gl4es keeps one global shadow state, so per-window GL contexts made every window after the first render black (linkatron's gl4es viewer had been silently broken); under IV_GL4ES all render areas now share a single GL context. Also found: desktop-GL render caching drops a BaseColor change after an Array node (revo grid axes; SGI-era core bug — gl4es renders it correctly) |
 
 ## 11. Process notes (how not to lose work)
 
@@ -337,8 +350,12 @@ are now policy:
   platform-neutral; Linux built throughout M1–M7 — needs re-verification).
 - Two-sided lighting quality check (glLightModeli is wired but the FFP
   shader's treatment is approximate).
-- Performance: the emulation re-creates renderer state per flush in places;
-  profile once content is heavier.
-- Upstreaming: demo pages on sgi-demos.github.io; consider offering the
-  glemu patch upstream to emscripten (the immediate-mode and glGet fixes
-  are generally useful for GL1-era ports).
+- Root-cause Inventor render caching (GL display lists) replaying black
+  under gl4es-on-WebGL — works under gl4es-on-ANGLE natively, so it is a
+  gl4es web-backend issue; enabling caches would speed up browser
+  rendering. Candidate for a gl4es issues/ pair once understood.
+- Remaining LGPL demos from apps/demos: qmorf, revo, noodle, textomatic,
+  gview, SceneViewer (M11b).
+- Upstreaming: demo pages on sgi-demos.github.io; the gl4es fixes are
+  maintained as issues/ pairs in the gl4es fork for eventual upstream
+  review.

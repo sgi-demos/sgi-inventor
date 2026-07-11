@@ -33,8 +33,10 @@ SoSDL::init()
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 #ifdef __EMSCRIPTEN__
-    // Display lists are unsupported under Emscripten's legacy GL
-    // emulation; disable Inventor's render caching before SoDB::init.
+    // Inventor's render caching (GL display lists) works under gl4es
+    // natively, but on WebGL the cached geometry replays black (maze
+    // floor/walls lose their material; gl4es display-list issue, not
+    // yet root-caused). Disable caching before SoDB::init on the web.
     setenv("IV_SEPARATOR_MAX_CACHES", "0", 1);
 #endif
     SoDB::init();

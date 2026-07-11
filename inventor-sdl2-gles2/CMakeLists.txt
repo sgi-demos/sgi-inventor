@@ -32,13 +32,17 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # GL backend selection:
-#   desktop - native: the platform's desktop OpenGL (fixed function);
-#             web: emscripten LEGACY_GL_EMULATION with the vendored patch.
-#   gl4es   - GL1.x -> GLES2 translation via gl4es on BOTH targets
-#             (native mac renders through ANGLE); one GL path everywhere,
-#             stock (unpatched) emscripten on the web.
+#   desktop - native only: the platform's desktop OpenGL (fixed function).
+#   gl4es   - GL1.x -> GLES2 translation via gl4es; native mac renders
+#             through ANGLE, the web through WebGL on stock emscripten.
+#             This is the only web backend (the earlier patched
+#             LEGACY_GL_EMULATION path was retired in M11).
 set(IV_GL_BACKEND "desktop" CACHE STRING "GL backend: desktop | gl4es")
 set_property(CACHE IV_GL_BACKEND PROPERTY STRINGS desktop gl4es)
+if (EMSCRIPTEN AND NOT IV_GL_BACKEND STREQUAL "gl4es")
+    message(FATAL_ERROR "The web build requires -DIV_GL_BACKEND=gl4es "
+        "(the patched-emscripten LEGACY_GL_EMULATION path was retired).")
+endif()
 if (IV_GL_BACKEND STREQUAL "gl4es")
     set(IV_GL4ES TRUE)
 else()
@@ -153,20 +157,9 @@ if (EMSCRIPTEN)
     if (NOT PPP_COMMAND)
         set(PPP_COMMAND ${CMAKE_SOURCE_DIR}/build/tools/ppp/ppp)
     endif()
-    if (IV_GL_BACKEND STREQUAL "gl4es")
-        # gl4es + glues come in via OpenGL::GL / OpenGL::GLU above;
-        # FULL_ES2 exposes the GLES2 entry points gl4es calls into.
-        set(GLUES_LIBRARY "")
-        set(IV_EM_GL_LINK_OPTIONS -sFULL_ES2=1)
-    else()
-        # GLU for OpenGL ES (SGI tessellator/NURBS/mipmap), built by
-        # tools/build-glues-em.sh into the build dir by default.
-        set(GLUES_LIBRARY "${CMAKE_BINARY_DIR}/glues/libglues.a"
-            CACHE FILEPATH "wasm libglues.a built by tools/build-glues-em.sh")
-        # Requires the vendored patch applied to emscripten's libglemu.js
-        # (tools/emscripten-patches/).
-        set(IV_EM_GL_LINK_OPTIONS -sLEGACY_GL_EMULATION=1 -sGL_UNSAFE_OPTS=0)
-    endif()
+    # gl4es + glues come in via OpenGL::GL / OpenGL::GLU above;
+    # FULL_ES2 exposes the GLES2 entry points gl4es calls into.
+    set(IV_EM_GL_LINK_OPTIONS -sFULL_ES2=1)
 else()
     add_subdirectory(tools)
     set(PPP_COMMAND ppp)
@@ -187,3 +180,5 @@ add_subdirectory(apps/sdldemos/spacecadet)
 add_subdirectory(apps/sdldemos/linkatron)
 add_subdirectory(apps/sdldemos/drop)
 add_subdirectory(apps/sdldemos/pbn)
+add_subdirectory(apps/sdldemos/revo)
+add_subdirectory(apps/sdldemos/qmorf)

@@ -2,8 +2,8 @@
 
 The patches that used to live here are now folded into the canonical
 glues fork (https://github.com/sgi-demos/glues), which all the sgi-demos
-ports share; the build scripts (`tools/build-glues-em.sh`,
-`tools/build-glues-gl4es.sh`) compile straight from that checkout.
+ports share; the build script
+(`tools/build-glues-gl4es.sh`) compiles straight from that checkout.
 
 What was upstreamed (see this directory's git history for the patches):
 

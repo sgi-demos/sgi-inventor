@@ -14,7 +14,6 @@ endif()
 
 if (EMSCRIPTEN)
     set_target_properties(puck PROPERTIES SUFFIX ".html")
-    target_link_libraries(puck PRIVATE ${GLUES_LIBRARY})
     target_link_options(puck PRIVATE
         -sUSE_SDL=2 -sUSE_FREETYPE=1
         ${IV_EM_GL_LINK_OPTIONS}

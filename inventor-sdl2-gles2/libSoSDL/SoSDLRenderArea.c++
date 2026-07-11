@@ -118,14 +118,35 @@ SoSDLRenderArea::SoSDLRenderArea(const char *title, int width, int height)
 	sceneMgr = NULL;
 	return;
     }
+#ifdef IV_GL4ES
+    // gl4es keeps ONE global shadow state (fixed-pipeline shader
+    // programs, buffer/texture ids). With a GL context per window,
+    // those ids are only valid in the first context and every other
+    // window renders black. Share a single GL context across all
+    // render areas instead; per-window differences (viewport, clear)
+    // are re-established on every render anyway.
+    static SDL_GLContext sharedContext = NULL;
+    if (sharedContext == NULL) {
+	sharedContext = SDL_GL_CreateContext(window);
+	if (sharedContext) {
+	    gl4esBootstrap(window);
+	}
+    } else {
+	SDL_GL_MakeCurrent(window, sharedContext);
+    }
+    context = sharedContext;
+    if (!context) {
+	fprintf(stderr, "SoSDLRenderArea — context: %s\n", SDL_GetError());
+	sceneMgr = NULL;
+	return;
+    }
+#else
     context = SDL_GL_CreateContext(window);
     if (!context) {
 	fprintf(stderr, "SoSDLRenderArea — context: %s\n", SDL_GetError());
 	sceneMgr = NULL;
 	return;
     }
-#ifdef IV_GL4ES
-    gl4esBootstrap(window);
 #endif
 
     // SoXtRenderArea enabled depth testing when realizing its GL widget;
@@ -144,7 +165,13 @@ SoSDLRenderArea::~SoSDLRenderArea()
 {
     SoSDL::removeRenderArea(this);
     delete sceneMgr;
+#ifdef IV_GL4ES
+    // The GL context is shared between render areas; leak it rather
+    // than pull it out from under the survivors (process teardown
+    // reclaims it).
+#else
     if (context) SDL_GL_DeleteContext(context);
+#endif
     if (window) SDL_DestroyWindow(window);
 }
 
@@ -213,6 +240,12 @@ SoNode *
 SoSDLRenderArea::getSceneGraph() const
 {
     return sceneMgr->getSceneGraph();
+}
+
+SoGLRenderAction *
+SoSDLRenderArea::getGLRenderAction() const
+{
+    return sceneMgr ? sceneMgr->getGLRenderAction() : NULL;
 }
 
 void

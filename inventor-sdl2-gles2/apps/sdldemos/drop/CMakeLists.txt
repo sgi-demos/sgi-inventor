@@ -10,7 +10,6 @@ if (NOT EMSCRIPTEN)
 endif()
 if (EMSCRIPTEN)
     set_target_properties(drop PROPERTIES SUFFIX ".html")
-    target_link_libraries(drop PRIVATE ${GLUES_LIBRARY})
     target_link_options(drop PRIVATE
         -sUSE_SDL=2 -sUSE_FREETYPE=1
         ${IV_EM_GL_LINK_OPTIONS}

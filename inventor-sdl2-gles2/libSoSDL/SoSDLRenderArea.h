@@ -13,6 +13,7 @@
 class SoNode;
 class SoSceneManager;
 class SoEvent;
+class SoGLRenderAction;
 
 class SoSDLRenderArea {
   public:
@@ -26,6 +27,7 @@ class SoSDLRenderArea {
     void		setBackgroundColor(const SbColor &c);
     // Forwarded to the scene manager's GL render action.
     void		setTransparencyType(int type);
+    SoGLRenderAction	*getGLRenderAction() const;
     // Window title (SoXtComponent::setTitle semantics).
     void		setTitle(const char *title);
     SbVec2s		getSize() const { return size; }

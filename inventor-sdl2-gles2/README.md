@@ -1,23 +1,33 @@
 # SGI Open Inventor — SDL2 / OpenGL ES 2 / WebAssembly port
 
-Genuine 1990s SGI Inventor demos, running natively on modern machines and
-in any web browser — built from the actual SGI source lineage, not a
-reimplementation. Part of the [sgi-demos](https://github.com/sgi-demos)
-historical preservation project.
+Genuine 1990s SGI Inventor demos and games, running natively on modern
+machines and in any web browser — built from the actual SGI source
+lineage, not a reimplementation. Part of the
+[sgi-demos](https://github.com/sgi-demos) historical preservation project.
 
-Two complete SGI demos are ported so far:
+Ported so far (all run native and in-browser):
 
-| Demo | Origin | Native | Browser |
-|---|---|---|---|
-| **maze** | SGI demo, 1994 | ✅ | ✅ |
-| **slotcar** ("SlotCars") | Bell/Immel, SGI 1994 — with SoText3 title, textures, robot cars, engine sound | ✅ | ✅ |
+| Demo | Origin |
+|---|---|
+| **maze** | SGI demo, 1994 — tilt the maze, roll the marble |
+| **slotcar** ("SlotCars") | Bell/Immel, SGI 1994 — SoText3 title, textures, robot cars, engine sound |
+| **drop** | SGI demo — falling-blocks game in 3D |
+| **hohoho** | Inventor Games CD — holiday card with swirling snow |
+| **puck** | Inventor Games CD — 3D air hockey |
+| **spacecadet** | Inventor Games CD — space flight sim |
+| **linkatron** | Inventor Games CD — linkage building toy |
+| **pbn** (pbnsolve + pbncreate) | Inventor Games CD — Paint By Numbers puzzles + editor |
+| **revo** | SGI demo — surface-of-revolution editor (draw a profile, spin it) |
+| **qmorf** | Gavin Bell, SGI — 3D morphing between quad-mesh CyberHeads |
 
 The scene-graph core is kept byte-identical where possible; the Xt/Motif
-windowing layer is replaced by a small SDL2 layer (`libSoSDL`), and
-Emscripten's `LEGACY_GL_EMULATION` is patched to handle the GL1 idioms
-Inventor actually uses. See [ARCHITECTURE.md](ARCHITECTURE.md) for the full
-design and the war stories; the upstream open-inventor README is preserved
-as [README.upstream.md](README.upstream.md).
+windowing layer is replaced by a small SDL2 layer (`libSoSDL`), and all of
+Inventor's OpenGL 1.x rendering goes through
+[gl4es](https://github.com/sgi-demos/gl4es) to OpenGL ES 2 — WebGL in the
+browser on **stock, unpatched emscripten**. See
+[ARCHITECTURE.md](ARCHITECTURE.md) for the full design and the war
+stories; the upstream open-inventor README is preserved as
+[README.upstream.md](README.upstream.md).
 
 ## Prerequisites (macOS)
 
@@ -38,13 +48,10 @@ cmake --build build -j8
 Run the demos (each opens an SDL window):
 
 ```sh
-build/apps/sdldemos/maze/maze          # tilt the maze, roll the marble
-build/apps/sdldemos/slotcar/slotcar    # click Start, race
+build/apps/sdldemos/maze/maze
+build/apps/sdldemos/slotcar/slotcar
+build/apps/sdldemos/drop/drop            # ... and so on for each game
 ```
-
-maze: drag tilts the board. slotcar: mouse up/down = speed, left/right
-click = change lanes, arrow keys = camera, stop at the start/finish line
-for a new race.
 
 Also built: `build/apps/sdltests/{ivread,ivcone,ivview,ivinteract}` —
 smoke tests (`ivview <file.iv>` is a handy generic viewer, e.g. against
@@ -55,82 +62,51 @@ each rendered frame as a PPM — ground truth for headless testing.
 
 ## Browser (WebAssembly) build
 
-Three one-time setup steps, then a normal `emcmake` build.
+The web build uses stock emscripten with the gl4es backend (no emscripten
+patches). Two one-time setup steps:
 
-**1. Emscripten with the GL-emulation patch.** The build needs an
-[emscripten](https://github.com/emscripten-core/emscripten) source
-checkout (tested with 4.0.12) with our `LEGACY_GL_EMULATION` patch
-applied — stock emulation renders Inventor gray/black/jumbled (see
-[tools/emscripten-patches/README.txt](tools/emscripten-patches/README.txt)):
-
-```sh
-cd <your-emscripten-checkout>
-patch -p1 < <this-repo>/tools/emscripten-patches/library_glemu-4.0.12-inventor.patch
-```
-
-**2. Native build first.** The wasm build runs Inventor's `ppp` code
+**1. Native build first.** The wasm build runs Inventor's `ppp` code
 generator on the host, and expects it at `build/tools/ppp/ppp` (already
 there if you did the native build above; override with `-DPPP_COMMAND=`).
 
-**3. GLU for GLES (glues).** SoText3/NURBS need the SGI GLU tessellator.
-One script builds it for wasm (it looks for a
-[glues](https://github.com/sgi-demos/glues) checkout at `../glues` or
-`~/Github/glues`, cloning one otherwise):
+**2. gl4es + glues.** Sibling checkouts of
+[gl4es](https://github.com/sgi-demos/gl4es) (run its `build-all.sh` to
+produce `lib/libGL-{native,web}.a`) and
+[glues](https://github.com/sgi-demos/glues) (the script below looks for
+it at `../glues` or `~/Github/glues`, cloning one otherwise):
 
 ```sh
-tools/build-glues-em.sh          # -> build-em/glues/libglues.a
+tools/build-glues-gl4es.sh            # full glues for gl4es, native + web
 ```
 
 Then configure and build:
 
 ```sh
-emcmake cmake -S . -B build-em -DCMAKE_BUILD_TYPE=Release
-cmake --build build-em -j8
+emcmake cmake -S . -B build-em-gl4es -DCMAKE_BUILD_TYPE=Release -DIV_GL_BACKEND=gl4es
+cmake --build build-em-gl4es -j8
 ```
 
 Serve and play (wasm requires HTTP, not file://):
 
 ```sh
 python3 -m http.server 8000
-# http://localhost:8000/build-em/apps/sdldemos/maze/maze.html
-# http://localhost:8000/build-em/apps/sdldemos/slotcar/slotcar.html
+# http://localhost:8000/build-em-gl4es/apps/sdldemos/maze/maze.html
+# http://localhost:8000/build-em-gl4es/apps/sdldemos/slotcar/slotcar.html
+# ... one .html per game
 ```
 
-The only expected console output is Emscripten's two boilerplate
-"using emscripten GL emulation" warnings.
+## The gl4es backend, natively
 
-Note: emscripten's system JS libraries are not in the build dependency
-graph — after re-applying or changing the glemu patch, delete
-`build-em/apps` (or the whole `build-em` except `glues/`) to force a
-relink.
-
-## The gl4es backend (one GL path, native and web)
-
-`-DIV_GL_BACKEND=gl4es` routes all of Inventor's GL1 through
-[gl4es](https://github.com/sgi-demos/gl4es) to OpenGL ES 2 on **both**
-targets — ANGLE (GLES-on-Metal) natively on macOS, WebGL in the browser
-— so rendering bugs reproduce natively where they are debuggable. On the
-web this uses **stock, unpatched emscripten** (no LEGACY_GL_EMULATION,
-no glemu patch). Verified pixel-identical (maze 0.000%, slotcar title
-0.002%) against the desktop-GL backend.
-
-Prerequisites: sibling checkouts of
-[gl4es](https://github.com/sgi-demos/gl4es) (run its `build-all.sh` to
-produce `lib/libGL-{native,web}.a`) and
-[opengl-for-mac](https://github.com/erik-larsen/opengl-for-mac) (ANGLE
-headers + dylibs, native only), plus the same
-[glues](https://github.com/sgi-demos/glues) checkout as above. Then:
+`-DIV_GL_BACKEND=gl4es` also works for the **native** build, routing GL1
+through gl4es to ANGLE (GLES-on-Metal) — the same GL path the browser
+uses, so web rendering bugs reproduce natively where they are debuggable.
+Verified pixel-identical against the desktop-GL backend across all demos.
+Requires [opengl-for-mac](https://github.com/erik-larsen/opengl-for-mac)
+(ANGLE headers + dylibs) as a sibling checkout:
 
 ```sh
-tools/build-glues-gl4es.sh            # full glues for gl4es, native + web
-
-# native (ANGLE)
 cmake -S . -B build-gl4es-native -DCMAKE_BUILD_TYPE=Release -DIV_GL_BACKEND=gl4es
 cmake --build build-gl4es-native -j8
-
-# web (stock emscripten; native build must exist first, for ppp)
-emcmake cmake -S . -B build-em-gl4es -DCMAKE_BUILD_TYPE=Release -DIV_GL_BACKEND=gl4es
-cmake --build build-em-gl4es -j8
 ```
 
 Paths default to `../../gl4es` and `../../opengl-for-mac` relative to
@@ -142,13 +118,11 @@ this directory; override with `-DGL4ES_DIR=` / `-DGLES_DIR=`.
 lib/                     Core libInventor — upstream SGI code, minimal patches
 libFL/  libimage/        Font + SGI .rgb image libraries (upstream)
 libSoSDL/                The SDL2 windowing/viewer layer (replaces SoXt)
-apps/sdldemos/           The ported demos: maze, slotcar
+apps/sdldemos/           The ported demos and games
 apps/sdltests/           Native smoke tests
 tools/ppp/               Inventor's code generator (host tool)
-tools/emscripten-patches/  LEGACY_GL_EMULATION patch + root-cause notes
-tools/glues-patches/     libtess GLdouble patch for glues
-tools/build-glues-em.sh  Builds libglues.a for the wasm link
-tools/harness/           Headless Node mock-WebGL test harness
+tools/glues-patches/     Notes on glues fixes (now upstreamed to sgi-demos/glues)
+tools/build-glues-gl4es.sh  Builds libglues for the native + web links
 ARCHITECTURE.md          Full port writeup: design, failures, lessons
 ```
 
